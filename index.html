@@ -235,7 +235,8 @@
 <body class="bg-gray-900 text-white">
 
     <div id="loading-screen" class="fixed inset-0 bg-gray-900 bg-opacity-90 flex flex-col justify-center items-center z-50 transition-opacity duration-500">
-        <h1 class="text-5xl font-amiri text-white" style="text-shadow: 0 0 15px rgba(50, 230, 0, 0.5);">RAMADHAN WORLD</h1>
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-neon"></div>
+        <p class="mt-4 text-lg">Loading App...</p>
     </div>
 
     <div id="main-content" class="min-h-screen container mx-auto p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-1000">
@@ -244,10 +245,7 @@
             <img id="app-logo" src="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png" alt="Ramadhan World Logo" class="w-[200px] h-[200px] mx-auto mb-4 rounded-full shadow-lg object-contain">
             <h1 class="text-4xl sm:text-5xl">Ramadhan World</h1>
             <p id="islamic-date" class="text-lg text-gray-300 mt-2">Loading Islamic Date...</p>
-            <div id="location-area">
-                <p id="location" class="text-md text-gray-400 mt-1">Location not set. Using default times.</p>
-                <button id="find-location-btn" class="action-btn px-4 py-2 mt-2 text-sm" onclick="startLocationSearch()">Enable Location for Prayer Times</button>
-            </div>
+            <p id="location" class="text-md text-gray-400 mt-1">Fetching location...</p>
         </header>
 
         <!-- Navigation -->
@@ -503,6 +501,7 @@
         let youtubePlayer;
         let userCoords = null;
         let notificationLog = [];
+        let audioUnlocked = false;
         let intendedAudioSource = null;
         let quranChapters = [];
         let quranListLoaded = false;
@@ -535,10 +534,11 @@
         }
 
         async function initializeApp() {
-            // Show branding screen for a moment then reveal the app
-            setTimeout(hideLoading, 1500);
+            // Show the page immediately
+            hideLoading();
             
-            // Load all non-location-dependent settings and stored data
+            // Load all settings and stored data
+            document.body.addEventListener('click', unlockAllAudio, { once: true });
             loadSettings();
             loadNotificationStatus();
             loadNotificationLog();
@@ -547,12 +547,23 @@
             loadDuas();
             setupRadioPlayer();
             
-            // Fetch Hadith
-            await fetchHadith();
-            
-            // Set default prayer times until user enables location
-            const defaultPrayerData = await getPrayerTimes("Karachi", "Pakistan");
-            if(defaultPrayerData) updateCountdown(defaultPrayerData.timings);
+            // Fetch location and hadith data in the background
+            getUserLocation();
+            fetchHadith();
+        }
+
+        function unlockAllAudio() {
+            if (audioUnlocked) return;
+            [azanFajrAudio, azanOtherAudio, smsTuneAudio, quranAudioPlayer, radioPlayer].forEach(audio => {
+                if (audio) {
+                    audio.muted = true;
+                    const playPromise = audio.play();
+                    if(playPromise !== undefined){
+                        playPromise.then(() => { audio.pause(); audio.currentTime = 0; audio.muted = false; }).catch(() => {});
+                    }
+                }
+            });
+            audioUnlocked = true;
         }
 
         async function fetchHadith() {
@@ -619,67 +630,33 @@
             const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
             return (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
         }
-        
-        function startLocationSearch() {
-            const findBtn = document.getElementById('find-location-btn');
-            if (findBtn) findBtn.style.display = 'none';
-            locationEl.textContent = 'Fetching your location...';
-            getUserLocation();
-        }
-
-        async function getLocationByIp() {
-            locationEl.textContent = "Estimating location from network...";
-            try {
-                const response = await fetch('https://ip-api.com/json');
-                if (!response.ok) throw new Error('IP API response not OK');
-                const data = await response.json();
-                if (data.status === 'success') {
-                    const { city, country } = data;
-                    locationEl.textContent = `${city}, ${country}`;
-                    const prayerData = await getPrayerTimes(city, country);
-                    if (prayerData) updateCountdown(prayerData.timings);
-                } else {
-                    throw new Error('IP API returned failure status');
-                }
-            } catch (error) {
-                console.error("IP Geolocation failed:", error);
-                locationEl.textContent = "Could not determine location. Using default.";
-                const prayerData = await getPrayerTimes("Karachi", "Pakistan");
-                if (prayerData) updateCountdown(prayerData.timings);
-            }
-        }
 
         function getUserLocation() {
             return new Promise((resolve) => {
                 if (!navigator.geolocation) {
-                    getLocationByIp().then(resolve);
+                    locationEl.textContent = "Geolocation is not supported. Using default times.";
+                    getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
                     return;
                 }
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        userCoords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-                        qiblaAngle = calculateQiblaDirection(userCoords.latitude, userCoords.longitude);
-                        try {
-                            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`);
-                            const data = await response.json();
-                            const city = data.address.city || data.address.town || 'Unknown City';
-                            const country = data.address.country || 'Unknown Country';
-                            locationEl.textContent = `${city}, ${country}`;
-                            const prayerData = await getPrayerTimes(city, country);
-                            if (prayerData) updateCountdown(prayerData.timings);
-                        } catch (error) {
-                            console.error("Reverse geocoding failed, using IP fallback:", error);
-                            await getLocationByIp();
-                        }
-                        resolve();
-                    },
-                    async (error) => {
-                        console.warn(`Geolocation error (${error.code}): ${error.message}. Falling back to IP.`);
-                        await getLocationByIp();
-                        resolve();
-                    },
-                    { timeout: 8000 }
-                );
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    userCoords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+                    qiblaAngle = calculateQiblaDirection(userCoords.latitude, userCoords.longitude);
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`);
+                        const data = await response.json();
+                        const city = data.address.city || data.address.town || 'Unknown', country = data.address.country || 'Country';
+                        locationEl.textContent = `${city}, ${country}`;
+                        getPrayerTimes(city, country).then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
+                    } catch (error) {
+                        getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
+                    }
+                }, async (error) => {
+                    let message = "Location access failed. Using default times for Karachi.";
+                    if (error.code === 1) message = "Location access denied. Using default times for Karachi.";
+                    else if (error.code === 2) { message = "Could not detect your location. Using default times for Karachi."; }
+                    locationEl.textContent = message;
+                    getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
+                }, { timeout: 10000 });
             });
         }
 
@@ -725,7 +702,7 @@
                         const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
                         countdownTimerEl.textContent = `${padZero(h)}:${padZero(m)}:${padZero(s)}`;
                         if (diff <= 1000 && !nextPrayerTriggered) { triggerPrayerNotification(nextPrayer.name); nextPrayerTriggered = true; }
-                    } else { startLocationSearch(); }
+                    } else { getUserLocation(); }
                 } else { nextPrayerNameEl.textContent = 'Day Complete'; countdownTimerEl.textContent = '00:00:00'; }
             }, 1000);
         }
@@ -759,7 +736,7 @@
             setTimeout(() => { 
                 loadingScreen.style.display = 'none'; 
                 mainContent.classList.remove('opacity-0'); 
-            }, 1500);
+            }, 500);
         }
 
         function startCompass() {
