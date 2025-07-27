@@ -687,7 +687,9 @@
                 // Using freeipapi.com for IP-based geolocation
                 const response = await fetch('https://freeipapi.com/api/json/');
                 if (!response.ok) {
-                    throw new Error(`IP API response not OK: ${response.status} ${response.statusText}`);
+                    // Log more details about the failed response
+                    console.error(`IP API response not OK: ${response.status} ${response.statusText}`);
+                    throw new Error(`Failed to fetch location data (Status: ${response.status})`);
                 }
                 const data = await response.json();
                 if (data.cityName && data.countryName) {
@@ -696,11 +698,15 @@
                     const prayerData = await getPrayerTimes(city, country);
                     if (prayerData) updateCountdown(prayerData.timings);
                 } else {
-                    throw new Error('IP API returned unexpected data structure');
+                    // Log the unexpected data structure
+                    console.error('IP API returned unexpected data structure:', data);
+                    throw new Error('IP API returned unexpected data.');
                 }
             } catch (error) {
                 console.error("IP Geolocation failed:", error);
-                locationEl.textContent = "Could not determine location. Using default (Karachi, Pakistan).";
+                // Provide a more informative message to the user
+                locationEl.textContent = "Could not determine location automatically. Please check your internet connection or try again. Using default (Karachi, Pakistan).";
+                showTemporaryMessage("Automatic location failed. Check internet. Using default times.", true);
                 // Fallback to a hardcoded default if IP API fails
                 const prayerData = await getPrayerTimes("Karachi", "Pakistan");
                 if (prayerData) updateCountdown(prayerData.timings);
@@ -709,9 +715,9 @@
 
         /**
          * Gets user's precise location using Geolocation API. Falls back to IP if denied or error.
-         * Note: For geolocation to work on iOS, the app MUST be served over HTTPS.
          */
         function getUserLocation() {
+            // Note: For geolocation to work on iOS (and securely on other browsers), the app MUST be served over HTTPS.
             return new Promise((resolve) => {
                 if (!navigator.geolocation) {
                     // Geolocation not supported, fall back to IP-based location
@@ -739,6 +745,9 @@
                     },
                     async (error) => {
                         console.warn(`Geolocation error (${error.code}): ${error.message}. Falling back to IP.`);
+                        // Provide user feedback for geolocation denial/error
+                        locationEl.textContent = "Geolocation denied or failed. Using approximate location from network.";
+                        showTemporaryMessage("Geolocation denied or failed. Using approximate location.", true);
                         await getLocationByIp(); // Fallback to IP if geolocation is denied or errors
                         resolve();
                     },
