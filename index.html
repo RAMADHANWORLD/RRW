@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadhan World App - Prayer Times, Qibla, Quran</title>
     <meta name="description" content="An all-in-one Islamic app featuring accurate prayer times, Sehri and Iftar times, Qibla compass, Quran recitation, a dynamic Islamic calendar, Naat collection, and Tasbeeh counter. Your perfect companion for Ramadan and daily worship.">
-    <meta name="keywords" content="islamic app, prayer times, qibla direction, quran online, ramadan 2025, sehri time, iftar time, islamic calendar, hijri date, naat, tasbeeh counter, ramadhan world, islamic history, salah times, listen quran, hadith, dua">
+    <meta name="keywords" content="islamic app, prayer times, qibla direction, quran online, ramadan 2025, sehri time, iftar time, islamic calendar, hijri date, naat, tasbeeb counter, ramadhan world, islamic history, salah times, listen quran, hadith, dua">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,8 +235,7 @@
 <body class="bg-gray-900 text-white">
 
     <div id="loading-screen" class="fixed inset-0 bg-gray-900 bg-opacity-90 flex flex-col justify-center items-center z-50 transition-opacity duration-500">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-neon"></div>
-        <p class="mt-4 text-lg">Loading App...</p>
+        <h1 class="text-5xl font-amiri text-white" style="text-shadow: 0 0 15px rgba(50, 230, 0, 0.5);">RAMADHAN WORLD</h1>
     </div>
 
     <div id="main-content" class="min-h-screen container mx-auto p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-1000">
@@ -245,7 +244,10 @@
             <img id="app-logo" src="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png" alt="Ramadhan World Logo" class="w-[200px] h-[200px] mx-auto mb-4 rounded-full shadow-lg object-contain">
             <h1 class="text-4xl sm:text-5xl">Ramadhan World</h1>
             <p id="islamic-date" class="text-lg text-gray-300 mt-2">Loading Islamic Date...</p>
-            <p id="location" class="text-md text-gray-400 mt-1">Fetching location...</p>
+            <div id="location-area">
+                <p id="location" class="text-md text-gray-400 mt-1">Location not set. Using default times.</p>
+                <button id="find-location-btn" class="action-btn px-4 py-2 mt-2 text-sm" onclick="startLocationSearch()">Enable Location for Prayer Times</button>
+            </div>
         </header>
 
         <!-- Navigation -->
@@ -397,7 +399,6 @@
                         <div id="qibla-line"></div>
                     </div>
                     <p id="qibla-direction" class="mt-4 text-lg text-gray-300">For accurate results, hold your device flat, away from any metals.</p>
-                    <p class="text-lg text-yellow-400 mt-4">THIS FEATURE IS COMING SOON</p>
                     <p class="text-sm text-gray-400 mt-2">(Accuracy depends on your device's hardware and browser support)</p>
                 </div>
             </div>
@@ -457,9 +458,10 @@
 
     <audio id="azan-fajr-audio" src="fajr.mp3" preload="auto"></audio>
     <audio id="azan-other-audio" src="other salah.mp3" preload="auto"></audio>
-    <audio id="sms-tune-audio" src="data:audio/mpeg;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT19OaWNlIGZlZWwgYmVhdCBvZiB0aGUgbW9kZXJuIHdvcmxkLiBDb250YWN0IG1lIGF0ICtrZDUyNjU2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NkZWZpbml0ZWx5IG5vdCBhIHZpcnVz" preload="auto"></audio>
+    <!-- Removed sms-tune-audio as its base64 source was invalid -->
     <div id="settings-saved-message" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-50"></div>
     
+    <!-- Correct YouTube Iframe API URL -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
@@ -477,7 +479,7 @@
         const radioPlayer = document.getElementById('radioPlayer');
         const azanFajrAudio = document.getElementById('azan-fajr-audio');
         const azanOtherAudio = document.getElementById('azan-other-audio');
-        const smsTuneAudio = document.getElementById('sms-tune-audio');
+        // const smsTuneAudio = document.getElementById('sms-tune-audio'); // Removed as the source was invalid
         const settingsSavedMessage = document.getElementById('settings-saved-message');
         const tvPlayButton = document.getElementById('tv-play-button');
         const tvPauseButton = document.getElementById('tv-pause-button');
@@ -501,7 +503,6 @@
         let youtubePlayer;
         let userCoords = null;
         let notificationLog = [];
-        let audioUnlocked = false;
         let intendedAudioSource = null;
         let quranChapters = [];
         let quranListLoaded = false;
@@ -526,19 +527,28 @@
             { hijriDate: '10-12', date: "10 Dhul Hijjah", name: "Eid al-Adha", description: "The festival of sacrifice." }
         ];
 
+        /**
+         * Manages audio playback across different sections (radio, quran, naat)
+         * to ensure only one audio source plays at a time.
+         * @param {string|null} source - The source that is intended to play ('radio', 'quran', 'naat'), or null to pause all.
+         */
         function manageAudioPlayback(source) {
             if (source !== 'radio' && radioPlayer && !radioPlayer.paused) { radioPlayer.pause(); }
             if (source !== 'quran' && quranAudioPlayer && !quranAudioPlayer.paused) { quranAudioPlayer.pause(); }
+            // Check if youtubePlayer exists and has pauseVideo method before calling
             if (source !== 'naat' && youtubePlayer && typeof youtubePlayer.pauseVideo === 'function' && youtubePlayer.getPlayerState() === 1) { youtubePlayer.pauseVideo(); }
             intendedAudioSource = source;
         }
 
+        /**
+         * Initializes the application by hiding the loading screen,
+         * loading settings, and fetching initial data.
+         */
         async function initializeApp() {
-            // Show the page immediately
-            hideLoading();
+            // Show branding screen for a moment then reveal the app
+            setTimeout(hideLoading, 1500);
             
-            // Load all settings and stored data
-            document.body.addEventListener('click', unlockAllAudio, { once: true });
+            // Load all non-location-dependent settings and stored data
             loadSettings();
             loadNotificationStatus();
             loadNotificationLog();
@@ -547,29 +557,24 @@
             loadDuas();
             setupRadioPlayer();
             
-            // Fetch location and hadith data in the background
-            getUserLocation();
-            fetchHadith();
+            // Fetch Hadith
+            await fetchHadith();
+            
+            // Set default prayer times until user enables location
+            // This ensures some data is displayed even without location access.
+            const defaultPrayerData = await getPrayerTimes("Karachi", "Pakistan");
+            if(defaultPrayerData) updateCountdown(defaultPrayerData.timings);
         }
 
-        function unlockAllAudio() {
-            if (audioUnlocked) return;
-            [azanFajrAudio, azanOtherAudio, smsTuneAudio, quranAudioPlayer, radioPlayer].forEach(audio => {
-                if (audio) {
-                    audio.muted = true;
-                    const playPromise = audio.play();
-                    if(playPromise !== undefined){
-                        playPromise.then(() => { audio.pause(); audio.currentTime = 0; audio.muted = false; }).catch(() => {});
-                    }
-                }
-            });
-            audioUnlocked = true;
-        }
-
+        /**
+         * Fetches a random Hadith from an external API or loads from cache.
+         * Caches Hadith for 6 hours to reduce API calls.
+         */
         async function fetchHadith() {
             try {
                 const cachedData = JSON.parse(localStorage.getItem(HADITH_CACHE_KEY));
-                const sixHours = 6 * 60 * 60 * 1000;
+                const sixHours = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+                // Use cached data if available and not older than 6 hours
                 if (cachedData && (Date.now() - cachedData.timestamp < sixHours)) {
                     displayHadith(cachedData.hadith);
                     return;
@@ -579,196 +584,415 @@
                 const data = await response.json();
                 const hadith = data.data;
                 displayHadith(hadith);
+                // Cache the fetched Hadith with a timestamp
                 localStorage.setItem(HADITH_CACHE_KEY, JSON.stringify({ hadith: hadith, timestamp: Date.now() }));
             } catch (error) {
                 console.error("Hadith fetch error:", error);
+                // Fallback Hadith in case of API failure
                 const fallbackHadith = { hadith_english: "The best among you are those who have the best manners and character.", book: "Sahih al-Bukhari", refno: "3559" };
                 displayHadith(fallbackHadith);
             }
         }
         
+        /**
+         * Displays the fetched Hadith in the UI.
+         * @param {object} hadith - The Hadith object containing text and reference.
+         */
         function displayHadith(hadith) {
-            hadithContentEl.innerHTML = `<p class="font-amiri text-lg">${hadith.hadith_english}</p><p id="hadith-reference" class="text-neon mt-4 font-semibold">Reference: ${hadith.book} ${hadith.refno}</p>`;
+            hadithContentEl.innerHTML = `<p class="font-amiri text-lg">${escapeHTML(hadith.hadith_english)}</p><p id="hadith-reference" class="text-neon mt-4 font-semibold">Reference: ${escapeHTML(hadith.book)} ${escapeHTML(hadith.refno)}</p>`;
         }
         
+        /**
+         * Populates the Islamic calendar grid with major Islamic events.
+         * Fetches Gregorian dates for Hijri events from an API.
+         * @param {number} hijriYear - The current Hijri year to fetch events for.
+         */
         async function populateEventCalendar(hijriYear) {
             const grid = document.getElementById('islamic-calendar-grid');
             const loadingIndicator = document.getElementById('calendar-loading-indicator');
             const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const apiCalls = islamicEvents.map(event => fetch(`https://api.aladhan.com/v1/hToG?date=${event.hijriDate}-${hijriYear}`).then(res => res.json()));
+            today.setHours(0, 0, 0, 0); // Normalize today's date for comparison
+
+            // Create an array of API calls for each Islamic event
+            const apiCalls = islamicEvents.map(event => 
+                fetch(`https://api.aladhan.com/v1/hToG?date=${event.hijriDate}-${hijriYear}`)
+                    .then(res => res.json())
+            );
+
             try {
                 const results = await Promise.all(apiCalls);
                 const eventsHtml = results.map((result, index) => {
-                    if (result.code === 200) {
+                    if (result.code === 200 && result.data) {
                         const gregDate = result.data.gregorian;
+                        // Construct a Date object from the Gregorian date to compare with today
                         const eventDate = new Date(`${gregDate.month.en} ${gregDate.day}, ${gregDate.year}`);
+                        
+                        // Only display events that are today or in the future
                         if (eventDate >= today) {
                             const fullDisplayDate = eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                             return `<div class="calendar-item">
                                         <div class="calendar-date">${islamicEvents[index].date}</div>
-                                        <h3 class="calendar-event-name">${islamicEvents[index].name}</h3>
-                                        <p class="calendar-event-desc">${islamicEvents[index].description}</p>
+                                        <h3 class="calendar-event-name">${escapeHTML(islamicEvents[index].name)}</h3>
+                                        <p class="calendar-event-desc">${escapeHTML(islamicEvents[index].description)}</p>
                                         <div class="gregorian-date"><strong>Expected Gregorian Date (${gregDate.year}):</strong><br>${fullDisplayDate}</div>
                                     </div>`;
                         }
                     }
-                    return '';
+                    return ''; // Return empty string for past events or failed API calls
                 }).join('');
+
+                // Update the grid with events or a message if no upcoming events
                 grid.innerHTML = eventsHtml.trim() ? eventsHtml : `<p class="text-center text-gray-400 col-span-full">No upcoming major events found.</p>`;
-                loadingIndicator.style.display = 'none';
+                loadingIndicator.style.display = 'none'; // Hide loading indicator
             } catch (error) {
-                loadingIndicator.innerHTML = `<p class="text-red-400">Could not load live calendar dates.</p>`;
+                console.error("Error fetching calendar events:", error);
+                loadingIndicator.innerHTML = `<p class="text-red-400">Could not load live calendar dates. Please try again later.</p>`;
             }
         }
         
+        /**
+         * Calculates the Qibla direction (angle from North) based on user's coordinates.
+         * @param {number} userLat - User's latitude.
+         * @param {number} userLon - User's longitude.
+         * @returns {number} The Qibla angle in degrees (0-360).
+         */
         function calculateQiblaDirection(userLat, userLon) {
-            const kaabaLat = 21.4225, kaabaLon = 39.8262;
-            const dLon = (kaabaLon - userLon) * (Math.PI / 180);
-            const lat1 = userLat * (Math.PI / 180), lat2 = kaabaLat * (Math.PI / 180);
+            const kaabaLat = 21.4225, kaabaLon = 39.8262; // Kaaba coordinates
+            const dLon = (kaabaLon - userLon) * (Math.PI / 180); // Difference in longitude, converted to radians
+            const lat1 = userLat * (Math.PI / 180), lat2 = kaabaLat * (Math.PI / 180); // User and Kaaba latitudes, converted to radians
+
             const y = Math.sin(dLon) * Math.cos(lat2);
             const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+
+            // Calculate angle and convert to degrees, ensuring it's positive (0-360)
             return (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
         }
+        
+        /**
+         * Initiates the location search process, first attempting geolocation, then IP fallback.
+         */
+        function startLocationSearch() {
+            const findBtn = document.getElementById('find-location-btn');
+            if (findBtn) findBtn.style.display = 'none'; // Hide the button once search starts
+            locationEl.textContent = 'Fetching your location...';
+            getUserLocation();
+        }
 
+        /**
+         * Attempts to get user's location via IP address if geolocation fails or is unavailable.
+         */
+        async function getLocationByIp() {
+            locationEl.textContent = "Estimating location from network...";
+            try {
+                // Using freeipapi.com for IP-based geolocation
+                const response = await fetch('https://freeipapi.com/api/json/');
+                if (!response.ok) {
+                    throw new Error(`IP API response not OK: ${response.status} ${response.statusText}`);
+                }
+                const data = await response.json();
+                if (data.cityName && data.countryName) {
+                    const { cityName: city, countryName: country } = data;
+                    locationEl.textContent = `${city}, ${country}`;
+                    const prayerData = await getPrayerTimes(city, country);
+                    if (prayerData) updateCountdown(prayerData.timings);
+                } else {
+                    throw new Error('IP API returned unexpected data structure');
+                }
+            } catch (error) {
+                console.error("IP Geolocation failed:", error);
+                locationEl.textContent = "Could not determine location. Using default (Karachi, Pakistan).";
+                // Fallback to a hardcoded default if IP API fails
+                const prayerData = await getPrayerTimes("Karachi", "Pakistan");
+                if (prayerData) updateCountdown(prayerData.timings);
+            }
+        }
+
+        /**
+         * Gets user's precise location using Geolocation API. Falls back to IP if denied or error.
+         * Note: For geolocation to work on iOS, the app MUST be served over HTTPS.
+         */
         function getUserLocation() {
             return new Promise((resolve) => {
                 if (!navigator.geolocation) {
-                    locationEl.textContent = "Geolocation is not supported. Using default times.";
-                    getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
+                    // Geolocation not supported, fall back to IP-based location
+                    getLocationByIp().then(resolve);
                     return;
                 }
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    userCoords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-                    qiblaAngle = calculateQiblaDirection(userCoords.latitude, userCoords.longitude);
-                    try {
-                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`);
-                        const data = await response.json();
-                        const city = data.address.city || data.address.town || 'Unknown', country = data.address.country || 'Country';
-                        locationEl.textContent = `${city}, ${country}`;
-                        getPrayerTimes(city, country).then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
-                    } catch (error) {
-                        getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
-                    }
-                }, async (error) => {
-                    let message = "Location access failed. Using default times for Karachi.";
-                    if (error.code === 1) message = "Location access denied. Using default times for Karachi.";
-                    else if (error.code === 2) { message = "Could not detect your location. Using default times for Karachi."; }
-                    locationEl.textContent = message;
-                    getPrayerTimes("Karachi", "Pakistan").then(prayerData => { if(prayerData) updateCountdown(prayerData.timings); resolve(); });
-                }, { timeout: 10000 });
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        userCoords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+                        qiblaAngle = calculateQiblaDirection(userCoords.latitude, userCoords.longitude);
+                        try {
+                            // Reverse geocoding to get city/country from coordinates
+                            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`);
+                            const data = await response.json();
+                            const city = data.address.city || data.address.town || 'Unknown City';
+                            const country = data.address.country || 'Unknown Country';
+                            locationEl.textContent = `${city}, ${country}`;
+                            const prayerData = await getPrayerTimes(city, country);
+                            if (prayerData) updateCountdown(prayerData.timings);
+                        } catch (error) {
+                            console.error("Reverse geocoding failed, using IP fallback:", error);
+                            await getLocationByIp(); // Fallback to IP if reverse geocoding fails
+                        }
+                        resolve();
+                    },
+                    async (error) => {
+                        console.warn(`Geolocation error (${error.code}): ${error.message}. Falling back to IP.`);
+                        await getLocationByIp(); // Fallback to IP if geolocation is denied or errors
+                        resolve();
+                    },
+                    { timeout: 8000 } // Timeout for geolocation attempt
+                );
             });
         }
 
+        /**
+         * Fetches prayer times for a given city and country from Aladhan API.
+         * @param {string} city - The city name.
+         * @param {string} country - The country name.
+         * @returns {object|null} Prayer data if successful, otherwise null.
+         */
         async function getPrayerTimes(city, country) {
             try {
-                const date = new Date(), dateString = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-                const response = await fetch(`https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${city}&country=${country}&method=2`);
+                const date = new Date();
+                const dateString = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`; // Format: DD-MM-YYYY
+                const response = await fetch(`https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2`);
                 const data = await response.json();
                 if (data.code === 200) {
                     displayPrayerTimes(data.data);
+                    // Populate calendar with current Hijri year from prayer data
                     populateEventCalendar(data.data.date.hijri.year);
                     return data.data;
                 }
+                console.error("Aladhan API error:", data.status, data.code, data.data);
                 return null;
-            } catch (error) { console.error("Error fetching prayer times:", error); return null; }
+            } catch (error) { 
+                console.error("Error fetching prayer times:", error); 
+                return null; 
+            }
         }
 
+        /**
+         * Subtracts minutes from a given time string.
+         * Used for Sehri end time calculation (Fajr - 10 minutes).
+         * @param {string} timeStr - Time in "HH:MM" format (24-hour).
+         * @param {number} minutes - Number of minutes to subtract.
+         * @returns {string} New time in "HH:MM" format (24-hour).
+         */
         function subtractMinutes(timeStr, minutes) {
             const [h, m] = timeStr.split(':').map(Number);
-            const time = new Date(); time.setHours(h, m - minutes, 0, 0);
+            const time = new Date(); 
+            time.setHours(h, m - minutes, 0, 0); // Set hours, minutes, seconds, milliseconds
             return `${padZero(time.getHours())}:${padZero(time.getMinutes())}`;
         }
 
+        /**
+         * Displays the fetched prayer times in the Salah view and updates Islamic date.
+         * @param {object} data - Prayer time data from Aladhan API.
+         */
         function displayPrayerTimes(data) {
             const { timings, date } = data;
             islamicDateEl.textContent = `${date.hijri.weekday.en}, ${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year}`;
-            Object.keys(salahPrayerTimeElements).forEach(p => { if (salahPrayerTimeElements[p] && timings[p]) salahPrayerTimeElements[p].textContent = formatTime(timings[p]); });
+            
+            // Update individual prayer time displays
+            Object.keys(salahPrayerTimeElements).forEach(p => { 
+                if (salahPrayerTimeElements[p] && timings[p]) 
+                    salahPrayerTimeElements[p].textContent = formatTime(timings[p]); 
+            });
+
+            // Calculate and display Sehri and Iftar times
             document.querySelector('#salah-sehri span:last-child').textContent = formatTime(subtractMinutes(timings.Fajr, 10));
             document.querySelector('#salah-iftar span:last-child').textContent = formatTime(timings.Maghrib);
         }
         
+        /**
+         * Updates the countdown timer to the next prayer time.
+         * @param {object} timings - Object containing prayer timings.
+         */
         function updateCountdown(timings) {
-            if (countdownInterval) clearInterval(countdownInterval);
-            let nextPrayerTriggered = false;
+            if (countdownInterval) clearInterval(countdownInterval); // Clear any existing interval
+
+            let nextPrayerTriggered = false; // Flag to prevent multiple notifications for the same prayer
             countdownInterval = setInterval(() => {
                 const now = new Date();
                 const nextPrayer = findNextPrayer(now, timings);
+
                 if (nextPrayer) {
-                    if (nextPrayer.name !== nextPrayerNameEl.textContent) nextPrayerTriggered = false;
+                    // Reset trigger flag if the next prayer has changed
+                    if (nextPrayer.name !== nextPrayerNameEl.textContent) {
+                        nextPrayerTriggered = false;
+                    }
                     nextPrayerNameEl.textContent = nextPrayer.name;
+
+                    // Calculate time difference to the next prayer
                     const diff = new Date(`${now.toDateString()} ${nextPrayer.time}`).getTime() - now.getTime();
+
                     if (diff > 0) {
-                        const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+                        // Format and display remaining time
+                        const h = Math.floor(diff / 3600000);
+                        const m = Math.floor((diff % 3600000) / 60000);
+                        const s = Math.floor((diff % 60000) / 1000);
                         countdownTimerEl.textContent = `${padZero(h)}:${padZero(m)}:${padZero(s)}`;
-                        if (diff <= 1000 && !nextPrayerTriggered) { triggerPrayerNotification(nextPrayer.name); nextPrayerTriggered = true; }
-                    } else { getUserLocation(); }
-                } else { nextPrayerNameEl.textContent = 'Day Complete'; countdownTimerEl.textContent = '00:00:00'; }
-            }, 1000);
+
+                        // Trigger notification when time is very close (e.g., within 1 second)
+                        if (diff <= 1000 && !nextPrayerTriggered) { 
+                            triggerPrayerNotification(nextPrayer.name); 
+                            nextPrayerTriggered = true; 
+                        }
+                    } else {
+                        // If prayer time has passed, re-fetch times to get next day's timings
+                        // This handles cases where the app is open past Isha.
+                        startLocationSearch(); 
+                    }
+                } else { 
+                    // No more prayers for the current day
+                    nextPrayerNameEl.textContent = 'Day Complete'; 
+                    countdownTimerEl.textContent = '00:00:00'; 
+                }
+            }, 1000); // Update every second
         }
 
+        /**
+         * Finds the next upcoming prayer based on current time and prayer timings.
+         * @param {Date} now - Current Date object.
+         * @param {object} timings - Object of prayer timings.
+         * @returns {object|null} Object with next prayer name and time, or null if day complete.
+         */
         function findNextPrayer(now, timings) {
-            for (const prayerName of ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']) {
+            // Define prayer order
+            const prayerOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            
+            for (const prayerName of prayerOrder) {
                 if (timings[prayerName]) {
                     const prayerTime = new Date(`${now.toDateString()} ${timings[prayerName]}`);
-                    if (prayerTime > now) return { name: prayerName, time: timings[prayerName] };
+                    if (prayerTime > now) {
+                        // Special handling for Sehri/Iftar if they are the next events
+                        if (prayerName === 'Fajr') {
+                            const sehriEndTime = new Date(`${now.toDateString()} ${subtractMinutes(timings.Fajr, 10)}`);
+                            if (sehriEndTime > now) return { name: 'Sehri End', time: subtractMinutes(timings.Fajr, 10) };
+                        } else if (prayerName === 'Maghrib') {
+                            const iftarTime = new Date(`${now.toDateString()} ${timings.Maghrib}`);
+                            if (iftarTime > now) return { name: 'Iftar', time: timings.Maghrib };
+                        }
+                        return { name: prayerName, time: timings[prayerName] };
+                    }
                 }
             }
-            return null;
+            return null; // All prayers for the day have passed
         }
 
+        /**
+         * Shows the selected view and hides others. Manages audio playback state.
+         * @param {string} viewName - The ID of the view to show (e.g., 'home', 'salah').
+         */
         function showView(viewName) {
-            manageAudioPlayback(null);
-            if (youtubePlayer && typeof youtubePlayer.pauseVideo === 'function') { youtubePlayer.pauseVideo(); }
+            manageAudioPlayback(null); // Pause all audio when switching views
+            // Pause YouTube player if it's active
+            if (youtubePlayer && typeof youtubePlayer.pauseVideo === 'function') { 
+                youtubePlayer.pauseVideo(); 
+            }
             
+            // Hide all views
             Object.values(views).forEach(v => v.classList.add('hidden'));
+            // Show the selected view
             if (views[viewName]) views[viewName].classList.remove('hidden');
             
+            // Update navigation button active state
             document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
             document.querySelector(`.nav-button[onclick="showView('${viewName}')"]`)?.classList.add('active');
 
+            // Specific actions for certain views
             if (viewName === 'listenQuran' && !quranListLoaded) populateQuranList();
             if (viewName === 'qibla') startCompass(); else stopCompass();
         }
 
+        /**
+         * Hides the initial loading screen and reveals the main content.
+         */
         function hideLoading() {
             loadingScreen.classList.add('opacity-0');
             setTimeout(() => { 
                 loadingScreen.style.display = 'none'; 
                 mainContent.classList.remove('opacity-0'); 
-            }, 500);
+            }, 1500); // Allow transition to complete
         }
 
+        /**
+         * Starts the Qibla compass functionality by adding deviceorientation event listener.
+         * Requests permission on iOS 13+ devices.
+         */
         function startCompass() {
+            // Request permission for device orientation on iOS 13+
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(p => { if (p === 'granted') window.addEventListener('deviceorientation', handleOrientation); }).catch(console.error);
-            } else window.addEventListener('deviceorientation', handleOrientation);
-        }
-        function stopCompass() { window.removeEventListener('deviceorientation', handleOrientation); }
-        function handleOrientation(event) {
-            let alpha = event.webkitCompassHeading || event.alpha;
-            if (alpha !== null) qiblaLine.style.transform = `translateX(-50%) rotate(${qiblaAngle - alpha}deg)`;
+                DeviceOrientationEvent.requestPermission().then(p => { 
+                    if (p === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation); 
+                    } else {
+                        qiblaDirectionEl.textContent = 'Permission denied for compass. Please enable in iOS settings.';
+                    }
+                }).catch(error => {
+                    console.error("DeviceOrientationEvent permission error:", error);
+                    qiblaDirectionEl.textContent = 'Error requesting compass permission.';
+                });
+            } else {
+                // For browsers that don't require explicit permission or older iOS versions
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
         }
 
+        /**
+         * Stops the Qibla compass functionality by removing the event listener.
+         */
+        function stopCompass() { 
+            window.removeEventListener('deviceorientation', handleOrientation); 
+        }
+
+        /**
+         * Handles the device orientation event to update the Qibla line.
+         * @param {DeviceOrientationEvent} event - The device orientation event.
+         */
+        function handleOrientation(event) {
+            // webkitCompassHeading is for iOS, alpha for other browsers
+            let alpha = event.webkitCompassHeading || event.alpha; 
+            if (alpha !== null) {
+                // Adjust for device orientation (portrait vs landscape) if needed,
+                // but generally `webkitCompassHeading` provides true north.
+                // Rotate the Qibla line based on the difference between Qibla angle and current device heading.
+                qiblaLine.style.transform = `translateX(-50%) rotate(${qiblaAngle - alpha}deg)`;
+            } else {
+                qiblaDirectionEl.textContent = 'Compass not supported or calibrated on this device.';
+            }
+        }
+
+        /**
+         * Populates the list of Quran Surahs from an API.
+         * Ensures the list is loaded only once.
+         */
         async function populateQuranList() {
-            if (quranListLoaded) return;
-            quranLoadingIndicator.classList.remove('hidden');
+            if (quranListLoaded) return; // Prevent re-loading
+            quranLoadingIndicator.classList.remove('hidden'); // Show loading indicator
             try {
                 const response = await fetch('https://api.quran.com/api/v4/chapters');
                 quranChapters = (await response.json()).chapters;
                 quranSurahList.innerHTML = quranChapters.map((s, i) => `
-                    <div id="surah-item-${s.id}" class="quran-surah cursor-pointer p-3 rounded-lg flex justify-between items-center bg-gray-800 hover:bg-gray-700 transition" onclick="playSurah(${s.id}, '${s.name_simple.replace(/'/g, "\\'")}', this, ${i})">
-                        <div><p class="font-semibold">${s.id}. ${s.name_simple}</p><p class="text-sm text-gray-400">${s.translated_name.name}</p></div>
+                    <div id="surah-item-${s.id}" class="quran-surah cursor-pointer p-3 rounded-lg flex justify-between items-center bg-gray-800 hover:bg-gray-700 transition" onclick="playSurah(${s.id}, '${escapeHTML(s.name_simple)}', this, ${i})">
+                        <div><p class="font-semibold">${s.id}. ${escapeHTML(s.name_simple)}</p><p class="text-sm text-gray-400">${escapeHTML(s.translated_name.name)}</p></div>
                         <div><i class="fas fa-play text-neon play-icon"></i><i class="fas fa-pause text-neon pause-icon hidden"></i></div>
                     </div>`).join('');
-                quranListLoaded = true;
+                quranListLoaded = true; // Mark as loaded
             } catch (e) { 
-                quranSurahList.innerHTML = `<p class="text-center text-red-400 col-span-full">Could not load Surahs.</p>`; 
+                console.error("Error loading Quran Surahs:", e);
+                quranSurahList.innerHTML = `<p class="text-center text-red-400 col-span-full">Could not load Surahs. Please check your internet connection.</p>`; 
             } finally { 
-                quranLoadingIndicator.style.display = 'none';
+                quranLoadingIndicator.style.display = 'none'; // Hide loading indicator
             }
         }
         
+        /**
+         * Resets the UI of a Quran Surah item (shows play icon, hides pause icon).
+         * @param {HTMLElement} element - The Surah item's DOM element.
+         */
         function resetQuranItemUI(element) {
             if (element) {
                 const playIcon = element.querySelector('.play-icon');
@@ -780,125 +1004,262 @@
             }
         }
         
+        /**
+         * Plays a specific Surah recitation. Handles pausing/playing if same Surah is clicked.
+         * @param {number} surahId - The ID of the Surah to play.
+         * @param {string} surahName - The simple name of the Surah.
+         * @param {HTMLElement} element - The DOM element of the clicked Surah item.
+         * @param {number} index - The index of the Surah in the chapters array.
+         */
         async function playSurah(surahId, surahName, element, index) {
+            // If the same surah is clicked, toggle play/pause
             if (currentPlayingQuran.surahId === surahId) {
-                if (quranAudioPlayer.paused) { quranAudioPlayer.play(); } else { quranAudioPlayer.pause(); }
+                if (quranAudioPlayer.paused) { 
+                    await quranAudioPlayer.play(); 
+                } else { 
+                    quranAudioPlayer.pause(); 
+                }
                 return;
             }
-            if (currentPlayingQuran.element) { resetQuranItemUI(currentPlayingQuran.element); }
-            manageAudioPlayback('quran');
+
+            // Reset UI of previously playing Surah
+            if (currentPlayingQuran.element) { 
+                resetQuranItemUI(currentPlayingQuran.element); 
+            }
+            
+            manageAudioPlayback('quran'); // Pause other audio sources
             currentSurahName.textContent = `Loading ${surahName}...`;
-            quranPlayer.classList.remove('hidden');
+            quranPlayer.classList.remove('hidden'); // Show the audio player controls
+
             try {
-                const response = await fetch(`https://api.quran.com/api/v4/chapter_recitations/7/${surahId}`);
-                if (!response.ok) throw new Error(`API request failed`);
+                // Fetch audio URL for the selected Surah
+                const response = await fetch(`https://api.quran.com/api/v4/chapter_recitations/7/${surahId}`); // Reciter 7 (Abdurrahman As-Sudais)
+                if (!response.ok) throw new Error(`API request failed with status: ${response.status}`);
                 const data = await response.json();
-                if (!data.audio_file || !data.audio_file.audio_url) { throw new Error(`Audio not available`); }
+                
+                if (!data.audio_file || !data.audio_file.audio_url) { 
+                    throw new Error(`Audio not available for ${surahName}`); 
+                }
+
                 quranAudioPlayer.src = data.audio_file.audio_url;
-                quranAudioPlayer.muted = false;
-                quranAudioPlayer.volume = 1.0;
-                await quranAudioPlayer.play();
-                currentSurahName.textContent = surahName;
-                currentPlayingQuran = { element, surahId, index };
+                quranAudioPlayer.muted = false; // Ensure not muted
+                quranAudioPlayer.volume = 1.0; // Set full volume
+                
+                await quranAudioPlayer.play(); // Attempt to play audio
+                currentSurahName.textContent = surahName; // Update current Surah name
+                currentPlayingQuran = { element, surahId, index }; // Store current playing Surah info
             } catch (error) {
-                currentSurahName.textContent = `Error: ${error.message} for ${surahName}`; 
-                resetQuranItemUI(element);
-                currentPlayingQuran = { element: null, surahId: null, index: -1 };
+                console.error("Error playing Surah:", error);
+                currentSurahName.textContent = `Error: ${error.message}`; 
+                resetQuranItemUI(element); // Reset UI on error
+                currentPlayingQuran = { element: null, surahId: null, index: -1 }; // Clear current playing state
+                showTemporaryMessage(`Failed to play ${surahName}. ${error.message}`, true);
             }
         }
 
+        // Event listener for when Quran audio starts playing
         quranAudioPlayer.addEventListener('play', () => {
             if (currentPlayingQuran.element) {
                 currentPlayingQuran.element.querySelector('.play-icon').classList.add('hidden');
                 currentPlayingQuran.element.querySelector('.pause-icon').classList.remove('hidden');
             }
         });
-        quranAudioPlayer.addEventListener('pause', () => { if (currentPlayingQuran.element) { resetQuranItemUI(currentPlayingQuran.element); } });
+
+        // Event listener for when Quran audio is paused
+        quranAudioPlayer.addEventListener('pause', () => { 
+            if (currentPlayingQuran.element) { 
+                resetQuranItemUI(currentPlayingQuran.element); 
+            } 
+        });
+
+        // Event listener for when Quran audio ends, plays next Surah automatically
         quranAudioPlayer.onended = () => {
-            if (currentPlayingQuran.element) { resetQuranItemUI(currentPlayingQuran.element); }
+            if (currentPlayingQuran.element) { 
+                resetQuranItemUI(currentPlayingQuran.element); 
+            }
             const nextIndex = currentPlayingQuran.index + 1;
             if (nextIndex < quranChapters.length) {
                 const nextSurah = quranChapters[nextIndex];
                 const nextElement = document.getElementById(`surah-item-${nextSurah.id}`);
                 playSurah(nextSurah.id, nextSurah.name_simple, nextElement, nextIndex);
             } else {
+                // All Surahs finished
                 currentPlayingQuran = { element: null, surahId: null, index: -1 };
                 currentSurahName.textContent = "Finished Recitation";
             }
         };
 
-        function setupRadioPlayer() { radioPlayer.addEventListener('play', () => manageAudioPlayback('radio')); }
-        
-        function incrementTasbeeh() { tasbeehCounterDisplay.textContent = ++tasbeehCount; saveTasbeehCount(); }
-        function resetTasbeeh() { tasbeehCounterDisplay.textContent = tasbeehCount = 0; saveTasbeehCount(); }
-        function saveTasbeehCount() { localStorage.setItem('ramadanTasbeeh', tasbeehCount); }
-        function loadTasbeehCount() { tasbeehCount = localStorage.getItem('ramadanTasbeeh') || 0; tasbeehCounterDisplay.textContent = tasbeehCount; }
-
-        function onYouTubeIframeAPIReady() {
-            youtubePlayer = new YT.Player('youtube-player', { height: '480', width: '854', playerVars: { 'playsinline': 1, 'listType': 'playlist', 'list': 'PL6b_3Yr67_wFpDJfaZLlMEUP6h5EroJi2', 'controls': 0, 'rel': 0 }, events: { 'onStateChange': onPlayerStateChange } });
+        /**
+         * Sets up the radio player to manage audio playback when it starts playing.
+         */
+        function setupRadioPlayer() { 
+            radioPlayer.addEventListener('play', () => manageAudioPlayback('radio')); 
         }
         
+        /**
+         * Increments the Tasbeeh counter and saves the count.
+         */
+        function incrementTasbeeh() { 
+            tasbeehCounterDisplay.textContent = ++tasbeehCount; 
+            saveTasbeebCount(); 
+        }
+
+        /**
+         * Resets the Tasbeeh counter to zero and saves the count.
+         */
+        function resetTasbeeh() { 
+            tasbeehCounterDisplay.textContent = tasbeehCount = 0; 
+            saveTasbeebCount(); 
+        }
+
+        /**
+         * Saves the current Tasbeeh count to local storage.
+         */
+        function saveTasbeebCount() { 
+            localStorage.setItem('ramadanTasbeeh', tasbeehCount); 
+        }
+
+        /**
+         * Loads the Tasbeeh count from local storage.
+         */
+        function loadTasbeehCount() { 
+            tasbeehCount = parseInt(localStorage.getItem('ramadanTasbeeh') || '0', 10); 
+            tasbeehCounterDisplay.textContent = tasbeehCount; 
+        }
+
+        /**
+         * Initializes the YouTube Iframe API player for Naat collection.
+         * This function is called automatically when the YouTube Iframe API script loads.
+         */
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtube-player', { 
+                height: '480', 
+                width: '854', 
+                playerVars: { 
+                    'playsinline': 1, // Crucial for iOS to play videos inline, not fullscreen automatically
+                    'listType': 'playlist', 
+                    'list': 'PL6b_3Yr67_wFpDJfaZLlMEUP6h5EroJi2', // Example playlist ID
+                    'controls': 0, // Hide native YouTube controls
+                    'rel': 0 // Do not show related videos
+                }, 
+                events: { 
+                    'onStateChange': onPlayerStateChange 
+                } 
+            });
+        }
+        
+        /**
+         * Handles YouTube player state changes (playing, paused, ended).
+         * Updates play/pause buttons accordingly.
+         * @param {object} event - The YouTube player event object.
+         */
         function onPlayerStateChange(event) {
             tvPlayButton.classList.toggle('hidden', event.data === YT.PlayerState.PLAYING);
             tvPauseButton.classList.toggle('hidden', event.data !== YT.PlayerState.PLAYING);
-            if(event.data === YT.PlayerState.PLAYING) manageAudioPlayback('naat');
+            if(event.data === YT.PlayerState.PLAYING) {
+                manageAudioPlayback('naat'); // Pause other audio when YouTube video plays
+            }
         }
         
-        function playVideo() { manageAudioPlayback('naat'); youtubePlayer.playVideo(); }
-        function pauseVideo() { youtubePlayer.pauseVideo(); intendedAudioSource = null; }
-        function nextVideo() { youtubePlayer.nextVideo(); }
-        function previousVideo() { youtubePlayer.previousVideo(); }
+        /** Plays the current YouTube video. */
+        function playVideo() { 
+            manageAudioPlayback('naat'); 
+            if (youtubePlayer && typeof youtubePlayer.playVideo === 'function') {
+                youtubePlayer.playVideo(); 
+            }
+        }
 
+        /** Pauses the current YouTube video. */
+        function pauseVideo() { 
+            if (youtubePlayer && typeof youtubePlayer.pauseVideo === 'function') {
+                youtubePlayer.pauseVideo(); 
+            }
+            intendedAudioSource = null; // Clear intended source when manually paused
+        }
+
+        /** Plays the next video in the YouTube playlist. */
+        function nextVideo() { 
+            if (youtubePlayer && typeof youtubePlayer.nextVideo === 'function') {
+                youtubePlayer.nextVideo(); 
+            }
+        }
+
+        /** Plays the previous video in the YouTube playlist. */
+        function previousVideo() { 
+            if (youtubePlayer && typeof youtubePlayer.previousVideo === 'function') {
+                youtubePlayer.previousVideo(); 
+            }
+        }
+
+        /** Loads Dua requests from local storage. */
         function loadDuas() {
             duaList = JSON.parse(localStorage.getItem(DUA_LIST_KEY) || '[]');
             displayDuas();
         }
 
+        /** Displays the list of Dua requests in the UI. */
         function displayDuas() {
-            if (!duaListContainer) return;
+            if (!duaListContainer) return; // Ensure element exists
             if (duaList.length === 0) {
-                duaListContainer.innerHTML = `<p class="text-center text-gray-400">No duas yet. Be the first!</p>`;
+                duaListContainer.innerHTML = `<p class="text-center text-gray-400">No duas yet. Be the first to request one!</p>`;
                 return;
             }
+            // Map dua objects to HTML, escaping user-generated content
             duaListContainer.innerHTML = duaList
-                .map(dua => `<div class="dua-item"><p class="font-bold text-white">${escapeHTML(dua.name)} <span class="font-normal text-gray-300">(${escapeHTML(dua.relation)})</span></p><p class="text-gray-200 my-2">${escapeHTML(dua.text)}</p><small>Submitted: ${new Date(dua.timestamp).toLocaleString()}</small></div>`).join('');
+                .map(dua => `<div class="dua-item">
+                                <p class="font-bold text-white">${escapeHTML(dua.name)} <span class="font-normal text-gray-300">(${escapeHTML(dua.relation)})</span></p>
+                                <p class="text-gray-200 my-2">${escapeHTML(dua.text)}</p>
+                                <small>Submitted: ${new Date(dua.timestamp).toLocaleString()}</small>
+                            </div>`).join('');
         }
         
+        /**
+         * Escapes HTML entities in a string to prevent XSS attacks.
+         * @param {string} str - The string to escape.
+         * @returns {string} The escaped string.
+         */
         function escapeHTML(str) {
-            return str.replace(/[&<>"']/g, function(match) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[match];
-            });
+            if (typeof str !== 'string') return str; // Return non-strings as is
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
         }
         
+        // Event listener for Dua form submission
         duaForm.addEventListener('submit', function(e){
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
             const nameEl = document.getElementById('dua-name');
             const relationEl = document.getElementById('dua-relation');
             const textEl = document.getElementById('dua-text');
             const text = textEl.value.trim();
 
             if (text.length < 10) {
-                showTemporaryMessage('Dua is too short. Please write a meaningful request.', true);
+                showTemporaryMessage('Dua is too short. Please write a meaningful request (min 10 characters).', true);
                 return;
             }
             
-            const forbiddenWords = ['badword', 'profanity', 'inappropriate', 'test', 'kill'];
-            const filterPattern = new RegExp(forbiddenWords.join('|'), 'i');
+            // Simple content filtering for inappropriate words
+            const forbiddenWords = ['badword', 'profanity', 'inappropriate', 'test', 'kill', 'fuck', 'shit', 'asshole']; // Add more as needed
+            const filterPattern = new RegExp(forbiddenWords.join('|'), 'i'); // Case-insensitive regex
             if (filterPattern.test(text)) {
                 showTemporaryMessage('Dua contains inappropriate content and cannot be submitted.', true);
                 return;
             }
 
+            // Create new dua object and add to list
             const newDua = { name: nameEl.value, relation: relationEl.value, text: text, timestamp: new Date().toISOString() };
-            duaList.unshift(newDua);
-            localStorage.setItem(DUA_LIST_KEY, JSON.stringify(duaList));
-            displayDuas();
+            duaList.unshift(newDua); // Add to the beginning of the list
+            localStorage.setItem(DUA_LIST_KEY, JSON.stringify(duaList)); // Save to local storage
+            displayDuas(); // Re-render the list
+            
+            // Clear form fields
             nameEl.value = '';
             relationEl.value = '';
             textEl.value = '';
             showTemporaryMessage('Your dua has been submitted for the community!', false);
         });
 
+        /** Updates the UI of the notification toggle button in settings. */
         function updateSettingsNotificationUI() {
             if (notificationsEnabled) {
                 settingsNotificationToggle.textContent = 'Notifications are ON';
@@ -911,67 +1272,173 @@
             }
         }
 
-        function saveNotificationStatus() { localStorage.setItem(NOTIFICATION_STATUS_KEY, notificationsEnabled); }
-        function loadNotificationStatus() { notificationsEnabled = localStorage.getItem(NOTIFICATION_STATUS_KEY) !== 'false'; updateSettingsNotificationUI(); }
+        /** Saves the current notification status to local storage. */
+        function saveNotificationStatus() { 
+            localStorage.setItem(NOTIFICATION_STATUS_KEY, notificationsEnabled); 
+        }
 
+        /** Loads the notification status from local storage and updates UI. */
+        function loadNotificationStatus() { 
+            notificationsEnabled = localStorage.getItem(NOTIFICATION_STATUS_KEY) !== 'false'; 
+            updateSettingsNotificationUI(); 
+        }
+
+        /** Toggles master notification control. Requests permission if needed. */
         function toggleMasterNotifications() {
-            if (Notification.permission === 'denied') return showTemporaryMessage('Notifications are blocked by your browser.', true);
+            if (Notification.permission === 'denied') {
+                showTemporaryMessage('Notifications are blocked by your browser. Please enable them in your browser settings.', true);
+                return;
+            }
             if (Notification.permission === 'default') {
-                Notification.requestPermission().then(p => { if (p === 'granted') { notificationsEnabled = !notificationsEnabled; saveNotificationStatus(); updateSettingsNotificationUI(); } });
-            } else { notificationsEnabled = !notificationsEnabled; saveNotificationStatus(); updateSettingsNotificationUI(); }
+                // Request permission if it hasn't been granted or denied yet
+                Notification.requestPermission().then(p => { 
+                    if (p === 'granted') { 
+                        notificationsEnabled = true; // Automatically enable if granted
+                        saveNotificationStatus(); 
+                        updateSettingsNotificationUI(); 
+                    } else {
+                        notificationsEnabled = false; // Keep disabled if not granted
+                        saveNotificationStatus();
+                        updateSettingsNotificationUI();
+                        showTemporaryMessage('Notification permission not granted.', true);
+                    }
+                }).catch(error => {
+                    console.error("Notification permission request error:", error);
+                    showTemporaryMessage('Error requesting notification permission.', true);
+                });
+            } else { 
+                // Toggle if permission is already granted
+                notificationsEnabled = !notificationsEnabled; 
+                saveNotificationStatus(); 
+                updateSettingsNotificationUI(); 
+                showTemporaryMessage(`Notifications are now ${notificationsEnabled ? 'enabled' : 'disabled'}.`);
+            }
         }
 
+        /**
+         * Logs a notification message to the inbox history.
+         * @param {string} message - The notification message.
+         * @param {string} type - Type of notification (e.g., 'salah', 'history').
+         */
         function logNotification(message, type) {
-            notificationLog.unshift({ message, type, timestamp: new Date().toISOString() });
-            pruneNotificationLog();
+            notificationLog.unshift({ message, type, timestamp: new Date().toISOString() }); // Add to beginning
+            pruneNotificationLog(); // Keep log size manageable
             localStorage.setItem(NOTIFICATION_LOG_KEY, JSON.stringify(notificationLog));
-            displayNotificationsInInbox();
+            displayNotificationsInInbox(); // Update inbox UI
         }
 
-        function loadNotificationLog() { notificationLog = JSON.parse(localStorage.getItem(NOTIFICATION_LOG_KEY) || '[]'); pruneNotificationLog(); }
+        /** Loads notification history from local storage. */
+        function loadNotificationLog() { 
+            notificationLog = JSON.parse(localStorage.getItem(NOTIFICATION_LOG_KEY) || '[]'); 
+            pruneNotificationLog(); // Clean up old entries on load
+        }
+
+        /** Removes notifications older than 2 days from the log. */
         function pruneNotificationLog() {
-            const twoDaysAgo = new Date(); twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            const twoDaysAgo = new Date(); 
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2); // Set date to 2 days ago
             notificationLog = notificationLog.filter(i => new Date(i.timestamp) > twoDaysAgo);
             localStorage.setItem(NOTIFICATION_LOG_KEY, JSON.stringify(notificationLog));
         }
         
+        /** Displays notification history in the inbox view. */
         function displayNotificationsInInbox() {
-            if (notificationLog.length === 0) return inboxList.innerHTML = `<p class="text-center text-gray-400">No notifications in the last 48 hours.</p>`;
-            inboxList.innerHTML = notificationLog.map(i => `<div class="inbox-item ${i.type==='history' ? 'history' : ''}"><p>${i.message}</p><p class="timestamp">${new Date(i.timestamp).toLocaleDateString()} at ${new Date(i.timestamp).toLocaleTimeString()}</p></div>`).join('');
+            if (notificationLog.length === 0) {
+                inboxList.innerHTML = `<p class="text-center text-gray-400">No notifications in the last 48 hours.</p>`;
+                return;
+            }
+            inboxList.innerHTML = notificationLog.map(i => 
+                `<div class="inbox-item ${i.type==='history' ? 'history' : ''}">
+                    <p>${escapeHTML(i.message)}</p>
+                    <p class="timestamp">${new Date(i.timestamp).toLocaleDateString()} at ${new Date(i.timestamp).toLocaleTimeString()}</p>
+                </div>`).join('');
         }
 
-        function clearInboxHistory() { notificationLog = []; localStorage.removeItem(NOTIFICATION_LOG_KEY); displayNotificationsInInbox(); showTemporaryMessage('Inbox history has been cleared.'); }
+        /** Clears all notification history from inbox and local storage. */
+        function clearInboxHistory() { 
+            notificationLog = []; 
+            localStorage.removeItem(NOTIFICATION_LOG_KEY); 
+            displayNotificationsInInbox(); 
+            showTemporaryMessage('Inbox history has been cleared.'); 
+        }
 
+        /**
+         * Sends a browser notification and logs it.
+         * @param {string} message - The notification message.
+         * @param {string} type - The type of notification (e.g., 'salah').
+         */
         function sendNotification(message, type) {
-             if (!notificationsEnabled) return;
-             logNotification(message, type);
-             if (Notification.permission === "granted") new Notification(message);
+             if (!notificationsEnabled) return; // Do not send if disabled
+             logNotification(message, type); // Log all attempted notifications
+             if (Notification.permission === "granted") {
+                 new Notification(message); // Create browser notification
+             }
         }
         
+        /**
+         * Triggers a prayer time notification with Azan sound.
+         * @param {string} prayerName - The name of the prayer (e.g., 'Fajr', 'Dhuhr').
+         */
         function triggerPrayerNotification(prayerName) {
             if (!notificationsEnabled) return;
             sendNotification(`It's time for ${prayerName} prayer!`, 'salah');
             const audio = prayerName === 'Fajr' ? azanFajrAudio : azanOtherAudio;
-            if (audio) audio.play().catch(e => showTemporaryMessage('Azan blocked by browser.', true));
+            if (audio) {
+                // Attempt to play audio, catching potential autoplay errors on iOS/browsers
+                audio.play().catch(e => {
+                    console.warn("Azan audio playback blocked:", e);
+                    showTemporaryMessage('Azan blocked by browser. Please interact with the page to enable audio.', true);
+                });
+            }
         }
 
-        function saveSettings() { localStorage.setItem('ramadanAppSettings', JSON.stringify(settings)); showTemporaryMessage('Settings Saved!'); }
-        function loadSettings() { const s = localStorage.getItem('ramadanAppSettings'); if (s) settings = JSON.parse(s); }
+        /** Saves general app settings to local storage. */
+        function saveSettings() { 
+            localStorage.setItem('ramadanAppSettings', JSON.stringify(settings)); 
+            showTemporaryMessage('Settings Saved!'); 
+        }
+
+        /** Loads general app settings from local storage. */
+        function loadSettings() { 
+            const s = localStorage.getItem('ramadanAppSettings'); 
+            if (s) settings = JSON.parse(s); 
+        }
         
+        /**
+         * Displays a temporary message at the bottom of the screen.
+         * @param {string} message - The message to display.
+         * @param {boolean} isError - True if it's an error message, changes background color.
+         */
         function showTemporaryMessage(message, isError = false) {
             settingsSavedMessage.textContent = message;
-            settingsSavedMessage.style.backgroundColor = isError ? '#ef4444' : '#10B981';
-            settingsSavedMessage.classList.remove('opacity-0');
-            setTimeout(() => { settingsSavedMessage.classList.add('opacity-0'); }, 4000);
+            settingsSavedMessage.style.backgroundColor = isError ? '#ef4444' : '#10B981'; // Red for error, green for success
+            settingsSavedMessage.classList.remove('opacity-0'); // Make visible
+            setTimeout(() => { 
+                settingsSavedMessage.classList.add('opacity-0'); // Fade out after 4 seconds
+            }, 4000);
         }
 
+        /**
+         * Formats a 24-hour time string to 12-hour AM/PM format.
+         * @param {string} time24 - Time in "HH:MM" (24-hour) format.
+         * @returns {string} Formatted time (e.g., "01:00 PM").
+         */
         function formatTime(time24) {
             const [h, m] = time24.split(':');
             const hour = parseInt(h, 10);
             return `${padZero(hour % 12 || 12)}:${m} ${hour >= 12 ? 'PM' : 'AM'}`;
         }
-        function padZero(num) { return num < 10 ? '0' + num : String(num); }
 
+        /**
+         * Pads a number with a leading zero if it's less than 10.
+         * @param {number} num - The number to pad.
+         * @returns {string} The padded number as a string.
+         */
+        function padZero(num) { 
+            return num < 10 ? '0' + num : String(num); 
+        }
+
+        // Initialize the app when the window has fully loaded
         window.addEventListener('load', initializeApp);
     </script>
 </body>
