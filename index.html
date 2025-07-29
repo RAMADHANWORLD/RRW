@@ -194,6 +194,9 @@
                 <section id="countdown-section" class="mb-8">
                     <div class="card rounded-2xl p-6 max-w-2xl mx-auto text-center">
                         <h2 id="countdown-heading" class="text-2xl mb-2">Time until <span id="next-prayer-name">...</span></h2>
+                        <div class="sun-container">
+                            <div id="moving-sun" class="sun"></div>
+                        </div>
                         <div id="countdown-timer" class="tracking-wider">00:00:00</div>
                     </div>
                 </section>
@@ -261,7 +264,7 @@
             <!-- Listen Quran View -->
             <div id="listen-quran-view" class="hidden">
                 <div class="card rounded-2xl p-6 max-w-4xl mx-auto">
-                    <h2 class="section-title">Holy Quran Recitation</h2>
+                    <h2 class="section-title">📖 Holy Quran Recitation</h2>
                     <!-- Elegant Player -->
                     <div id="quran-player-container">
                         <h3 id="current-surah-name" class="text-xl font-bold mb-2 text-center">Select a Surah to Play</h3>
@@ -302,11 +305,23 @@
             
             <!-- Tasbeeh View -->
             <div id="tasbeeh-view" class="hidden">
-                 <div class="card rounded-2xl p-6 max-w-sm mx-auto text-center">
-                    <h2 class="text-2xl font-semibold mb-4">Tasbeeh Counter</h2>
-                    <div id="tasbeeh-counter-display" class="font-mono text-7xl font-bold text-green-400 mb-4">0</div>
-                    <button onclick="incrementTasbeeh()" class="w-48 h-48 rounded-full bg-green-500 text-black text-5xl flex items-center justify-center mx-auto shadow-lg transform transition hover:scale-105 active:scale-95"><i class="fas fa-plus"></i></button>
-                    <button onclick="resetTasbeeh()" class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition">Reset</button>
+                <div class="max-w-lg mx-auto">
+                    <h2 class="section-title">📿 Tasbeeh Counter</h2>
+                    <div class="tasbeeh-counter">
+                        <div class="tasbeeh-text">SubhanAllah</div>
+                        <div id="tasbeeh-counter-display" class="tasbeeh-count">0</div>
+                        <button onclick="incrementTasbeeh()" class="tasbeeh-button mb-4">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="resetTasbeeh()" class="setting-button bg-red-600 hover:bg-red-700">🔄 Reset</button>
+                            <button onclick="switchTasbeehText()" class="setting-button">🔄 Switch</button>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-300">
+                            <p>Current: <span id="current-tasbeeh-text">SubhanAllah</span></p>
+                            <p>Goal: 33 each (99 total)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -328,13 +343,97 @@
 
             <!-- Settings View -->
             <div id="settings-view" class="hidden">
-                <div class="card rounded-2xl p-6 max-w-lg mx-auto">
-                    <h2 class="text-2xl font-semibold mb-4">Settings</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-green-400 mb-2">Master Notification Control</h3>
-                            <p class="text-sm text-gray-400 mb-2">Enable or disable all prayer time notifications.</p>
-                            <button id="settings-notification-toggle" onclick="toggleMasterNotifications()" class="w-full py-2 px-4 rounded-lg transition-colors">Toggle Notifications</button>
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <h2 class="section-title">⚙️ Settings</h2>
+                    
+                    <!-- Prayer Time Settings -->
+                    <div class="settings-group">
+                        <h3>🕌 Prayer Time Settings</h3>
+                        <div class="setting-item">
+                            <span>Calculation Method</span>
+                            <select id="calculation-method" class="setting-select" onchange="updateCalculationMethod()">
+                                <option value="2">University of Islamic Sciences, Karachi</option>
+                                <option value="1">University of Islamic Sciences, Karachi (Shafi)</option>
+                                <option value="3">Muslim World League</option>
+                                <option value="4">Umm Al-Qura University, Makkah</option>
+                                <option value="5">Egyptian General Authority of Survey</option>
+                                <option value="7">Institute of Geophysics, University of Tehran</option>
+                                <option value="8">Gulf Region</option>
+                                <option value="9">Kuwait</option>
+                                <option value="10">Qatar</option>
+                                <option value="11">Majlis Ugama Islam Singapura, Singapore</option>
+                                <option value="12">Union Organization Islamic de France</option>
+                                <option value="13">Diyanet İşleri Başkanlığı, Turkey</option>
+                                <option value="14">Spiritual Administration of Muslims of Russia</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <span>Madhab</span>
+                            <select id="madhab" class="setting-select" onchange="updateMadhab()">
+                                <option value="0">Shafi/Hanbali/Maliki</option>
+                                <option value="1">Hanafi</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <span>Higher Latitudes</span>
+                            <select id="high-latitude" class="setting-select" onchange="updateHighLatitude()">
+                                <option value="1">Angle Based</option>
+                                <option value="2">Midnight</option>
+                                <option value="3">One Seventh</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Location Settings -->
+                    <div class="settings-group">
+                        <h3>📍 Location Settings</h3>
+                        <div class="setting-item">
+                            <span>Current Location</span>
+                            <span id="current-location-display">Karachi, Pakistan</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Update Location</span>
+                            <button class="setting-button" onclick="refreshLocation()">🔄 Refresh</button>
+                        </div>
+                        <div class="setting-item">
+                            <span>Auto-detect location</span>
+                            <div id="auto-location-toggle" class="setting-toggle" onclick="toggleAutoLocation()"></div>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div class="settings-group">
+                        <h3>🖥️ Display Settings</h3>
+                        <div class="setting-item">
+                            <span>Time Format</span>
+                            <select id="time-format" class="setting-select" onchange="updateTimeFormat()">
+                                <option value="12">12 Hour</option>
+                                <option value="24">24 Hour</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <span>Enable prayer time notifications</span>
+                            <div id="notification-toggle" class="setting-toggle" onclick="toggleNotifications()"></div>
+                        </div>
+                    </div>
+
+                    <!-- App Information -->
+                    <div class="settings-group">
+                        <h3>ℹ️ App Information</h3>
+                        <div class="setting-item">
+                            <span>Version: 2.0.0</span>
+                            <span></span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Last Updated: July 2025</span>
+                            <span></span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Developer: Islamic App Development Team</span>
+                            <span></span>
+                        </div>
+                        <div class="text-center mt-4 text-sm text-gray-400">
+                            This app provides Islamic prayer times, Quran recitation, Hadith collections, and other Islamic resources for Muslims worldwide.
                         </div>
                     </div>
                 </div>
@@ -417,9 +516,24 @@
         let currentPlayingSurahElement = null;
         let userCoords = null;
         let audioUnlocked = false;
+        let currentTasbeehTextIndex = 0;
+        let calculationMethod = 2;
+        let madhab = 0;
+        let highLatitude = 1;
+        let timeFormat = 12;
+        let autoLocationEnabled = true;
 
         const NOTIFICATION_STATUS_KEY = 'ramadanAppNotificationStatus';
         const HADITH_LOG_KEY = 'ramadanAppHadithLog';
+        const SETTINGS_KEY = 'ramadanAppSettings';
+        
+        const tasbeehTexts = [
+            'SubhanAllah',
+            'Alhamdulillah', 
+            'Allahu Akbar',
+            'La ilaha illa Allah',
+            'Astaghfirullah'
+        ];
 
         const radioStations = [{ name: "Ramadhan World", url: "https://ramadhan786.radioca.st/;" }];
         const islamicEvents = [
@@ -489,8 +603,9 @@
         }
         
         function displayDailyMessage() {
-            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-            const messageIndex = dayOfYear % curatedQuranMessages.length;
+            const now = new Date();
+            const hourOfDay = now.getHours();
+            const messageIndex = hourOfDay % curatedQuranMessages.length;
             const message = curatedQuranMessages[messageIndex];
             dailyIslamicMessageEl.textContent = `"${message.text}"`;
             dailyIslamicMessageRefEl.textContent = `— ${message.reference}`;
@@ -507,8 +622,9 @@
         }
 
         function displayDailyHadith() {
-            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-            const hadithIndex = dayOfYear % curatedHadiths.length;
+            const now = new Date();
+            const hourOfDay = now.getHours();
+            const hadithIndex = hourOfDay % curatedHadiths.length;
             const hadith = curatedHadiths[hadithIndex];
             
             hadithContentHome.innerHTML = `
@@ -633,7 +749,7 @@
             try {
                 const date = new Date();
                 const dateString = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${city}&country=${country}&method=2`;
+                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${city}&country=${country}&method=${calculationMethod}&school=${madhab}&latitudeAdjustmentMethod=${highLatitude}`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 if (data.code === 200) {
@@ -828,10 +944,55 @@
             }
         }
 
-        function incrementTasbeeh() { tasbeehCounterDisplay.textContent = ++tasbeehCount; saveTasbeehCount(); }
-        function resetTasbeeh() { tasbeehCounterDisplay.textContent = tasbeehCount = 0; saveTasbeehCount(); }
-        function saveTasbeehCount() { localStorage.setItem('ramadanTasbeeh', tasbeehCount); }
-        function loadTasbeehCount() { tasbeehCount = localStorage.getItem('ramadanTasbeeh') || 0; tasbeehCounterDisplay.textContent = tasbeehCount; }
+        function incrementTasbeeh() { 
+            tasbeehCount++;
+            tasbeehCounterDisplay.textContent = tasbeehCount;
+            saveTasbeehCount();
+            
+            // Vibrate on mobile devices
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            // Auto-advance to next tasbeeh after 33
+            if (tasbeehCount === 33) {
+                setTimeout(() => {
+                    switchTasbeehText();
+                    resetTasbeeh();
+                }, 1000);
+            }
+        }
+        
+        function resetTasbeeh() { 
+            tasbeehCount = 0;
+            tasbeehCounterDisplay.textContent = tasbeehCount;
+            saveTasbeehCount();
+        }
+        
+        function switchTasbeehText() {
+            currentTasbeehTextIndex = (currentTasbeehTextIndex + 1) % tasbeehTexts.length;
+            const newText = tasbeehTexts[currentTasbeehTextIndex];
+            document.querySelector('.tasbeeh-text').textContent = newText;
+            document.getElementById('current-tasbeeh-text').textContent = newText;
+            saveTasbeehCount();
+        }
+        
+        function saveTasbeehCount() { 
+            localStorage.setItem('ramadanTasbeeh', JSON.stringify({
+                count: tasbeehCount,
+                textIndex: currentTasbeehTextIndex
+            }));
+        }
+        
+        function loadTasbeehCount() { 
+            const saved = JSON.parse(localStorage.getItem('ramadanTasbeeh') || '{"count":0,"textIndex":0}');
+            tasbeehCount = parseInt(saved.count) || 0;
+            currentTasbeehTextIndex = parseInt(saved.textIndex) || 0;
+            tasbeehCounterDisplay.textContent = tasbeehCount;
+            const currentText = tasbeehTexts[currentTasbeehTextIndex];
+            document.querySelector('.tasbeeh-text').textContent = currentText;
+            document.getElementById('current-tasbeeh-text').textContent = currentText;
+        }
 
         function setupRadioPlayer() {
             homeRadioAudioPlayer.src = radioStations[0].url;
@@ -923,11 +1084,169 @@
             if (!time24) return '--:--';
             const [hour, minute] = time24.split(':');
             const h = parseInt(hour, 10);
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            const h12 = h % 12 || 12;
-            return `${padZero(h12)}:${minute} ${ampm}`;
+            
+            if (timeFormat === 24) {
+                return `${padZero(h)}:${minute}`;
+            } else {
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                const h12 = h % 12 || 12;
+                return `${padZero(h12)}:${minute} ${ampm}`;
+            }
         }
         function padZero(num) { return num < 10 ? '0' + num : String(num); }
+
+        // Settings Functions
+        function updateCalculationMethod() {
+            calculationMethod = document.getElementById('calculation-method').value;
+            saveSettings();
+            refreshPrayerTimes();
+        }
+        
+        function updateMadhab() {
+            madhab = document.getElementById('madhab').value;
+            saveSettings();
+            refreshPrayerTimes();
+        }
+        
+        function updateHighLatitude() {
+            highLatitude = document.getElementById('high-latitude').value;
+            saveSettings();
+            refreshPrayerTimes();
+        }
+        
+        function updateTimeFormat() {
+            timeFormat = parseInt(document.getElementById('time-format').value);
+            saveSettings();
+            refreshPrayerTimes();
+        }
+        
+        function toggleAutoLocation() {
+            autoLocationEnabled = !autoLocationEnabled;
+            updateToggleUI('auto-location-toggle', autoLocationEnabled);
+            saveSettings();
+            if (autoLocationEnabled) {
+                getUserLocation();
+            }
+        }
+        
+        function toggleNotifications() {
+            notificationsEnabled = !notificationsEnabled;
+            updateToggleUI('notification-toggle', notificationsEnabled);
+            saveSettings();
+        }
+        
+        function refreshLocation() {
+            getUserLocation();
+        }
+        
+        function updateToggleUI(toggleId, isActive) {
+            const toggle = document.getElementById(toggleId);
+            if (isActive) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+        
+        function saveSettings() {
+            const settings = {
+                calculationMethod,
+                madhab,
+                highLatitude,
+                timeFormat,
+                autoLocationEnabled,
+                notificationsEnabled
+            };
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        }
+        
+        function loadSettings() {
+            const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+            calculationMethod = saved.calculationMethod || 2;
+            madhab = saved.madhab || 0;
+            highLatitude = saved.highLatitude || 1;
+            timeFormat = saved.timeFormat || 12;
+            autoLocationEnabled = saved.autoLocationEnabled !== false;
+            notificationsEnabled = saved.notificationsEnabled !== false;
+            
+            // Update UI
+            document.getElementById('calculation-method').value = calculationMethod;
+            document.getElementById('madhab').value = madhab;
+            document.getElementById('high-latitude').value = highLatitude;
+            document.getElementById('time-format').value = timeFormat;
+            updateToggleUI('auto-location-toggle', autoLocationEnabled);
+            updateToggleUI('notification-toggle', notificationsEnabled);
+        }
+        
+        function refreshPrayerTimes() {
+            const locationText = document.getElementById('current-location-display').textContent;
+            const [city, country] = locationText.split(', ');
+            getPrayerTimes(city || 'Karachi', country || 'Pakistan');
+        }
+        
+        // Moving Sun Animation
+        function updateSunPosition() {
+            const now = new Date();
+            const sunrise = new Date();
+            sunrise.setHours(6, 0, 0, 0); // Approximate sunrise
+            const sunset = new Date();
+            sunset.setHours(18, 0, 0, 0); // Approximate sunset
+            
+            const dayDuration = sunset.getTime() - sunrise.getTime();
+            const timeSinceSunrise = now.getTime() - sunrise.getTime();
+            
+            let position = 0;
+            if (timeSinceSunrise >= 0 && timeSinceSunrise <= dayDuration) {
+                position = (timeSinceSunrise / dayDuration) * 100;
+            } else if (timeSinceSunrise < 0) {
+                position = 0;
+            } else {
+                position = 100;
+            }
+            
+            const sunElement = document.getElementById('moving-sun');
+            if (sunElement) {
+                sunElement.style.left = `${Math.max(0, Math.min(100, position))}%`;
+            }
+        }
+        
+        // Initialize everything
+        async function initializeApp() {
+            try {
+                loadSettings();
+                loadTasbeehCount();
+                setupRadioPlayer();
+                populateQuranList();
+                displayDailyMessage();
+                displayDailyHadith();
+                populateEventCalendar();
+                populateHadithLogPage();
+                
+                if (autoLocationEnabled) {
+                    await getUserLocation();
+                } else {
+                    await getPrayerTimes("Karachi", "Pakistan");
+                }
+                
+                // Update sun position every minute
+                updateSunPosition();
+                setInterval(updateSunPosition, 60000);
+                
+                // Update messages every hour
+                setInterval(() => {
+                    displayDailyMessage();
+                    displayDailyHadith();
+                }, 3600000);
+                
+                // Update current location display
+                const locationText = locationEl.textContent;
+                document.getElementById('current-location-display').textContent = locationText;
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                hideLoading();
+            }
+        }
 
         window.addEventListener('load', initializeApp);
     </script>
