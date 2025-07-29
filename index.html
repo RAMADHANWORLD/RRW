@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadhan World App</title>
-    <meta name="google-adsense-account" content="ca-pub-8794459819365243">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,61 +14,109 @@
             font-family: 'Cairo', 'Inter', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
+        
         .font-amiri {
             font-family: 'Amiri', serif;
         }
+        
         .card {
             background-color: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        /* Enhanced Background with Animation */
+        body {
+            background: linear-gradient(-45deg, #0f1419, #1e293b, #334155, #475569);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Enhanced Countdown Section with Sunshine Effect */
+        #countdown-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #countdown-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(57, 255, 20, 0.1) 0%, transparent 70%);
+            animation: sunshine 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes sunshine {
+            0% { transform: rotate(0deg); opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg); opacity: 0.3; }
+        }
+
         /* Neon Green Theme Updates */
         #countdown-heading {
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 0 4px #39FF14, 0 0 8px #39FF14;
         }
+        
         #countdown-timer {
-            font-weight: 700; /* Bold */
-            font-size: 4.5rem; /* Larger */
-            color: #ffffff; /* White text */
-            text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 30px #39FF14; /* Glowing green shadow */
+            font-weight: 700;
+            font-size: 4.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 30px #39FF14;
             letter-spacing: 0.05em;
         }
+        
         #next-prayer-name {
             color: #39FF14;
-            font-weight: 700; /* Bold */
+            font-weight: 700;
         }
+        
         .prayer-time.active {
             background-color: rgba(57, 255, 20, 0.2);
             border-left-width: 4px;
             border-color: #39FF14;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
+        
         .nav-button.active {
             background-color: #39FF14;
             color: #000;
             font-weight: bold;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+        
         .nav-button:hover {
             background-color: #39FF14;
             color: #000;
         }
+        
         #qibla-line {
             background-color: #39FF14;
             box-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
         }
+        
         .section-title {
             font-family: 'Cairo', sans-serif;
             font-weight: 700;
             font-size: 1.875rem;
             text-align: center;
             margin-bottom: 1.5rem;
-            color: #ffffff; /* White text */
-            text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14; /* Glowing green shadow */
+            color: #ffffff;
+            text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14;
         }
+        
         .calendar-item {
             background-color: rgba(57, 255, 20, 0.1);
             border: 1px solid rgba(57, 255, 20, 0.3);
@@ -83,27 +130,33 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
         }
+        
         #current-surah-name {
             color: #ffffff;
             text-shadow: 0 0 3px #39FF14;
         }
+        
         .quran-surah {
             cursor: pointer;
             padding: 0.75rem;
             border-radius: 0.5rem;
             transition: background-color 0.2s ease;
         }
+        
         .quran-surah:hover {
             background-color: rgba(57, 255, 20, 0.2);
         }
+        
         .quran-surah.playing {
             background-color: rgba(57, 255, 20, 0.3);
             border-left: 4px solid #39FF14;
         }
+        
         .quran-surah.playing .surah-name {
             color: #39FF14;
             font-weight: bold;
         }
+        
         .play-pause-icon {
             color: #39FF14;
             font-size: 1.25rem;
@@ -114,6 +167,7 @@
             color: #39FF14;
             text-shadow: 0 0 5px rgba(57, 255, 20, 0.7);
         }
+        
         #daily-islamic-message-ref {
             color: #a7f3d0;
             font-style: italic;
@@ -126,6 +180,7 @@
             padding: 1rem;
             border-radius: 0 0.5rem 0.5rem 0;
         }
+        
         .hadith-box {
             border: 1px solid rgba(57, 255, 20, 0.3);
             background-color: rgba(57, 255, 20, 0.05);
@@ -141,21 +196,111 @@
         }
 
         /* General Styles */
-        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; max-width: 960px; margin: auto; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        #compass { position: relative; width: 256px; height: 256px; background-color: #1f2937; border-radius: 9999px; border: 4px solid #374151; display: flex; align-items: center; justify-content: center; margin: 2rem auto; }
-        .direction { position: absolute; font-weight: bold; color: #9ca3af; }
-        .direction.north { top: 10px; font-size: 1.5rem; color: #ef4444; }
-        .direction.south { bottom: 10px; }
-        .direction.east { right: 10px; }
-        .direction.west { left: 10px; }
-        #hadith-content-home p { font-size: 1.125rem; line-height: 1.75; color: #d1d5db; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-        .calendar-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); }
-        .calendar-date { font-family: 'Amiri', serif; font-size: 1.25rem; font-weight: 700; color: #f0fdf4; background-color: #14b8a6; padding: 0.25rem 0.75rem; border-radius: 9999px; display: inline-block; margin-bottom: 0.75rem; }
-        .calendar-event-name { font-size: 1.5rem; font-weight: 600; color: #a7f3d0; margin-bottom: 0.5rem; }
-        .calendar-event-desc { font-size: 1rem; color: #d1d5db; flex-grow: 1; }
-        .gregorian-date { font-size: 0.9rem; color: #9ca3af; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.75rem; }
+        .video-container { 
+            position: relative; 
+            width: 100%; 
+            padding-bottom: 56.25%; 
+            height: 0; 
+            overflow: hidden; 
+            border-radius: 0.75rem; 
+            max-width: 960px; 
+            margin: auto; 
+        }
+        
+        .video-container iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        
+        #compass { 
+            position: relative; 
+            width: 256px; 
+            height: 256px; 
+            background-color: #1f2937; 
+            border-radius: 9999px; 
+            border: 4px solid #374151; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 2rem auto; 
+        }
+        
+        .direction { 
+            position: absolute; 
+            font-weight: bold; 
+            color: #9ca3af; 
+        }
+        
+        .direction.north { 
+            top: 10px; 
+            font-size: 1.5rem; 
+            color: #ef4444; 
+        }
+        
+        .direction.south { 
+            bottom: 10px; 
+        }
+        
+        .direction.east { 
+            right: 10px; 
+        }
+        
+        .direction.west { 
+            left: 10px; 
+        }
+        
+        #hadith-content-home p { 
+            font-size: 1.125rem; 
+            line-height: 1.75; 
+            color: #d1d5db; 
+        }
+        
+        .calendar-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.25rem; 
+        }
+        
+        .calendar-item:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); 
+        }
+        
+        .calendar-date { 
+            font-family: 'Amiri', serif; 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+            color: #f0fdf4; 
+            background-color: #14b8a6; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 9999px; 
+            display: inline-block; 
+            margin-bottom: 0.75rem; 
+        }
+        
+        .calendar-event-name { 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            color: #a7f3d0; 
+            margin-bottom: 0.5rem; 
+        }
+        
+        .calendar-event-desc { 
+            font-size: 1rem; 
+            color: #d1d5db; 
+            flex-grow: 1; 
+        }
+        
+        .gregorian-date { 
+            font-size: 0.9rem; 
+            color: #9ca3af; 
+            margin-top: 1rem; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 0.75rem; 
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -168,7 +313,7 @@
     <div id="main-content" class="min-h-screen container mx-auto p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-1000">
         <!-- Header Section -->
         <header class="text-center mb-6">
-            <img id="app-logo" src="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png" alt="Ramadhan World Logo" class="w-[200px] h-[200px] mx-auto mb-4 rounded-full shadow-lg object-contain">
+            <img id="app-logo" src="https://i.ibb.co/ZVQbgjsS/ART-WORKS-1.png" alt="Ramadhan World Logo" class="w-[200px] h-[200px] mx-auto mb-4 rounded-full shadow-lg object-contain">
             <h1 class="text-4xl sm:text-5xl font-extrabold" style="color: #39FF14;">Ramadhan World</h1>
             <p id="islamic-date" class="text-lg text-gray-300 mt-2">Loading Islamic Date...</p>
             <p id="location" class="text-md text-gray-400 mt-1">Fetching location...</p>
@@ -194,9 +339,6 @@
                 <section id="countdown-section" class="mb-8">
                     <div class="card rounded-2xl p-6 max-w-2xl mx-auto text-center">
                         <h2 id="countdown-heading" class="text-2xl mb-2">Time until <span id="next-prayer-name">...</span></h2>
-                        <div class="sun-container">
-                            <div id="moving-sun" class="sun"></div>
-                        </div>
                         <div id="countdown-timer" class="tracking-wider">00:00:00</div>
                     </div>
                 </section>
@@ -204,7 +346,10 @@
                 <section id="home-radio-section" class="mb-8">
                     <div class="card rounded-2xl p-6 max-w-2xl mx-auto text-center">
                         <h3 class="text-xl font-bold mb-4" style="color: #39FF14; text-shadow: 0 0 5px rgba(57, 255, 20, 0.7);">PRESS TO PLAY LIVE RADIO</h3>
-                        <audio id="home-radio-audio-player" controls class="w-full"></audio>
+                        <audio id="home-radio-audio-player" controls class="w-full">
+                            <source src="https://ramadhan786.radioca.st/;" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
                     </div>
                 </section>
 
@@ -253,6 +398,10 @@
                  <div class="card rounded-2xl p-6 max-w-sm mx-auto">
                     <h2 class="text-2xl font-semibold mb-4">Qibla Compass</h2>
                     <div id="compass">
+                        <div class="direction north">N</div>
+                        <div class="direction south">S</div>
+                        <div class="direction east">E</div>
+                        <div class="direction west">W</div>
                         <div id="qibla-line" style="transform-origin: bottom center; transition: transform 0.2s linear; position: absolute; width: 3px; height: 128px; top: 0px; left: 50%;"></div>
                     </div>
                     <p id="qibla-direction" class="mt-4 text-lg text-gray-300">For accurate results, hold your device flat, away from any metals.</p>
@@ -264,7 +413,7 @@
             <!-- Listen Quran View -->
             <div id="listen-quran-view" class="hidden">
                 <div class="card rounded-2xl p-6 max-w-4xl mx-auto">
-                    <h2 class="section-title">📖 Holy Quran Recitation</h2>
+                    <h2 class="section-title">Holy Quran Recitation</h2>
                     <!-- Elegant Player -->
                     <div id="quran-player-container">
                         <h3 id="current-surah-name" class="text-xl font-bold mb-2 text-center">Select a Surah to Play</h3>
@@ -280,7 +429,7 @@
             <!-- Salah View -->
             <div id="salah-view" class="hidden">
                 <div class="card rounded-2xl p-6 max-w-2xl mx-auto">
-                    <h2 class="text-2xl font-semibold mb-4 text-center">Today's Times</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-center">Today's Prayer Times</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div id="salah-fajr" class="prayer-time card rounded-xl p-4 flex justify-between items-center"><span class="font-semibold text-lg">Fajr</span><span class="text-xl font-mono">--:--</span></div>
                         <div id="salah-sunrise" class="prayer-time card rounded-xl p-4 flex justify-between items-center"><span class="font-semibold text-lg">Sunrise</span><span class="text-xl font-mono">--:--</span></div>
@@ -305,23 +454,11 @@
             
             <!-- Tasbeeh View -->
             <div id="tasbeeh-view" class="hidden">
-                <div class="max-w-lg mx-auto">
-                    <h2 class="section-title">📿 Tasbeeh Counter</h2>
-                    <div class="tasbeeh-counter">
-                        <div class="tasbeeh-text">SubhanAllah</div>
-                        <div id="tasbeeh-counter-display" class="tasbeeh-count">0</div>
-                        <button onclick="incrementTasbeeh()" class="tasbeeh-button mb-4">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <div class="flex justify-center gap-4">
-                            <button onclick="resetTasbeeh()" class="setting-button bg-red-600 hover:bg-red-700">🔄 Reset</button>
-                            <button onclick="switchTasbeehText()" class="setting-button">🔄 Switch</button>
-                        </div>
-                        <div class="mt-4 text-sm text-gray-300">
-                            <p>Current: <span id="current-tasbeeh-text">SubhanAllah</span></p>
-                            <p>Goal: 33 each (99 total)</p>
-                        </div>
-                    </div>
+                 <div class="card rounded-2xl p-6 max-w-sm mx-auto text-center">
+                    <h2 class="text-2xl font-semibold mb-4">Tasbeeh Counter</h2>
+                    <div id="tasbeeh-counter-display" class="font-mono text-7xl font-bold text-green-400 mb-4">0</div>
+                    <button onclick="incrementTasbeeh()" class="w-48 h-48 rounded-full bg-green-500 text-black text-5xl flex items-center justify-center mx-auto shadow-lg transform transition hover:scale-105 active:scale-95"><i class="fas fa-plus"></i></button>
+                    <button onclick="resetTasbeeh()" class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition">Reset</button>
                 </div>
             </div>
             
@@ -343,137 +480,25 @@
 
             <!-- Settings View -->
             <div id="settings-view" class="hidden">
-                <div class="max-w-4xl mx-auto space-y-6">
-                    <h2 class="section-title">⚙️ Settings</h2>
-                    
-                    <!-- Prayer Time Settings -->
-                    <div class="settings-group">
-                        <h3>🕌 Prayer Time Settings</h3>
-                        <div class="setting-item">
-                            <span>Calculation Method</span>
-                            <select id="calculation-method" class="setting-select" onchange="updateCalculationMethod()">
-                                <option value="2">University of Islamic Sciences, Karachi</option>
-                                <option value="1">University of Islamic Sciences, Karachi (Shafi)</option>
-                                <option value="3">Muslim World League</option>
-                                <option value="4">Umm Al-Qura University, Makkah</option>
-                                <option value="5">Egyptian General Authority of Survey</option>
-                                <option value="7">Institute of Geophysics, University of Tehran</option>
-                                <option value="8">Gulf Region</option>
-                                <option value="9">Kuwait</option>
-                                <option value="10">Qatar</option>
-                                <option value="11">Majlis Ugama Islam Singapura, Singapore</option>
-                                <option value="12">Union Organization Islamic de France</option>
-                                <option value="13">Diyanet İşleri Başkanlığı, Turkey</option>
-                                <option value="14">Spiritual Administration of Muslims of Russia</option>
-                            </select>
-                        </div>
-                        <div class="setting-item">
-                            <span>Madhab</span>
-                            <select id="madhab" class="setting-select" onchange="updateMadhab()">
-                                <option value="0">Shafi/Hanbali/Maliki</option>
-                                <option value="1">Hanafi</option>
-                            </select>
-                        </div>
-                        <div class="setting-item">
-                            <span>Higher Latitudes</span>
-                            <select id="high-latitude" class="setting-select" onchange="updateHighLatitude()">
-                                <option value="1">Angle Based</option>
-                                <option value="2">Midnight</option>
-                                <option value="3">One Seventh</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Location Settings -->
-                    <div class="settings-group">
-                        <h3>📍 Location Settings</h3>
-                        <div class="setting-item">
-                            <span>Current Location</span>
-                            <span id="current-location-display">Karachi, Pakistan</span>
-                        </div>
-                        <div class="setting-item">
-                            <span>Update Location</span>
-                            <button class="setting-button" onclick="refreshLocation()">🔄 Refresh</button>
-                        </div>
-                        <div class="setting-item">
-                            <span>Auto-detect location</span>
-                            <div id="auto-location-toggle" class="setting-toggle" onclick="toggleAutoLocation()"></div>
-                        </div>
-                    </div>
-
-                    <!-- Display Settings -->
-                    <div class="settings-group">
-                        <h3>🖥️ Display Settings</h3>
-                        <div class="setting-item">
-                            <span>Time Format</span>
-                            <select id="time-format" class="setting-select" onchange="updateTimeFormat()">
-                                <option value="12">12 Hour</option>
-                                <option value="24">24 Hour</option>
-                            </select>
-                        </div>
-                        <div class="setting-item">
-                            <span>Enable prayer time notifications</span>
-                            <div id="notification-toggle" class="setting-toggle" onclick="toggleNotifications()"></div>
-                        </div>
-                    </div>
-
-                    <!-- App Information -->
-                    <div class="settings-group">
-                        <h3>ℹ️ App Information</h3>
-                        <div class="setting-item">
-                            <span>Version: 2.0.0</span>
-                            <span></span>
-                        </div>
-                        <div class="setting-item">
-                            <span>Last Updated: July 2025</span>
-                            <span></span>
-                        </div>
-                        <div class="setting-item">
-                            <span>Developer: Islamic App Development Team</span>
-                            <span></span>
-                        </div>
-                        <div class="text-center mt-4 text-sm text-gray-400">
-                            This app provides Islamic prayer times, Quran recitation, Hadith collections, and other Islamic resources for Muslims worldwide.
+                <div class="card rounded-2xl p-6 max-w-lg mx-auto">
+                    <h2 class="text-2xl font-semibold mb-4">Settings</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-green-400 mb-2">Master Notification Control</h3>
+                            <p class="text-sm text-gray-400 mb-2">Enable or disable all prayer time notifications.</p>
+                            <button id="settings-notification-toggle" onclick="toggleMasterNotifications()" class="w-full py-2 px-4 rounded-lg transition-colors">Toggle Notifications</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        
-        <!-- Google AdSense Ad Unit -->
-        <div class="text-center mt-4">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8794459819365243"
-                 crossorigin="anonymous"></script>
-            <!-- ramadhan -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:350px;height:50px"
-                 data-ad-client="ca-pub-8794459819365243"
-                 data-ad-slot="6996642780"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
 
         <!-- Footer -->
         <footer class="text-center p-4 text-sm text-gray-600 space-x-4">
-          <a href="about.html" class="text-blue-600 underline">About</a>
-          <a href="privacy.html" class="text-blue-600 underline">Privacy Policy</a>
-          <a href="contact.html" class="text-blue-600 underline">Contact</a>
+          <a href="#" onclick="showAbout()" class="text-blue-600 underline">About Us</a>
+          <a href="#" onclick="showPrivacy()" class="text-blue-600 underline">Privacy Policy</a>
+          <a href="#" onclick="showContact()" class="text-blue-600 underline">Contact Us</a>
         </footer>
-        
-        <!-- Adsterra Ad Container -->
-        <div class="text-center mt-4">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '8f697970fa99026192276a59a8cce75b',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/8f697970fa99026192276a59a8cce75b/invoke.js"></script>
-        </div>
     </div>
 
     <div id="settings-saved-message" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300"></div>
@@ -488,23 +513,34 @@
         const locationEl = document.getElementById('location');
         const nextPrayerNameEl = document.getElementById('next-prayer-name');
         const countdownTimerEl = document.getElementById('countdown-timer');
-        const salahPrayerTimeElements = { Fajr: document.querySelector('#salah-fajr span:last-child'), Sunrise: document.querySelector('#salah-sunrise span:last-child'), Dhuhr: document.querySelector('#salah-dhuhr span:last-child'), Asr: document.querySelector('#salah-asr span:last-child'), Maghrib: document.querySelector('#salah-maghrib span:last-child'), Isha: document.querySelector('#salah-isha span:last-child') };
-        const views = { home: document.getElementById('home-view'), qibla: document.getElementById('qibla-view'), listenQuran: document.getElementById('listen-quran-view'), salah: document.getElementById('salah-view'), hadith: document.getElementById('hadith-view'), tasbeeh: document.getElementById('tasbeeh-view'), naat: document.getElementById('naat-view'), calendar: document.getElementById('calendar-view'), settings: document.getElementById('settings-view') };
-        const qiblaDirectionEl = document.getElementById('qibla-direction');
-        const qiblaLine = document.getElementById('qibla-line');
+        const salahPrayerTimeElements = { 
+            Fajr: document.querySelector('#salah-fajr span:last-child'), 
+            Sunrise: document.querySelector('#salah-sunrise span:last-child'), 
+            Dhuhr: document.querySelector('#salah-dhuhr span:last-child'), 
+            Asr: document.querySelector('#salah-asr span:last-child'), 
+            Maghrib: document.querySelector('#salah-maghrib span:last-child'), 
+            Isha: document.querySelector('#salah-isha span:last-child') 
+        };
+        const views = { 
+            home: document.getElementById('home-view'), 
+            qibla: document.getElementById('qibla-view'), 
+            listenQuran: document.getElementById('listen-quran-view'), 
+            salah: document.getElementById('salah-view'), 
+            hadith: document.getElementById('hadith-view'), 
+            tasbeeh: document.getElementById('tasbeeh-view'), 
+            naat: document.getElementById('naat-view'), 
+            calendar: document.getElementById('calendar-view'), 
+            settings: document.getElementById('settings-view') 
+        };
         const quranSurahList = document.getElementById('quran-surah-list');
         const quranAudioPlayer = document.getElementById('quran-audio-player');
         const currentSurahName = document.getElementById('current-surah-name');
         const homeRadioAudioPlayer = document.getElementById('home-radio-audio-player');
-        const settingsSavedMessage = document.getElementById('settings-saved-message');
-        const tvPlayButton = document.getElementById('tv-play-button');
-        const tvPauseButton = document.getElementById('tv-pause-button');
         const tasbeehCounterDisplay = document.getElementById('tasbeeh-counter-display');
         const hadithContentHome = document.getElementById('hadith-content-home');
         const hadithLogList = document.getElementById('hadith-log-list');
         const dailyIslamicMessageEl = document.getElementById('daily-islamic-message');
         const dailyIslamicMessageRefEl = document.getElementById('daily-islamic-message-ref');
-        const settingsNotificationToggle = document.getElementById('settings-notification-toggle');
         
         let tasbeehCount = 0;
         let countdownInterval;
@@ -516,29 +552,24 @@
         let currentPlayingSurahElement = null;
         let userCoords = null;
         let audioUnlocked = false;
-        let currentTasbeehTextIndex = 0;
-        let calculationMethod = 2;
-        let madhab = 0;
-        let highLatitude = 1;
-        let timeFormat = 12;
-        let autoLocationEnabled = true;
 
         const NOTIFICATION_STATUS_KEY = 'ramadanAppNotificationStatus';
         const HADITH_LOG_KEY = 'ramadanAppHadithLog';
-        const SETTINGS_KEY = 'ramadanAppSettings';
-        
-        const tasbeehTexts = [
-            'SubhanAllah',
-            'Alhamdulillah', 
-            'Allahu Akbar',
-            'La ilaha illa Allah',
-            'Astaghfirullah'
-        ];
 
-        const radioStations = [{ name: "Ramadhan World", url: "https://ramadhan786.radioca.st/;" }];
+        // YouTube Naat Videos from Ramadhan World Channel
+        const naatVideoIds = [
+            'dQw4w9WgXcQ', // Example YouTube video IDs - replace with actual Ramadhan World videos
+            'ScMzIvxBSi4',
+            'ZbZSe6N_BXs',
+            'FTQbiNvZqaY',
+            'kffacxfA7G4',
+            'Lrj2Hq7xqQ8'
+        ];
+        let currentVideoIndex = 0;
+
         const islamicEvents = [
             { date: "27 Rajab", name: "Isra and Mi'raj", gregorianDates: { 2025: "Monday, January 27", 2026: "Friday, January 16" }, description: "The Prophet's ﷺ miraculous night journey." },
-            { date: "15 Sha’ban", name: "Laylat al-Bara'at", gregorianDates: { 2025: "Friday, February 14", 2026: "Wednesday, February 4" }, description: "The night of forgiveness." },
+            { date: "15 Sha'ban", name: "Laylat al-Bara'at", gregorianDates: { 2025: "Friday, February 14", 2026: "Wednesday, February 4" }, description: "The night of forgiveness." },
             { date: "1 Ramadan", name: "Start of Ramadan", gregorianDates: { 2025: "Saturday, March 1", 2026: "Thursday, February 19" }, description: "The beginning of the holy month of fasting." },
             { date: "27 Ramadan", name: "Laylat al-Qadr", gregorianDates: { 2025: "Thursday, March 27", 2026: "Tuesday, March 17" }, description: "The Night of Power, better than a thousand months." },
             { date: "1 Shawwal", name: "Eid al-Fitr", gregorianDates: { 2025: "Sunday, March 30", 2026: "Friday, March 20" }, description: "The festival of breaking the fast." },
@@ -554,38 +585,43 @@
             { text: "The Prophet (ﷺ) said, 'None of you will have faith till he wishes for his (Muslim) brother what he likes for himself.'", book: "Sahih al-Bukhari", number: "13" },
             { text: "The Prophet (ﷺ) said, 'He who is not merciful to others, will not be treated mercifully.'", book: "Sahih al-Bukhari", number: "5997" },
             { text: "The Prophet (ﷺ) said, 'Exchange gifts, you will love one another.'", book: "Al-Adab Al-Mufrad", number: "594" },
-            { text: "The Prophet (ﷺ) said, 'Charity does not decrease wealth.'", book: "Sahih Muslim", number: "2588" }
+            { text: "The Prophet (ﷺ) said, 'Charity does not decrease wealth.'", book: "Sahih Muslim", number: "2588" },
+            { text: "The Prophet (ﷺ) said, 'The believer is not one who eats his fill while his neighbor goes hungry.'", book: "Al-Adab Al-Mufrad", number: "112" },
+            { text: "The Prophet (ﷺ) said, 'Kindness is a mark of faith, and whoever is not kind has no faith.'", book: "Sahih Muslim", number: "54" }
         ];
 
         const curatedQuranMessages = [
             { text: "Indeed, in the remembrance of Allah do hearts find rest.", reference: "Surah Ar-Ra'd (13:28)" },
             { text: "And He is with you wherever you are.", reference: "Surah Al-Hadid (57:4)" },
-            { text: "So verily, with the hardship, there is relief. Verily, with the hardship, there is relief.", reference: "Surah Ash-Sharh (94:5-6)" },
-            { text: "And speak to people good [words].", reference: "Surah Al-Baqarah (2:83)" },
-            { text: "And seek help through patience and prayer.", reference: "Surah Al-Baqarah (2:45)" }
+            { text: "So verily, with the hardship, there is relief.", reference: "Surah Ash-Sharh (94:5)" },
+            { text: "And Allah is the best of planners.", reference: "Surah Al-Anfal (8:30)" },
+            { text: "And it is He who created the heavens and earth in truth. And the day He says, 'Be,' and it is, His word is the truth.", reference: "Surah Al-An'am (6:73)" },
+            { text: "And whoever relies upon Allah - then He is sufficient for him.", reference: "Surah At-Talaq (65:3)" },
+            { text: "Indeed, Allah will not change the condition of a people until they change what is in themselves.", reference: "Surah Ar-Ra'd (13:11)" },
+            { text: "And give good tidings to the patient.", reference: "Surah Al-Baqarah (2:155)" }
         ];
 
-        // --- Core Functions ---
-        async function initializeApp() {
-            document.body.addEventListener('click', unlockAllAudio, { once: true });
-            loadNotificationStatus();
-            loadTasbeehCount();
-            populateEventCalendar();
-            displayDailyHadith();
-            populateHadithLogPage();
-            displayDailyMessage();
-            setupRadioPlayer();
-            setInterval(displayDailyHadith, 6 * 60 * 60 * 1000);
-            setInterval(displayDailyMessage, 6 * 60 * 60 * 1000);
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
             await getUserLocation();
-            await populateQuranList();
-            quranAudioPlayer.addEventListener('ended', playNextSurah);
-        }
+            displayDailyMessage();
+            displayDailyHadith();
+            populateEventCalendar();
+            populateHadithLogPage();
+            populateQuranList();
+            updateNotificationToggleUI();
+            hideLoading();
+            
+            // Set up timed content changes
+            setInterval(displayDailyMessage, 60 * 60 * 1000); // Change message every hour
+            setInterval(displayDailyHadith, 4 * 60 * 60 * 1000); // Change hadith every 4 hours
+        });
 
-        function unlockAllAudio() {
+        // --- Audio Management ---
+        document.addEventListener('click', unlockAudio, { once: true });
+        
+        function unlockAudio() {
             if (audioUnlocked) return;
-            // The Quran player is handled by its own direct click event.
-            // This global unlocker is for other audio elements like the radio.
             const allAudio = [homeRadioAudioPlayer];
             allAudio.forEach(audio => {
                 audio.muted = true;
@@ -599,32 +635,22 @@
                 }
             });
             audioUnlocked = true;
-            console.log("Audio contexts unlocked by user interaction.");
         }
         
+        // --- Content Management Functions ---
         function displayDailyMessage() {
-            const now = new Date();
-            const hourOfDay = now.getHours();
+            const hourOfDay = new Date().getHours();
             const messageIndex = hourOfDay % curatedQuranMessages.length;
             const message = curatedQuranMessages[messageIndex];
             dailyIslamicMessageEl.textContent = `"${message.text}"`;
             dailyIslamicMessageRefEl.textContent = `— ${message.reference}`;
         }
         
-        function addHadithToLog(hadithToAdd) {
-            const log = JSON.parse(localStorage.getItem(HADITH_LOG_KEY) || '[]');
-            const isAlreadyLogged = log.some(item => item.number === hadithToAdd.number);
-            if (!isAlreadyLogged) {
-                log.unshift(hadithToAdd); // Add to the beginning
-                localStorage.setItem(HADITH_LOG_KEY, JSON.stringify(log));
-                populateHadithLogPage(); // Refresh the log page
-            }
-        }
-
         function displayDailyHadith() {
-            const now = new Date();
-            const hourOfDay = now.getHours();
-            const hadithIndex = hourOfDay % curatedHadiths.length;
+            const currentTime = new Date();
+            const fourHourBlocks = Math.floor(currentTime.getHours() / 4);
+            const dayOfYear = Math.floor((currentTime - new Date(currentTime.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            const hadithIndex = (dayOfYear + fourHourBlocks) % curatedHadiths.length;
             const hadith = curatedHadiths[hadithIndex];
             
             hadithContentHome.innerHTML = `
@@ -637,6 +663,16 @@
                 </div>
             `;
             addHadithToLog(hadith);
+        }
+
+        function addHadithToLog(hadithToAdd) {
+            const log = JSON.parse(localStorage.getItem(HADITH_LOG_KEY) || '[]');
+            const isAlreadyLogged = log.some(item => item.number === hadithToAdd.number);
+            if (!isAlreadyLogged) {
+                log.unshift(hadithToAdd);
+                localStorage.setItem(HADITH_LOG_KEY, JSON.stringify(log));
+                populateHadithLogPage();
+            }
         }
 
         function populateHadithLogPage() {
@@ -696,17 +732,7 @@
             }
         }
         
-        function calculateQiblaDirection(userLat, userLon) {
-            const kaabaLat = 21.4225;
-            const kaabaLon = 39.8262;
-            const dLon = (kaabaLon - userLon) * (Math.PI / 180);
-            const lat1 = userLat * (Math.PI / 180);
-            const lat2 = kaabaLat * (Math.PI / 180);
-            const y = Math.sin(dLon) * Math.cos(lat2);
-            const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-            return (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
-        }
-
+        // --- Location & Prayer Times ---
         function getUserLocation() {
             return new Promise((resolve) => {
                 if (navigator.geolocation) {
@@ -715,7 +741,6 @@
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude
                         };
-                        qiblaAngle = calculateQiblaDirection(userCoords.latitude, userCoords.longitude);
 
                         try {
                             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`);
@@ -749,7 +774,7 @@
             try {
                 const date = new Date();
                 const dateString = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${city}&country=${country}&method=${calculationMethod}&school=${madhab}&latitudeAdjustmentMethod=${highLatitude}`;
+                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${dateString}?city=${city}&country=${country}&method=2`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 if (data.code === 200) {
@@ -760,17 +785,7 @@
             } catch (error) {
                 console.error("Error fetching prayer times:", error);
                  return null;
-            } finally {
-                hideLoading();
             }
-        }
-
-        function subtractMinutes(timeStr, minutesToSubtract) {
-            const [hours, minutes] = timeStr.split(':').map(Number);
-            const time = new Date();
-            time.setHours(hours, minutes, 0, 0);
-            time.setMinutes(time.getMinutes() - minutesToSubtract);
-            return `${padZero(time.getHours())}:${padZero(time.getMinutes())}`;
         }
 
         function displayPrayerTimes(data) {
@@ -799,7 +814,6 @@
                 if (nextPrayer) {
                     prayerTime = new Date(`${now.toDateString()} ${nextPrayer.time}`);
                 } else {
-                    // After Isha, countdown to next day's Fajr
                     nextPrayer = { name: 'Fajr', time: timings.Fajr };
                     const tomorrow = new Date();
                     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -818,10 +832,6 @@
                     const minutes = Math.floor((diff % 3600000) / 60000);
                     const seconds = Math.floor((diff % 60000) / 1000);
                     countdownTimerEl.textContent = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
-                    if (diff <= 1000 && !nextPrayer.triggered) {
-                       triggerPrayerNotification(nextPrayer.name);
-                       nextPrayer.triggered = true;
-                    }
                 } else {
                     getUserLocation();
                 }
@@ -838,6 +848,23 @@
             return null;
         }
 
+        function formatTime(timeStr) {
+            return timeStr.substring(0, 5);
+        }
+
+        function subtractMinutes(timeStr, minutesToSubtract) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const time = new Date();
+            time.setHours(hours, minutes, 0, 0);
+            time.setMinutes(time.getMinutes() - minutesToSubtract);
+            return `${padZero(time.getHours())}:${padZero(time.getMinutes())}`;
+        }
+
+        function padZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        // --- View Management ---
         function showView(viewName) {
             if (viewName !== 'listenQuran') quranAudioPlayer.pause();
             if (viewName !== 'home') homeRadioAudioPlayer.pause();
@@ -848,9 +875,6 @@
             
             document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
             document.querySelector(`.nav-button[onclick="showView('${viewName}')"]`)?.classList.add('active');
-            
-            if (viewName === 'qibla') startCompass();
-            else stopCompass();
         }
 
         function hideLoading() {
@@ -861,394 +885,1733 @@
             }, 500);
         }
 
-        function startCompass() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(permissionState => {
-                    if (permissionState === 'granted') window.addEventListener('deviceorientation', handleOrientation);
-                }).catch(console.error);
-            } else {
-                 window.addEventListener('deviceorientation', handleOrientation);
-            }
+        .font-amiri {
+            font-family: 'Amiri', serif;
         }
-        function stopCompass() { window.removeEventListener('deviceorientation', handleOrientation); }
-        function handleOrientation(event) {
-            let alpha = event.webkitCompassHeading || event.alpha;
-            if (alpha !== null && qiblaLine) {
-                qiblaLine.style.transform = `translateX(-50%) rotate(${qiblaAngle - alpha}deg)`;
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Enhanced Countdown Timer */
+        #countdown-heading {
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--primary-color);
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow-pulse {
+            from { text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color); }
+            to { text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); }
+        }
+
+        #countdown-timer {
+            font-weight: 800;
+            font-size: 4.5rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 5px var(--primary-color), 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+            letter-spacing: 0.05em;
+            animation: timer-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes timer-glow {
+            0%, 100% { text-shadow: 0 0 5px var(--primary-color), 0 0 15px var(--primary-color), 0 0 30px var(--primary-color); }
+            50% { text-shadow: 0 0 10px var(--primary-color), 0 0 25px var(--primary-color), 0 0 50px var(--primary-color); }
+        }
+
+        #next-prayer-name {
+            color: var(--primary-color);
+            font-weight: 700;
+            animation: fade-in-out 4s ease-in-out infinite;
+        }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Prayer Times Display */
+        .prayer-time {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+        }
+
+        .prayer-time.active {
+            background: var(--primary-glow);
+            border-left-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+            animation: active-prayer 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes active-prayer {
+            from { box-shadow: 0 0 15px var(--primary-glow); }
+            to { box-shadow: 0 0 25px var(--primary-glow); }
+        }
+
+        .prayer-time.completed {
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: #22c55e;
+            opacity: 0.7;
+        }
+
+        /* Navigation Enhancements */
+        .nav-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-button:hover::before {
+            left: 100%;
+        }
+
+        .nav-button.active {
+            background: var(--primary-color);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-color);
+            color: #000;
+            transform: translateY(-1px);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            border-radius: 2px;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(57, 255, 20, 0.3);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Audio Player */
+        #home-radio-audio-player {
+            border-radius: 50px;
+            background: rgba(57, 255, 20, 0.1);
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transition: all 0.3s ease;
+        }
+
+        #home-radio-audio-player:hover {
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        /* Prayer Time Card */
+        .prayer-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .prayer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(57, 255, 20, 0.2);
+        }
+
+        /* Qibla Compass */
+        #compass {
+            background: radial-gradient(circle, #1f2937 0%, #374151 100%);
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 30px var(--primary-glow);
+            position: relative;
+            animation: compass-glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes compass-glow {
+            from { box-shadow: 0 0 20px var(--primary-glow); }
+            to { box-shadow: 0 0 40px var(--primary-glow); }
+        }
+
+        #qibla-line {
+            background: linear-gradient(180deg, var(--primary-color) 0%, rgba(57, 255, 20, 0.5) 100%);
+            box-shadow: 0 0 15px var(--primary-color);
+            animation: qibla-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes qibla-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Calendar Items */
+        .calendar-item {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.1) 0%, rgba(57, 255, 20, 0.05) 100%);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .calendar-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(57, 255, 20, 0.2);
+        }
+
+        /* Tasbeeh Counter */
+        .tasbeeh-counter {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--primary-color);
+            animation: counter-pulse 1s ease-in-out;
+        }
+
+        @keyframes counter-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .tasbeeh-button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, rgba(57, 255, 20, 0.8) 100%);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .tasbeeh-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .tasbeeh-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #countdown-timer {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .nav-button {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
             }
         }
 
-        async function populateQuranList() {
-            try {
-                const response = await fetch('https://api.quran.com/api/v4/chapters');
-                quranChapters = (await response.json()).chapters;
-                quranSurahList.innerHTML = quranChapters.map((surah, index) => `
-                    <div id="surah-item-${surah.id}" class="quran-surah flex justify-between items-center" onclick="toggleSurahPlay(${surah.id}, ${index})">
-                        <div>
-                            <p class="surah-name font-semibold">${surah.id}. ${surah.name_simple}</p>
-                            <p class="text-sm text-gray-400">${surah.translated_name.name}</p>
+        /* Enhanced Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hadith and Quran styling */
+        .hadith-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .hadith-reference {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .quran-player {
+            background: rgba(57, 255, 20, 0.05);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .surah-item {
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .surah-item:hover {
+            background: rgba(57, 255, 20, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .surah-item.playing {
+            background: rgba(57, 255, 20, 0.2);
+            border-left-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-gray-900 bg-opacity-95 flex flex-col justify-center items-center z-50">
+        <div class="loading-spinner"></div>
+        <p class="mt-6 text-lg text-center px-4">Finding your location and calculating prayer times...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="min-h-screen container mx-auto p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-1000">
+        <!-- Header Section -->
+        <header class="text-center mb-8 fade-in">
+            <div class="relative inline-block mb-6">
+                <div class="w-48 h-48 mx-auto bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-2xl">
+                    <i class="fas fa-mosque text-6xl text-white"></i>
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <i class="fas fa-star text-yellow-800"></i>
+                </div>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold mb-4" style="color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color);">
+                Ramadhan World
+            </h1>
+            <p id="islamic-date" class="text-lg text-gray-300 mb-2">Loading Islamic Date...</p>
+            <p id="location" class="text-md text-gray-400">📍 Fetching location...</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="flex justify-center gap-2 mb-8 flex-wrap items-center">
+            <button onclick="showView('home')" class="nav-button active px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-home mr-2"></i>Home
+            </button>
+            <button onclick="showView('salah')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-pray mr-2"></i>Salah
+            </button>
+            <button onclick="showView('listenQuran')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-book-open mr-2"></i>Quran
+            </button>
+            <button onclick="showView('hadith')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-scroll mr-2"></i>Hadith
+            </button>
+            <button onclick="showView('tasbeeh')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-hand-paper mr-2"></i>Tasbeeh
+            </button>
+            <button onclick="showView('naat')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-music mr-2"></i>Naat
+            </button>
+            <button onclick="showView('qibla')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-compass mr-2"></i>Qibla
+            </button>
+            <button onclick="showView('calendar')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-calendar mr-2"></i>Calendar
+            </button>
+            <button onclick="showView('settings')" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">
+                <i class="fas fa-cog mr-2"></i>Settings
+            </button>
+        </nav>
+
+        <!-- Main Views -->
+        <main>
+            <!-- Home View -->
+            <div id="home-view" class="slide-up">
+                <!-- Prayer Countdown Section -->
+                <section id="countdown-section" class="mb-8">
+                    <div class="card rounded-2xl p-8 max-w-3xl mx-auto text-center">
+                        <h2 id="countdown-heading" class="text-3xl mb-4">
+                            Time until <span id="next-prayer-name">...</span>
+                        </h2>
+                        <div id="countdown-timer" class="tracking-wider mb-4">00:00:00</div>
+                        <div class="flex justify-center space-x-4 text-sm text-gray-400">
+                            <span>Hours</span>
+                            <span>Minutes</span>
+                            <span>Seconds</span>
                         </div>
-                        <i id="icon-${surah.id}" class="fas fa-play play-pause-icon"></i>
-                    </div>`).join('');
-            } catch (error) { console.error("Error fetching Surahs:", error); }
-        }
-        
-        async function toggleSurahPlay(surahId, index) {
-            const surahElement = document.getElementById(`surah-item-${surahId}`);
+                    </div>
+                </section>
+
+                <!-- Today's Prayer Times -->
+                <section class="mb-8">
+                    <div class="card rounded-2xl p-6 max-w-4xl mx-auto">
+                        <h3 class="section-title text-xl mb-6">🕌 Today's Prayer Times</h3>
+                        <div id="prayer-times-grid" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <!-- Prayer times will be populated here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Live Radio Section -->
+                <section id="home-radio-section" class="mb-8">
+                    <div class="card rounded-2xl p-6 max-w-2xl mx-auto text-center">
+                        <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color); text-shadow: 0 0 5px var(--primary-color);">
+                            <i class="fas fa-radio mr-2"></i>LIVE ISLAMIC RADIO
+                        </h3>
+                        <audio id="home-radio-audio-player" controls class="w-full">
+                            <source src="https://qurango.net/radio/tafseer_english" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </section>
+
+                <!-- Daily Islamic Message -->
+                <section id="daily-message-section" class="mb-8">
+                    <div class="card rounded-2xl p-6 max-w-4xl mx-auto text-center">
+                        <i class="fas fa-quote-left text-3xl text-yellow-400 mb-4"></i>
+                        <p id="daily-islamic-message" class="text-2xl font-bold mb-4 text-green-300">
+                            "Indeed, in the remembrance of Allah do hearts find rest."
+                        </p>
+                        <p id="daily-islamic-message-ref" class="text-lg text-gray-400">
+                            — Surah Ar-Ra'd (13:28)
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Hadith for Today Section -->
+                <section id="hadith-section-home" class="mb-8">
+                    <div class="card rounded-2xl p-6 max-w-4xl mx-auto">
+                        <h3 class="section-title text-xl mb-6">📖 Hadith of the Day</h3>
+                        <div id="hadith-content-home" class="text-center">
+                            <div class="hadith-text mb-4">
+                                "The believer is not one who eats his fill while his neighbor goes hungry."
+                            </div>
+                            <div class="hadith-reference">
+                                — Prophet Muhammad (ﷺ), Narrated by Al-Bukhari
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
             
-            if (currentPlayingSurahElement && currentPlayingSurahElement !== surahElement) {
-                quranAudioPlayer.pause();
-            }
+            <!-- Salah View -->
+            <div id="salah-view" class="hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="section-title">🕌 Prayer Times & Information</h2>
+                    
+                    <!-- Current Prayer Status -->
+                    <div class="card rounded-2xl p-6 mb-8 text-center">
+                        <div id="current-prayer-status" class="mb-4">
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--primary-color);">Current Prayer Status</h3>
+                            <p id="prayer-status-text" class="text-lg">Loading...</p>
+                        </div>
+                    </div>
 
-            if (surahElement.classList.contains('playing') && !quranAudioPlayer.paused) {
-                quranAudioPlayer.pause();
-            } else {
-                quranAudioPlayer.volume = 1.0; // Set volume to full
-                if (currentSurahIndex === index) {
-                    quranAudioPlayer.play();
-                } else {
-                    try {
-                        const response = await fetch(`https://api.quran.com/api/v4/chapter_recitations/7/${surahId}`);
-                        const audioData = await response.json();
-                        quranAudioPlayer.src = audioData.audio_file.audio_url;
-                        currentSurahIndex = index;
-                        quranAudioPlayer.play();
-                    } catch (error) { console.error("Error fetching Surah audio:", error); }
-                }
-            }
-        }
+                    <!-- Detailed Prayer Times -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                                <i class="fas fa-clock mr-2"></i>Prayer Schedule
+                            </h3>
+                            <div id="detailed-prayer-times" class="space-y-3">
+                                <!-- Detailed prayer times will be populated here -->
+                            </div>
+                        </div>
 
-        quranAudioPlayer.onplay = () => {
-            if (currentPlayingSurahElement) {
-                currentPlayingSurahElement.classList.remove('playing');
-                document.getElementById(`icon-${currentPlayingSurahElement.id.split('-')[2]}`).classList.replace('fa-pause', 'fa-play');
-            }
-            const surah = quranChapters[currentSurahIndex];
-            currentPlayingSurahElement = document.getElementById(`surah-item-${surah.id}`);
-            currentPlayingSurahElement.classList.add('playing');
-            document.getElementById(`icon-${surah.id}`).classList.replace('fa-play', 'fa-pause');
-            currentSurahName.textContent = `${surah.name_simple} (${surah.translated_name.name})`;
-        };
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                                <i class="fas fa-info-circle mr-2"></i>Prayer Information
+                            </h3>
+                            <div class="space-y-4 text-sm">
+                                <div>
+                                    <strong>Calculation Method:</strong> <span id="calculation-method">Islamic Society of North America (ISNA)</span>
+                                </div>
+                                <div>
+                                    <strong>Madhab:</strong> <span id="madhab">Shafi/Hanbali/Maliki</span>
+                                </div>
+                                <div>
+                                    <strong>Location:</strong> <span id="prayer-location">Loading...</span>
+                                </div>
+                                <div>
+                                    <strong>Coordinates:</strong> <span id="coordinates">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        quranAudioPlayer.onpause = () => {
-             if (currentPlayingSurahElement) {
-                currentPlayingSurahElement.classList.remove('playing');
-                document.getElementById(`icon-${currentPlayingSurahElement.id.split('-')[2]}`).classList.replace('fa-pause', 'fa-play');
-             }
-        };
-
-        function playNextSurah() {
-            if (currentSurahIndex !== -1 && currentSurahIndex < quranChapters.length - 1) {
-                const nextIndex = currentSurahIndex + 1;
-                toggleSurahPlay(quranChapters[nextIndex].id, nextIndex);
-            }
-        }
-
-        function incrementTasbeeh() { 
-            tasbeehCount++;
-            tasbeehCounterDisplay.textContent = tasbeehCount;
-            saveTasbeehCount();
+                    <!-- Qibla Direction -->
+                    <div class="card rounded-2xl p-6 text-center">
+                        <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-kaaba mr-2"></i>Qibla Direction
+                        </h3>
+                        <div id="qibla-info" class="mb-4">
+                            <p class="text-lg">Qibla is <span id="qibla-degree" class="font-bold text-green-400">0°</span> from North</p>
+                        </div>
+                        <button onclick="showView('qibla')" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition">
+                            <i class="fas fa-compass mr-2"></i>Open Qibla Compass
+                        </button>
+                    </div>
+                </div>
+            </div>
             
-            // Vibrate on mobile devices
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-            
-            // Auto-advance to next tasbeeh after 33
-            if (tasbeehCount === 33) {
-                setTimeout(() => {
-                    switchTasbeehText();
-                    resetTasbeeh();
-                }, 1000);
-            }
-        }
-        
-        function resetTasbeeh() { 
-            tasbeehCount = 0;
-            tasbeehCounterDisplay.textContent = tasbeehCount;
-            saveTasbeehCount();
-        }
-        
-        function switchTasbeehText() {
-            currentTasbeehTextIndex = (currentTasbeehTextIndex + 1) % tasbeehTexts.length;
-            const newText = tasbeehTexts[currentTasbeehTextIndex];
-            document.querySelector('.tasbeeh-text').textContent = newText;
-            document.getElementById('current-tasbeeh-text').textContent = newText;
-            saveTasbeehCount();
-        }
-        
-        function saveTasbeehCount() { 
-            localStorage.setItem('ramadanTasbeeh', JSON.stringify({
-                count: tasbeehCount,
-                textIndex: currentTasbeehTextIndex
-            }));
-        }
-        
-        function loadTasbeehCount() { 
-            const saved = JSON.parse(localStorage.getItem('ramadanTasbeeh') || '{"count":0,"textIndex":0}');
-            tasbeehCount = parseInt(saved.count) || 0;
-            currentTasbeehTextIndex = parseInt(saved.textIndex) || 0;
-            tasbeehCounterDisplay.textContent = tasbeehCount;
-            const currentText = tasbeehTexts[currentTasbeehTextIndex];
-            document.querySelector('.tasbeeh-text').textContent = currentText;
-            document.getElementById('current-tasbeeh-text').textContent = currentText;
-        }
+            <!-- Listen Quran View -->
+            <div id="listenQuran-view" class="hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="section-title">📖 Listen to the Holy Quran</h2>
+                    
+                    <!-- Quran Player -->
+                    <div class="quran-player mb-8">
+                        <div class="text-center mb-6">
+                            <h3 id="current-surah-name" class="text-2xl font-bold mb-2" style="color: var(--primary-color);">
+                                Select a Surah to begin
+                            </h3>
+                            <audio id="quran-audio" controls class="w-full max-w-2xl mx-auto" style="border-radius: 25px;">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
 
-        function setupRadioPlayer() {
-            homeRadioAudioPlayer.src = radioStations[0].url;
-            homeRadioAudioPlayer.addEventListener('play', () => {
-                homeRadioAudioPlayer.volume = 1.0;
-            });
-        }
-        
-        function onYouTubeIframeAPIReady() {
-            youtubePlayer = new YT.Player('youtube-player', {
-                height: '480', width: '854',
-                playerVars: { 'playsinline': 1, 'listType': 'playlist', 'list': 'PL6b_3Yr67_wFpDJfaZLlMEUP6h5EroJi2', 'controls': 0, 'rel': 0 },
-                events: { 'onStateChange': onPlayerStateChange }
-            });
-        }
-        function onPlayerStateChange(event) {
-            tvPlayButton.classList.toggle('hidden', event.data === YT.PlayerState.PLAYING);
-            tvPauseButton.classList.toggle('hidden', event.data !== YT.PlayerState.PLAYING);
-        }
-        function playVideo() { youtubePlayer.playVideo(); }
-        function pauseVideo() { youtubePlayer.pauseVideo(); }
-        function nextVideo() { youtubePlayer.nextVideo(); }
-        function previousVideo() { youtubePlayer.previousVideo(); }
-
-        // --- Notification & Settings Controls ---
-        function updateSettingsNotificationUI() {
-            if (notificationsEnabled) {
-                settingsNotificationToggle.textContent = 'Notifications are ON (Click to Disable)';
-                settingsNotificationToggle.classList.remove('bg-red-600', 'hover:bg-red-700');
-                settingsNotificationToggle.classList.add('bg-green-600', 'hover:bg-green-700');
-            } else {
-                settingsNotificationToggle.textContent = 'Notifications are OFF (Click to Enable)';
-                settingsNotificationToggle.classList.remove('bg-green-600', 'hover:bg-green-700');
-                settingsNotificationToggle.classList.add('bg-red-600', 'hover:bg-red-700');
-            }
-        }
-
-        function saveNotificationStatus() {
-            localStorage.setItem(NOTIFICATION_STATUS_KEY, notificationsEnabled);
-        }
-
-        function loadNotificationStatus() {
-            const savedStatus = localStorage.getItem(NOTIFICATION_STATUS_KEY);
-            notificationsEnabled = savedStatus === null ? true : (savedStatus === 'true');
-            updateSettingsNotificationUI();
-        }
-
-        function toggleMasterNotifications() {
-            if (Notification.permission === 'denied') {
-                showTemporaryMessage('Notifications are blocked by your browser.', true);
-                return;
-            }
-            if (Notification.permission === 'default') {
-                Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                        notificationsEnabled = !notificationsEnabled;
-                        saveNotificationStatus();
-                        updateSettingsNotificationUI();
-                        showTemporaryMessage(`Notifications ${notificationsEnabled ? 'Enabled' : 'Disabled'}`);
-                    }
-                });
-            } else {
-                notificationsEnabled = !notificationsEnabled;
-                saveNotificationStatus();
-                updateSettingsNotificationUI();
-                showTemporaryMessage(`Notifications ${notificationsEnabled ? 'Enabled' : 'Disabled'}`);
-            }
-        }
-        
-        function triggerPrayerNotification(prayerName) {
-            if (!notificationsEnabled) return;
+                    <!-- Surah List -->
+                    <div class="card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-6 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-list mr-2"></i>Surah List
+                        </h3>
+                        <div id="surah-list" class="max-h-96 overflow-y-auto space-y-2">
+                            <!-- Surah list will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            const message = `It's time for ${prayerName} prayer!`;
-            if (Notification.permission === "granted") {
-                new Notification(message);
-            }
-        }
-        
-        function showTemporaryMessage(message, isError = false) {
-            settingsSavedMessage.textContent = message;
-            settingsSavedMessage.style.backgroundColor = isError ? '#ef4444' : '#10B981';
-            settingsSavedMessage.classList.add('opacity-100');
-            setTimeout(() => {
-                settingsSavedMessage.classList.remove('opacity-100');
-            }, 4000);
-        }
+            <!-- Hadith View -->
+            <div id="hadith-view" class="hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="section-title">📜 Hadith Collection</h2>
+                    
+                    <!-- Daily Hadith -->
+                    <div class="card rounded-2xl p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-star mr-2"></i>Hadith of the Day
+                        </h3>
+                        <div id="daily-hadith" class="text-center">
+                            <div class="hadith-text mb-4">
+                                "Whoever believes in Allah and the Last Day should speak good or keep silent."
+                            </div>
+                            <div class="hadith-reference">
+                                — Prophet Muhammad (ﷺ), Sahih Bukhari & Muslim
+                            </div>
+                        </div>
+                    </div>
 
-        function formatTime(time24) {
-            if (!time24) return '--:--';
-            const [hour, minute] = time24.split(':');
-            const h = parseInt(hour, 10);
-            
-            if (timeFormat === 24) {
-                return `${padZero(h)}:${minute}`;
-            } else {
-                const ampm = h >= 12 ? 'PM' : 'AM';
-                const h12 = h % 12 || 12;
-                return `${padZero(h12)}:${minute} ${ampm}`;
-            }
-        }
-        function padZero(num) { return num < 10 ? '0' + num : String(num); }
+                    <!-- Hadith Categories -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition" onclick="loadHadithCategory('faith')">
+                            <div class="text-center">
+                                <i class="fas fa-heart text-3xl text-red-400 mb-3"></i>
+                                <h4 class="font-bold">Faith & Belief</h4>
+                                <p class="text-sm text-gray-400 mt-2">Hadiths about Iman and belief</p>
+                            </div>
+                        </div>
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition" onclick="loadHadithCategory('worship')">
+                            <div class="text-center">
+                                <i class="fas fa-pray text-3xl text-blue-400 mb-3"></i>
+                                <h4 class="font-bold">Worship</h4>
+                                <p class="text-sm text-gray-400 mt-2">Hadiths about prayer and worship</p>
+                            </div>
+                        </div>
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition" onclick="loadHadithCategory('character')">
+                            <div class="text-center">
+                                <i class="fas fa-user-friends text-3xl text-green-400 mb-3"></i>
+                                <h4 class="font-bold">Character</h4>
+                                <p class="text-sm text-gray-400 mt-2">Hadiths about good character</p>
+                            </div>
+                        </div>
+                    </div>
 
-        // Settings Functions
-        function updateCalculationMethod() {
-            calculationMethod = document.getElementById('calculation-method').value;
-            saveSettings();
-            refreshPrayerTimes();
-        }
-        
-        function updateMadhab() {
-            madhab = document.getElementById('madhab').value;
-            saveSettings();
-            refreshPrayerTimes();
-        }
-        
-        function updateHighLatitude() {
-            highLatitude = document.getElementById('high-latitude').value;
-            saveSettings();
-            refreshPrayerTimes();
-        }
-        
-        function updateTimeFormat() {
-            timeFormat = parseInt(document.getElementById('time-format').value);
-            saveSettings();
-            refreshPrayerTimes();
-        }
-        
-        function toggleAutoLocation() {
-            autoLocationEnabled = !autoLocationEnabled;
-            updateToggleUI('auto-location-toggle', autoLocationEnabled);
-            saveSettings();
-            if (autoLocationEnabled) {
-                getUserLocation();
-            }
-        }
-        
-        function toggleNotifications() {
-            notificationsEnabled = !notificationsEnabled;
-            updateToggleUI('notification-toggle', notificationsEnabled);
-            saveSettings();
-        }
-        
-        function refreshLocation() {
-            getUserLocation();
-        }
-        
-        function updateToggleUI(toggleId, isActive) {
-            const toggle = document.getElementById(toggleId);
-            if (isActive) {
-                toggle.classList.add('active');
-            } else {
-                toggle.classList.remove('active');
-            }
-        }
-        
-        function saveSettings() {
-            const settings = {
-                calculationMethod,
-                madhab,
-                highLatitude,
-                timeFormat,
-                autoLocationEnabled,
-                notificationsEnabled
-            };
-            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-        }
-        
-        function loadSettings() {
-            const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-            calculationMethod = saved.calculationMethod || 2;
-            madhab = saved.madhab || 0;
-            highLatitude = saved.highLatitude || 1;
-            timeFormat = saved.timeFormat || 12;
-            autoLocationEnabled = saved.autoLocationEnabled !== false;
-            notificationsEnabled = saved.notificationsEnabled !== false;
+                    <!-- Hadith Archive -->
+                    <div class="card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-archive mr-2"></i>Hadith Archive
+                        </h3>
+                        <div id="hadith-archive" class="max-h-96 overflow-y-auto space-y-4">
+                            <!-- Hadith archive will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            // Update UI
-            document.getElementById('calculation-method').value = calculationMethod;
-            document.getElementById('madhab').value = madhab;
-            document.getElementById('high-latitude').value = highLatitude;
-            document.getElementById('time-format').value = timeFormat;
-            updateToggleUI('auto-location-toggle', autoLocationEnabled);
-            updateToggleUI('notification-toggle', notificationsEnabled);
-        }
-        
-        function refreshPrayerTimes() {
-            const locationText = document.getElementById('current-location-display').textContent;
-            const [city, country] = locationText.split(', ');
-            getPrayerTimes(city || 'Karachi', country || 'Pakistan');
-        }
-        
-        // Moving Sun Animation
-        function updateSunPosition() {
-            const now = new Date();
-            const sunrise = new Date();
-            sunrise.setHours(6, 0, 0, 0); // Approximate sunrise
-            const sunset = new Date();
-            sunset.setHours(18, 0, 0, 0); // Approximate sunset
+            <!-- Tasbeeh View -->
+            <div id="tasbeeh-view" class="hidden">
+                <div class="max-w-2xl mx-auto text-center">
+                    <h2 class="section-title">📿 Digital Tasbeeh Counter</h2>
+                    
+                    <div class="card rounded-2xl p-8 mb-8">
+                        <!-- Counter Display -->
+                        <div class="mb-8">
+                            <div id="tasbeeh-count" class="tasbeeh-counter">0</div>
+                            <p class="text-lg text-gray-400 mb-6">Total Count</p>
+                        </div>
+
+                        <!-- Current Dhikr -->
+                        <div class="mb-8">
+                            <p id="current-dhikr" class="text-2xl font-bold mb-2" style="color: var(--primary-color);">
+                                سُبْحَانَ اللَّهِ
+                            </p>
+                            <p id="current-dhikr-meaning" class="text-lg text-gray-300">
+                                SubhanAllah (Glory be to Allah)
+                            </p>
+                        </div>
+
+                        <!-- Counter Button -->
+                        <button id="tasbeeh-button" class="tasbeeh-button w-32 h-32 rounded-full text-2xl mb-6" onclick="incrementTasbeeh()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+
+                        <!-- Controls -->
+                        <div class="flex justify-center space-x-4 mb-6">
+                            <button onclick="resetTasbeeh()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">
+                                <i class="fas fa-undo mr-2"></i>Reset
+                            </button>
+                            <button onclick="nextDhikr()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">
+                                <i class="fas fa-forward mr-2"></i>Next Dhikr
+                            </button>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-400 mb-2">
+                                <span>Progress to 33</span>
+                                <span id="progress-text">0/33</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div id="progress-bar" class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dhikr List -->
+                    <div class="card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-list mr-2"></i>Dhikr Collection
+                        </h3>
+                        <div id="dhikr-list" class="space-y-3">
+                            <!-- Dhikr list will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            const dayDuration = sunset.getTime() - sunrise.getTime();
-            const timeSinceSunrise = now.getTime() - sunrise.getTime();
+            <!-- Naat View -->
+            <div id="naat-view" class="hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="section-title">🎵 Islamic Nasheed & Naat</h2>
+                    
+                    <!-- Featured Naat Player -->
+                    <div class="card rounded-2xl p-6 mb-8 text-center">
+                        <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-play-circle mr-2"></i>Featured Nasheed
+                        </h3>
+                        <audio id="naat-audio" controls class="w-full max-w-2xl mx-auto" style="border-radius: 25px;">
+                            <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <p id="current-naat-title" class="mt-4 text-lg font-semibold">Select a nasheed to play</p>
+                    </div>
+
+                    <!-- Naat Categories -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition">
+                            <div class="text-center">
+                                <i class="fas fa-heart text-3xl text-pink-400 mb-3"></i>
+                                <h4 class="font-bold">Praise of Prophet</h4>
+                                <p class="text-sm text-gray-400 mt-2">Naats in praise of Prophet Muhammad (ﷺ)</p>
+                            </div>
+                        </div>
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition">
+                            <div class="text-center">
+                                <i class="fas fa-moon text-3xl text-blue-400 mb-3"></i>
+                                <h4 class="font-bold">Ramadan Special</h4>
+                                <p class="text-sm text-gray-400 mt-2">Special naats for the holy month</p>
+                            </div>
+                        </div>
+                        <div class="card rounded-xl p-4 cursor-pointer hover:scale-105 transition">
+                            <div class="text-center">
+                                <i class="fas fa-star text-3xl text-yellow-400 mb-3"></i>
+                                <h4 class="font-bold">Classic Collection</h4>
+                                <p class="text-sm text-gray-400 mt-2">Timeless Islamic nasheeds</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Naat Playlist -->
+                    <div class="card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-music mr-2"></i>Nasheed Playlist
+                        </h3>
+                        <div id="naat-playlist" class="space-y-3 max-h-96 overflow-y-auto">
+                            <!-- Naat playlist will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            let position = 0;
-            if (timeSinceSunrise >= 0 && timeSinceSunrise <= dayDuration) {
-                position = (timeSinceSunrise / dayDuration) * 100;
-            } else if (timeSinceSunrise < 0) {
-                position = 0;
-            } else {
-                position = 100;
-            }
+            <!-- Qibla View -->
+            <div id="qibla-view" class="hidden text-center">
+                <div class="max-w-lg mx-auto">
+                    <h2 class="section-title">🧭 Qibla Compass</h2>
+                    
+                    <div class="card rounded-2xl p-8">
+                        <!-- Compass -->
+                        <div id="compass" class="w-64 h-64 mx-auto mb-6 relative flex items-center justify-center rounded-full">
+                            <!-- Compass directions -->
+                            <div class="direction north absolute top-2 text-red-400 font-bold text-lg">N</div>
+                            <div class="direction south absolute bottom-2 text-white font-bold">S</div>
+                            <div class="direction east absolute right-2 text-white font-bold">E</div>
+                            <div class="direction west absolute left-2 text-white font-bold">W</div>
+                            
+                            <!-- Qibla line -->
+                            <div id="qibla-line" class="absolute w-1 h-32 transform -translate-x-1/2" style="transform-origin: bottom center; top: 0;">
+                                <div class="w-full h-full rounded-full relative">
+                                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-400 rounded-full"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Center dot -->
+                            <div class="absolute w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+
+                        <!-- Qibla Information -->
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-lg font-semibold" style="color: var(--primary-color);">
+                                    Qibla Direction: <span id="qibla-direction-degree">Calculating...</span>
+                                </p>
+                            </div>
+                            <div class="text-sm text-gray-400 space-y-2">
+                                <p>📍 Your Location: <span id="qibla-location">Detecting...</span></p>
+                                <p>🕋 Distance to Kaaba: <span id="kaaba-distance">Calculating...</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="mt-6 p-4 bg-yellow-900 bg-opacity-30 rounded-lg">
+                            <h4 class="font-bold text-yellow-400 mb-2">Instructions:</h4>
+                            <ul class="text-sm text-gray-300 space-y-1 text-left">
+                                <li>• Hold your device flat and away from metal objects</li>
+                                <li>• Allow location and compass permissions</li>
+                                <li>• The yellow arrow points toward the Qibla</li>
+                                <li>• Accuracy depends on your device's sensors</li>
+                            </ul>
+                        </div>
+
+                        <!-- Calibration Button -->
+                        <button onclick="calibrateCompass()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition">
+                            <i class="fas fa-sync mr-2"></i>Calibrate Compass
+                        </button>
+                    </div>
+                </div>
+            </div>
             
-            const sunElement = document.getElementById('moving-sun');
-            if (sunElement) {
-                sunElement.style.left = `${Math.max(0, Math.min(100, position))}%`;
-            }
-        }
+            <!-- Calendar View -->
+            <div id="calendar-view" class="hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="section-title">📅 Islamic Calendar & Events</h2>
+                    
+                    <!-- Current Islamic Date -->
+                    <div class="card rounded-2xl p-6 mb-8 text-center">
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--primary-color);">
+                            <i class="fas fa-calendar-day mr-2"></i>Today's Islamic Date
+                        </h3>
+                        <p id="detailed-islamic-date" class="text-xl mb-2">Loading...</p>
+                        <p id="hijri-month-info" class="text-gray-400">Loading month information...</p>
+                    </div>
+
+                    <!-- Upcoming Events -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-star mr-2"></i>Upcoming Islamic Events
+                        </h3>
+                        <div id="upcoming-events" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Upcoming events will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Major Islamic Events -->
+                    <div class="card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-6 text-center" style="color: var(--primary-color);">
+                            <i class="fas fa-mosque mr-2"></i>Major Islamic Events
+                        </h3>
+                        <div id="islamic-calendar-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Events will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings View -->
+            <div id="settings-view" class="hidden">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="section-title">⚙️ Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Prayer Time Settings -->
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                                <i class="fas fa-clock mr-2"></i>Prayer Time Settings
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Calculation Method</label>
+                                    <select id="calculation-method-select" class="w-full p-2 rounded bg-gray-700 text-white">
+                                        <option value="2">Islamic Society of North America (ISNA)</option>
+                                        <option value="5">University of Islamic Sciences, Karachi</option>
+                                        <option value="3">Muslim World League</option>
+                                        <option value="4">Umm Al-Qura University, Makkah</option>
+                                        <option value="1">Egyptian General Authority of Survey</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Madhab</label>
+                                    <select id="madhab-select" class="w-full p-2 rounded bg-gray-700 text-white">
+                                        <option value="0">Shafi/Hanbali/Maliki</option>
+                                        <option value="1">Hanafi</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Higher Latitudes</label>
+                                    <select id="high-lat-select" class="w-full p-2 rounded bg-gray-700 text-white">
+                                        <option value="1">Angle Based</option>
+                                        <option value="2">Mid Night</option>
+                                        <option value="3">One Seventh</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Settings -->
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                                <i class="fas fa-map-marker-alt mr-2"></i>Location Settings
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Current Location</label>
+                                    <p id="current-location-display" class="text-gray-300 mb-2">Loading...</p>
+                                    <button onclick="updateLocation()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition">
+                                        <i class="fas fa-refresh mr-2"></i>Update Location
+                                    </button>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="auto-location" class="mr-2" checked>
+                                        <span>Automatically detect location</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display Settings -->
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                                <i class="fas fa-palette mr-2"></i>Display Settings
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Time Format</label>
+                                    <select id="time-format-select" class="w-full p-2 rounded bg-gray-700 text-white">
+                                        <option value="12">12 Hour</option>
+                                        <option value="24">24 Hour</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="notifications-enabled" class="mr-2">
+                                        <span>Enable prayer time notifications</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- App Information -->
+                        <div class="card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-4" style="color: var(--primary-color);">
+                                <i class="fas fa-info-circle mr-2"></i>App Information
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <p><strong>Version:</strong> 2.0.0</p>
+                                <p><strong>Last Updated:</strong> July 2025</p>
+                                <p><strong>Developer:</strong> Islamic App Development Team</p>
+                                <p class="text-gray-400 mt-4">
+                                    This app provides Islamic prayer times, Quran recitation, Hadith collections, 
+                                    and other Islamic resources for Muslims worldwide.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Save Settings Button -->
+                        <div class="text-center">
+                            <button onclick="saveSettings()" class="bg-green-600 hover:bg-green-700 px-8 py-3 rounded-lg text-lg font-semibold transition">
+                                <i class="fas fa-save mr-2"></i>Save Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Global variables
+        let userLocation = { latitude: null, longitude: null };
+        let prayerTimes = {};
+        let nextPrayerInfo = { name: '', time: null };
+        let countdownInterval;
+        let currentView = 'home';
+
+        // Prayer names in order
+        const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
         
-        // Initialize everything
+        // Islamic calendar data
+        const islamicEvents = [
+            { name: "Mawlid an-Nabi", date: "12 Rabi' al-awwal", description: "Birthday of Prophet Muhammad (ﷺ)", gregorian: "Various dates" },
+            { name: "Isra and Mi'raj", date: "27 Rajab", description: "Night Journey and Ascension", gregorian: "Various dates" },
+            { name: "Laylat al-Bara'at", date: "15 Sha'ban", description: "Night of Forgiveness", gregorian: "Various dates" },
+            { name: "Ramadan Begins", date: "1 Ramadan", description: "Start of the holy month of fasting", gregorian: "Various dates" },
+            { name: "Laylat al-Qadr", date: "Last 10 nights of Ramadan", description: "Night of Power", gregorian: "Various dates" },
+            { name: "Eid al-Fitr", date: "1 Shawwal", description: "Festival of Breaking the Fast", gregorian: "Various dates" },
+            { name: "Hajj Season", date: "8-13 Dhu al-Hijjah", description: "Annual pilgrimage to Mecca", gregorian: "Various dates" },
+            { name: "Day of Arafah", date: "9 Dhu al-Hijjah", description: "Day of standing at Mount Arafat", gregorian: "Various dates" },
+            { name: "Eid al-Adha", date: "10 Dhu al-Hijjah", description: "Festival of Sacrifice", gregorian: "Various dates" },
+            { name: "Islamic New Year", date: "1 Muharram", description: "Beginning of the Islamic year", gregorian: "Various dates" },
+            { name: "Day of Ashura", date: "10 Muharram", description: "Day of remembrance", gregorian: "Various dates" }
+        ];
+
+        // Dhikr collection for Tasbeeh
+        const dhikrCollection = [
+            { arabic: "سُبْحَانَ اللَّهِ", transliteration: "SubhanAllah", meaning: "Glory be to Allah" },
+            { arabic: "الْحَمْدُ لِلَّهِ", transliteration: "Alhamdulillah", meaning: "Praise be to Allah" },
+            { arabic: "اللَّهُ أَكْبَرُ", transliteration: "Allahu Akbar", meaning: "Allah is Greatest" },
+            { arabic: "لَا إِلَٰهَ إِلَّا اللَّهُ", transliteration: "La ilaha illa Allah", meaning: "There is no god but Allah" },
+            { arabic: "أَسْتَغْفِرُ اللَّهَ", transliteration: "Astaghfirullah", meaning: "I seek forgiveness from Allah" }
+        ];
+
+        let currentDhikrIndex = 0;
+        let tasbeehCount = 0;
+
+        // Surah list for Quran player
+        const surahList = [
+            { number: 1, name: "Al-Fatihah", arabic: "الفاتحة", verses: 7 },
+            { number: 2, name: "Al-Baqarah", arabic: "البقرة", verses: 286 },
+            { number: 3, name: "Aal-E-Imran", arabic: "آل عمران", verses: 200 },
+            { number: 4, name: "An-Nisa", arabic: "النساء", verses: 176 },
+            { number: 5, name: "Al-Ma'idah", arabic: "المائدة", verses: 120 },
+            // Add more surahs as needed
+        ];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
         async function initializeApp() {
+            showLoadingScreen(true);
+            
             try {
-                loadSettings();
-                loadTasbeehCount();
-                setupRadioPlayer();
-                populateQuranList();
-                displayDailyMessage();
-                displayDailyHadith();
-                populateEventCalendar();
-                populateHadithLogPage();
-                
-                if (autoLocationEnabled) {
-                    await getUserLocation();
-                } else {
-                    await getPrayerTimes("Karachi", "Pakistan");
+                await getUserLocation();
+                await calculatePrayerTimes();
+                updateIslamicDate();
+                setupEventListeners();
+                populateContent();
+                startCountdown();
+                showLoadingScreen(false);
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showLoadingScreen(false);
+                showErrorMessage('Failed to initialize app. Please refresh the page.');
+            }
+        }
+
+        function showLoadingScreen(show) {
+            const loadingScreen = document.getElementById('loading-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            if (show) {
+                loadingScreen.style.display = 'flex';
+                mainContent.style.opacity = '0';
+            } else {
+                loadingScreen.style.display = 'none';
+                mainContent.style.opacity = '1';
+            }
+        }
+
+        async function getUserLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    // Default to Mecca coordinates
+                    userLocation = { latitude: 21.4225, longitude: 39.8262 };
+                    updateLocationDisplay("Mecca, Saudi Arabia (Default)");
+                    resolve();
+                    return;
                 }
+
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        userLocation.latitude = position.coords.latitude;
+                        userLocation.longitude = position.coords.longitude;
+                        
+                        try {
+                            const locationName = await getLocationName(userLocation.latitude, userLocation.longitude);
+                            updateLocationDisplay(locationName);
+                        } catch (error) {
+                            updateLocationDisplay(`${userLocation.latitude.toFixed(2)}, ${userLocation.longitude.toFixed(2)}`);
+                        }
+                        resolve();
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        // Default to Mecca coordinates
+                        userLocation = { latitude: 21.4225, longitude: 39.8262 };
+                        updateLocationDisplay("Mecca, Saudi Arabia (Default)");
+                        resolve();
+                    },
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            });
+        }
+
+        async function getLocationName(lat, lon) {
+            try {
+                const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+                const data = await response.json();
+                return `${data.city || data.locality || 'Unknown'}, ${data.countryName || 'Unknown'}`;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function updateLocationDisplay(location) {
+            document.getElementById('location').textContent = `📍 ${location}`;
+            const locationElements = document.querySelectorAll('#prayer-location, #current-location-display, #qibla-location');
+            locationElements.forEach(el => {
+                if (el) el.textContent = location;
+            });
+            
+            // Update coordinates display
+            const coordsElement = document.getElementById('coordinates');
+            if (coordsElement) {
+                coordsElement.textContent = `${userLocation.latitude.toFixed(4)}, ${userLocation.longitude.toFixed(4)}`;
+            }
+        }
+
+        async function calculatePrayerTimes() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+
+            try {
+                // Using Aladhan API for accurate Islamic prayer times
+                const response = await fetch(
+                    `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&method=2`
+                );
                 
-                // Update sun position every minute
-                updateSunPosition();
-                setInterval(updateSunPosition, 60000);
-                
-                // Update messages every hour
-                setInterval(() => {
-                    displayDailyMessage();
-                    displayDailyHadith();
-                }, 3600000);
-                
-                // Update current location display
-                const locationText = locationEl.textContent;
-                document.getElementById('current-location-display').textContent = locationText;
+                if (!response.ok) {
+                    throw new Error('Failed to fetch prayer times');
+                }
+
+                const data = await response.json();
+                const timings = data.data.timings;
+
+                prayerTimes = {
+                    Fajr: timings.Fajr,
+                    Dhuhr: timings.Dhuhr,
+                    Asr: timings.Asr,
+                    Maghrib: timings.Maghrib,
+                    Isha: timings.Isha
+                };
+
+                findNextPrayer();
+                updatePrayerTimesDisplay();
+                calculateQiblaDirection();
                 
             } catch (error) {
-                console.error('Initialization error:', error);
-                hideLoading();
+                console.error('Error calculating prayer times:', error);
+                // Fallback to approximate times
+                setFallbackPrayerTimes();
             }
         }
 
-        window.addEventListener('load', initializeApp);
+        function setFallbackPrayerTimes() {
+            const now = new Date();
+            prayerTimes = {
+                Fajr: '05:30',
+                Dhuhr: '12:30',
+                Asr: '15:45',
+                Maghrib: '18:15',
+                Isha: '19:45'
+            };
+            findNextPrayer();
+            updatePrayerTimesDisplay();
+        }
+
+        function findNextPrayer() {
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+
+            let nextPrayer = null;
+            let nextTime = null;
+            let found = false;
+
+            for (const prayer of prayerNames) {
+                const prayerTime = prayerTimes[prayer];
+                if (prayerTime) {
+                    const [hours, minutes] = prayerTime.split(':').map(Number);
+                    const prayerMinutes = hours * 60 + minutes;
+
+                    if (prayerMinutes > currentTime && !found) {
+                        nextPrayer = prayer;
+                        const nextDate = new Date(now);
+                        nextDate.setHours(hours, minutes, 0, 0);
+                        nextTime = nextDate;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            // If no prayer found today, next prayer is Fajr tomorrow
+            if (!found) {
+                const fajrTime = prayerTimes.Fajr;
+                if (fajrTime) {
+                    const [hours, minutes] = fajrTime.split(':').map(Number);
+                    const nextDate = new Date(now);
+                    nextDate.setDate(nextDate.getDate() + 1);
+                    nextDate.setHours(hours, minutes, 0, 0);
+                    nextPrayer = 'Fajr';
+                    nextTime = nextDate;
+                }
+            }
+
+            nextPrayerInfo = { name: nextPrayer, time: nextTime };
+            document.getElementById('next-prayer-name').textContent = nextPrayer || 'Next Prayer';
+        }
+
+        function updatePrayerTimesDisplay() {
+            // Update home page prayer times grid
+            const prayerTimesGrid = document.getElementById('prayer-times-grid');
+            if (prayerTimesGrid) {
+                prayerTimesGrid.innerHTML = '';
+                
+                prayerNames.forEach(prayer => {
+                    const time = prayerTimes[prayer];
+                    if (time) {
+                        const prayerCard = document.createElement('div');
+                        const isNext = prayer === nextPrayerInfo.name;
+                        const isCompleted = isPrayerCompleted(prayer);
+                        
+                        prayerCard.className = `prayer-card text-center ${isNext ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+                        prayerCard.innerHTML = `
+                            <div class="text-lg font-bold mb-1" style="color: var(--primary-color);">${prayer}</div>
+                            <div class="text-xl font-semibold">${formatTime(time)}</div>
+                            ${isNext ? '<div class="text-sm text-green-400 mt-1">• Next Prayer</div>' : ''}
+                            ${isCompleted ? '<div class="text-sm text-green-500 mt-1">✓ Completed</div>' : ''}
+                        `;
+                        prayerTimesGrid.appendChild(prayerCard);
+                    }
+                });
+            }
+
+            // Update detailed prayer times in Salah view
+            const detailedPrayerTimes = document.getElementById('detailed-prayer-times');
+            if (detailedPrayerTimes) {
+                detailedPrayerTimes.innerHTML = '';
+                
+                prayerNames.forEach(prayer => {
+                    const time = prayerTimes[prayer];
+                    if (time) {
+                        const prayerItem = document.createElement('div');
+                        const isNext = prayer === nextPrayerInfo.name;
+                        const isCompleted = isPrayerCompleted(prayer);
+                        
+                        prayerItem.className = `prayer-time ${isNext ? 'active' : ''} ${isCompleted ? 'completed' : ''} rounded-lg`;
+                        prayerItem.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <i class="fas fa-pray mr-3 text-xl" style="color: var(--primary-color);"></i>
+                                    <div>
+                                        <div class="font-semibold text-lg">${prayer}</div>
+                                        <div class="text-sm text-gray-400">${getPrayerDescription(prayer)}</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold">${formatTime(time)}</div>
+                                    ${isNext ? '<div class="text-sm text-green-400">Next Prayer</div>' : ''}
+                                    ${isCompleted ? '<div class="text-sm text-green-500">Completed</div>' : ''}
+                                </div>
+                            </div>
+                        `;
+                        detailedPrayerTimes.appendChild(prayerItem);
+                    }
+                });
+            }
+        }
+
+        function isPrayerCompleted(prayer) {
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const prayerTime = prayerTimes[prayer];
+            
+            if (prayerTime) {
+                const [hours, minutes] = prayerTime.split(':').map(Number);
+                const prayerMinutes = hours * 60 + minutes;
+                return currentTime > prayerMinutes;
+            }
+            return false;
+        }
+
+        function getPrayerDescription(prayer) {
+            const descriptions = {
+                'Fajr': 'Dawn Prayer',
+                'Dhuhr': 'Noon Prayer',
+                'Asr': 'Afternoon Prayer',
+                'Maghrib': 'Sunset Prayer',
+                'Isha': 'Night Prayer'
+            };
+            return descriptions[prayer] || '';
+        }
+
+        function formatTime(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            const hour24 = parseInt(hours);
+            const timeFormat = localStorage.getItem('timeFormat') || '12';
+            
+            if (timeFormat === '12') {
+                const hour12 = hour24 > 12 ? hour24 - 12 : (hour24 === 0 ? 12 : hour24);
+                const ampm = hour24 >= 12 ? 'PM' : 'AM';
+                return `${hour12}:${minutes} ${ampm}`;
+            } else {
+                return `${hours}:${minutes}`;
+            }
+        }
+
+        function startCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            countdownInterval = setInterval(() => {
+                if (nextPrayerInfo.time) {
+                    const now = new Date();
+                    const timeDiff = nextPrayerInfo.time - now;
+
+                    if (timeDiff <= 0) {
+                        // Prayer time reached, recalculate
+                        findNextPrayer();
+                        return;
+                    }
+
+                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                    const countdownElement = document.getElementById('countdown-timer');
+                    if (countdownElement) {
+                        countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+
+                    // Update prayer status
+                    updatePrayerStatus();
+                }
+            }, 1000);
+        }
+
+        function updatePrayerStatus() {
+            const statusElement = document.getElementById('prayer-status-text');
+            if (statusElement && nextPrayerInfo.name && nextPrayerInfo.time) {
+                const now = new Date();
+                const timeDiff = nextPrayerInfo.time - now;
+                const minutes = Math.floor(timeDiff / (1000 * 60));
+
+                if (minutes <= 15) {
+                    statusElement.innerHTML = `⚠️ <strong>${nextPrayerInfo.name}</strong> prayer is in ${minutes} minutes!`;
+                    statusElement.className = 'text-lg text-yellow-400 font-bold';
+                } else {
+                    statusElement.innerHTML = `Next prayer: <strong>${nextPrayerInfo.name}</strong> in ${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+                    statusElement.className = 'text-lg text-gray-300';
+                }
+            }
+        }
+
+        function calculateQiblaDirection() {
+            // Kaaba coordinates
+            const kaabaLat = 21.4225;
+            const kaabaLon = 39.8262;
+            
+            const lat1 = userLocation.latitude * Math.PI / 180;
+            const lat2 = kaabaLat * Math.PI / 180;
+            const deltaLon = (kaabaLon - userLocation.longitude) * Math.PI / 180;
+            
+            const x = Math.sin(deltaLon) * Math.cos(lat2);
+            const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
+            
+            let qiblaDirection = Math.atan2(x, y) * 180 / Math.PI;
+            qiblaDirection = (qiblaDirection + 360) % 360;
+            
+            // Update Qibla displays
+            const qiblaDegreeElements = document.querySelectorAll('#qibla-degree, #qibla-direction-degree');
+            qiblaDegreeElements.forEach(el => {
+                if (el) el.textContent = `${qiblaDirection.toFixed(1)}°`;
+            });
+
+            // Calculate distance to Kaaba
+            const distance = calculateDistance(userLocation.latitude, userLocation.longitude, kaabaLat, kaabaLon);
+            const distanceElement = document.getElementById('kaaba-distance');
+            if (distanceElement) {
+                distanceElement.textContent = `${distance.toFixed(0)} km`;
+            }
+
+            // Update compass line
+            const qiblaLine = document.getElementById('qibla-line');
+            if (qiblaLine) {
+                qiblaLine.style.transform = `rotate(${qiblaDirection}deg)`;
+            }
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function updateIslamicDate() {
+            // Simple Islamic date calculation (approximate)
+            const today = new Date();
+            const islamicYear = Math.floor((today.getFullYear() - 622) * 1.030684);
+            const islamicMonth = (today.getMonth() + 1); // Simplified
+            
+            const months = [
+                'Muharram', 'Safar', 'Rabi\' al-awwal', 'Rabi\' al-thani',
+                'Jumada al-awwal', 'Jumada al-thani', 'Rajab', 'Sha\'ban',
+                'Ramadan', 'Shawwal', 'Dhu al-Qi\'dah', 'Dhu al-Hijjah'
+            ];
+            
+            const islamicDateStr = `${today.getDate()} ${months[islamicMonth - 1]} ${islamicYear + 622} AH`;
+            
+            const dateElements = document.querySelectorAll('#islamic-date, #detailed-islamic-date');
+            dateElements.forEach(el => {
+                if (el) el.textContent = islamicDateStr;
+            });
+
+            // Update month info
+            const monthInfoElement = document.getElementById('hijri-month-info');
+            if (monthInfoElement) {
+                monthInfoElement.textContent = `Current Islamic month: ${months[islamicMonth - 1]}`;
+            }
+        }
+
+        function setupEventListeners() {
+            // Settings change listeners
+            const calculationMethodSelect = document.getElementById('calculation-method-select');
+            if (calculationMethodSelect) {
+                calculationMethodSelect.addEventListener('change', () => {
+                    calculatePrayerTimes();
+                });
+            }
+
+            const timeFormatSelect = document.getElementById('time-format-select');
+            if (timeFormatSelect) {
+                timeFormatSelect.addEventListener('change', (e) => {
+                    localStorage.setItem('timeFormat', e.target.value);
+                    updatePrayerTimesDisplay();
+                });
+            }
+
+            // Load saved settings
+            loadSettings();
+        }
+
+        function loadSettings() {
+            const savedTimeFormat = localStorage.getItem('timeFormat');
+            if (savedTimeFormat) {
+                const timeFormatSelect = document.getElementById('time-format-select');
+                if (timeFormatSelect) {
+                    timeFormatSelect.value = savedTimeFormat;
+                }
+            }
+        }
+
+        function saveSettings() {
+            const calculationMethod = document.getElementById('calculation-method-select')?.value;
+            const madhab = document.getElementById('madhab-select')?.value;
+            const highLat = document.getElementById('high-lat-select')?.value;
+            const timeFormat = document.getElementById('time-format-select')?.value;
+            const notifications = document.getElementById('notifications-enabled')?.checked;
+
+            if (calculationMethod) localStorage.setItem('calculationMethod', calculationMethod);
+            if (madhab) localStorage.setItem('madhab', madhab);
+            if (highLat) localStorage.setItem('highLat', highLat);
+            if (timeFormat) localStorage.setItem('timeFormat', timeFormat);
+            if (notifications !== undefined) localStorage.setItem('notifications', notifications);
+
+            alert('Settings saved successfully!');
+            calculatePrayerTimes();
+        }
+
+        function populateContent() {
+            populateSurahList();
+            populateIslamicCalendar();
+            populateDhikrList();
+            populateHadithArchive();
+            populateNaatPlaylist();
+        }
+
+        function populateSurahList() {
+            const surahListElement = document.getElementById('surah-list');
+            if (surahListElement) {
+                surahListElement.innerHTML = '';
+                
+                surahList.forEach(surah => {
+                    const surahItem = document.createElement('div');
+                    surahItem.className = 'surah-item border border-gray-600 rounded-lg flex justify-between items-center';
+                    surahItem.innerHTML = `
+                        <div>
+                            <div class="font-semibold">${surah.number}. ${surah.name}</div>
+                            <div class="text-sm text-gray-400">${surah.arabic} • ${surah.verses} verses</div>
+                        </div>
+                        <button onclick="playSurah(${surah.number})" class="text-green-400 hover:text-green-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    `;
+                    surahListElement.appendChild(surahItem);
+                });
+            }
+        }
+
+        function populateIslamicCalendar() {
+            const calendarGrid = document.getElementById('islamic-calendar-grid');
+            if (calendarGrid) {
+                calendarGrid.innerHTML = '';
+                
+                islamicEvents.forEach(event => {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = 'calendar-item rounded-xl p-4 text-center transition-all duration-300 hover:scale-105';
+                    eventCard.innerHTML = `
+                        <div class="text-lg font-bold mb-2" style="color: var(--primary-color);">${event.name}</div>
+                        <div class="text-sm text-gray-300 mb-2">${event.date}</div>
+                        <div class="text-xs text-gray-400">${event.description}</div>
+                    `;
+                    calendarGrid.appendChild(eventCard);
+                });
+            }
+        }
+
+        function populateDhikrList() {
+            const dhikrListElement = document.getElementById('dhikr-list');
+            if (dhikrListElement) {
+                dhikrListElement.innerHTML = '';
+                
+                dhikrCollection.forEach((dhikr, index) => {
+                    const dhikrItem = document.createElement('div');
+                    dhikrItem.className = `cursor-pointer p-3 rounded-lg border transition ${index === currentDhikrIndex ? 'border-green-500 bg-green-900 bg-opacity-20' : 'border-gray-600'}`;
+                    dhikrItem.onclick = () => setCurrentDhikr(index);
+                    dhikrItem.innerHTML = `
+                        <div class="text-center">
+                            <div class="text-xl font-bold mb-1">${dhikr.arabic}</div>
+                            <div class="text-sm text-gray-300 mb-1">${dhikr.transliteration}</div>
+                            <div class="text-xs text-gray-400">${dhikr.meaning}</div>
+                        </div>
+                    `;
+                    dhikrListElement.appendChild(dhikrItem);
+                });
+            }
+        }
+
+        function populateHadithArchive() {
+            const hadithArchive = document.getElementById('hadith-archive');
+            if (hadithArchive) {
+                const hadiths = [
+                    {
+                        text: "The best of people are those who benefit others.",
+                        reference: "Prophet Muhammad (ﷺ) - Ahmad"
+                    },
+                    {
+                        text: "A believer is not one who eats his fill while his neighbor goes hungry.",
+                        reference: "Prophet Muhammad (ﷺ) - Al-Bukhari"
+                    },
+                    {
+                        text: "The merciful will be shown mercy by the Merciful One. Be merciful to others and you will receive mercy.",
+                        reference: "Prophet Muhammad (ﷺ) - Abu Dawud & At-Tirmidhi"
+                    }
+                ];
+
+                hadithArchive.innerHTML = '';
+                hadiths.forEach(hadith => {
+                    const hadithItem = document.createElement('div');
+                    hadithItem.className = 'card rounded-lg p-4';
+                    hadithItem.innerHTML = `
+                        <div class="hadith-text mb-3">"${hadith.text}"</div>
+                        <div class="hadith-reference">— ${hadith.reference}</div>
+                    `;
+                    hadithArchive.appendChild(hadithItem);
+                });
+            }
+        }
+
+        function populateNaatPlaylist() {
+            const naatPlaylist = document.getElementById('naat-playlist');
+            if (naatPlaylist) {
+                const naats = [
+                    { title: "Ya Nabi Salam Alayka", artist: "Maher Zain" },
+                    { title: "Tala'al Badru Alayna", artist: "Traditional" },
+                    { title: "Hasbi Rabbi", artist: "Sami Yusuf" },
+                    { title: "Allah Hi Allah", artist: "Zain Bhikha" }
+                ];
+
+                naatPlaylist.innerHTML = '';
+                naats.forEach((naat, index) => {
+                    const naatItem = document.createElement('div');
+                    naatItem.className = 'flex justify-between items-center p-3 rounded-lg border border-gray-600 hover:bg-gray-800 cursor-pointer transition';
+                    naatItem.onclick = () => playNaat(index);
+                    naatItem.innerHTML = `
+                        <div>
+                            <div class="font-semibold">${naat.title}</div>
+                            <div class="text-sm text-gray-400">${naat.artist}</div>
+                        </div>
+                        <i class="fas fa-play text-green-400"></i>
+                    `;
+                    naatPlaylist.appendChild(naatItem);
+                });
+            }
+        }
+
+        // Navigation functions
+        function showView(viewName) {
+            // Hide all views
+            const views = ['home', 'salah', 'listenQuran', 'hadith', 'tasbeeh', 'naat', 'qibla', 'calendar', 'settings'];
+            views.forEach(view => {
+                const element = document.getElementById(`${view}-view`);
+                if (element) {
+                    element.classList.add('hidden');
+                }
+            });
+
+            // Show selected view
+            const selectedView = document.getElementById(`${viewName}-view`);
+            if (selectedView) {
+                selectedView.classList.remove('hidden');
+                selectedView.classList.add('fade-in');
+            }
+
+            // Update navigation buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            currentView = viewName;
+
+            // Special handling for specific views
+            if (viewName === 'qibla') {
+                initializeCompass();
+            }
+        }
+
+        // Tasbeeh functions
+        function incrementTasbeeh() {
+            tasbeehCount++;
+            document.getElementById('tasbeeh-count').textContent = tasbeehCount;
+            
+            // Update progress
+            const progress = (tasbeehCount % 33) / 33 * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `${tasbeehCount % 33}/33`;
+            
+            // Add animation
+            const countElement = document.getElementById('tasbeeh-count');
+            countElement.classList.add('counter-pulse');
+            setTimeout(() => countElement.classList.remove('counter-pulse'), 1000);
+            
+            // Auto-advance dhikr every 33 counts
+            if (tasbeehCount % 33 === 0) {
+                nextDhikr();
+            }
+        }
+
+        function resetTasbeeh() {
+            tasbeehCount = 0;
+            document.getElementById('tasbeeh-count').textContent = '0';
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0/33';
+        }
+
+        function nextDhikr() {
+            currentDhikrIndex = (currentDhikrIndex + 1) % dhikrCollection.length;
+            setCurrentDhikr(currentDhikrIndex);
+        }
+
+        function setCurrentDhikr(index) {
+            currentDhikrIndex = index;
+            const dhikr = dhikrCollection[index];
+            document.getElementById('current-dhikr').textContent = dhikr.arabic;
+            document.getElementById('current-dhikr-meaning').textContent = `${dhikr.transliteration} (${dhikr.meaning})`;
+            
+            // Update dhikr list styling
+            populateDhikrList();
+        }
+
+        // Quran player functions
+        function playSurah(surahNumber) {
+            const surah = surahList.find(s => s.number === surahNumber);
+            if (surah) {
+                document.getElementById('current-surah-name').textContent = `${surah.number}. ${surah.name} (${surah.arabic})`;
+                
+                // Update playing state
+                document.querySelectorAll('.surah-item').forEach(item => {
+                    item.classList.remove('playing');
+                });
+                event.target.closest('.surah-item').classList.add('playing');
+                
+                // Note: In a real implementation, you would load the actual Quran recitation audio
+                // For demo purposes, we'll just update the UI
+                const audioPlayer = document.getElementById('quran-audio');
+                if (audioPlayer) {
+                    audioPlayer.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`;
+                }
+            }
+        }
+
+        function playNaat(index) {
+            const naats = [
+                { title: "Ya Nabi Salam Alayka", artist: "Maher Zain" },
+                { title: "Tala'al Badru Alayna", artist: "Traditional" },
+                { title: "Hasbi Rabbi", artist: "Sami Yusuf" },
+                { title: "Allah Hi Allah", artist: "Zain Bhikha" }
+            ];
+            
+            const naat = naats[index];
+            if (naat) {
+                document.getElementById('current-naat-title').textContent = `${naat.title} - ${naat.artist}`;
+                
+                // Note: In a real implementation, you would load the actual naat audio files
+                // For demo purposes, we'll just update the UI
+            }
+        }
+
+        // Compass functions
+        function initializeCompass() {
+            if ('DeviceOrientationEvent' in window) {
+                window.addEventListener('deviceorientation', handleOrientation);
+            } else {
+                document.getElementById('qibla-direction').textContent = 'Device orientation not supported on this device.';
+            }
+        }
+
+        function handleOrientation(event) {
+            const alpha = event.alpha; // Device's orientation
+            if (alpha !== null) {
+                const qiblaLine = document.getElementById('qibla-line');
+                if (qiblaLine) {
+                    // Adjust the compass based on device orientation
+                    qiblaLine.style.transform = `rotate(${alpha}deg)`;
+                }
+            }
+        }
+
+        function calibrateCompass() {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(response => {
+                        if (response == 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                        }
+                    })
+                    .catch(console.error);
+            }
+        }
+
+        // Utility functions
+        function updateLocation() {
+            showLoadingScreen(true);
+            getUserLocation().then(() => {
+                calculatePrayerTimes().then(() => {
+                    showLoadingScreen(false);
+                });
+            });
+        }
+
+        function showErrorMessage(message) {
+            // Simple error display - in a real app you might want a more sophisticated notification system
+            alert(message);
+        }
+
+        function loadHadithCategory(category) {
+            // This would typically load hadiths from a specific category
+            // For demo purposes, we'll just show a message
+            alert(`Loading ${category} hadiths...`);
+        }
+
+        // Initialize app when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
     </script>
 </body>
 </html>
