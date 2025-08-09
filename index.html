@@ -322,23 +322,29 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin: 40px 0;
+            gap: 8px;
+            margin: 20px 0;
             animation: fadeInUp 1.6s ease-out;
+            padding: 10px 5px;
+            max-width: 100%;
         }
 
         .category-tab {
-            padding: 12px 25px;
+            padding: 6px 12px;
             background: var(--background-card);
             border: 2px solid var(--border-color);
-            border-radius: 25px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             font-weight: 500;
-            font-size: 1em;
+            font-size: 0.8em;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
+            flex: 1 1 auto;
+            min-width: fit-content;
+            text-align: center;
         }
 
         .category-tab::before {
@@ -692,8 +698,13 @@
             .station-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
             .station-card { height: 220px; }
             #search-box { padding: 20px 30px 20px 50px; }
-            .category-tabs { gap: 10px; }
-            .category-tab { padding: 10px 20px; font-size: 0.9em; }
+            .category-tabs { gap: 6px; padding: 8px 3px; }
+            .category-tab { 
+                padding: 6px 10px; 
+                font-size: 0.75em;
+                min-width: auto;
+                flex: 1 1 auto;
+            }
             #now-playing-info { margin-left: 60px; }
             #player-container { padding: 10px 15px; height: 60px; }
             #app-container { padding: 15px; }
@@ -704,7 +715,15 @@
             .station-grid { grid-template-columns: 1fr; }
             body { padding-bottom: 160px; }
             .logo { width: 60px; height: 60px; font-size: 1.2em; }
-            .category-tabs { flex-direction: column; align-items: center; }
+            .category-tabs { 
+                gap: 4px;
+                padding: 6px 2px;
+            }
+            .category-tab { 
+                padding: 4px 8px; 
+                font-size: 0.7em;
+                border-radius: 12px;
+            }
         }
 
         /* Enhanced Button Styles */
@@ -996,6 +1015,7 @@
                 this.isPlaying = false;
                 this.isMuted = false;
                 this.stationsByCategory = {};
+                this.lastStation = this.getLastStation();
                 
                 this.init();
             }
@@ -1005,6 +1025,50 @@
                 this.setupEventListeners();
                 this.loadStations();
                 this.updateLocationIndicator();
+                this.restoreLastStation();
+            }
+
+            // localStorage methods for remembering last station
+            saveLastStation(station) {
+                try {
+                    localStorage.setItem('lastStation', JSON.stringify({
+                        name: station.name,
+                        url: station.url,
+                        country: station.country,
+                        favicon: station.favicon,
+                        savedAt: new Date().getTime()
+                    }));
+                } catch (error) {
+                    console.log('Could not save last station:', error);
+                }
+            }
+
+            getLastStation() {
+                try {
+                    const saved = localStorage.getItem('lastStation');
+                    if (saved) {
+                        const station = JSON.parse(saved);
+                        // Only restore if saved within last 7 days
+                        if (new Date().getTime() - station.savedAt < 7 * 24 * 60 * 60 * 1000) {
+                            return station;
+                        }
+                    }
+                } catch (error) {
+                    console.log('Could not retrieve last station:', error);
+                }
+                return null;
+            }
+
+            restoreLastStation() {
+                if (this.lastStation) {
+                    // Show last station info in player
+                    document.getElementById('now-playing-text').innerHTML = 
+                        `🔄 Last played: ${this.lastStation.name} (${this.lastStation.country})<br><small>Click play to resume</small>`;
+                    document.getElementById('player-wrapper').style.display = 'block';
+                    
+                    // Set up the station for easy resume
+                    this.currentStation = this.lastStation;
+                }
             }
 
             // Enhanced location detection with IP fallback
@@ -1210,6 +1274,15 @@
                 }
 
                 return stations.sort((a, b) => {
+                    const userCountry = this.userLocation.country ? this.userLocation.country.toLowerCase() : '';
+                    const aCountry = (a.country || '').toLowerCase();
+                    const bCountry = (b.country || '').toLowerCase();
+                    
+                    // Priority 1: Same country stations first
+                    if (aCountry === userCountry && bCountry !== userCountry) return -1;
+                    if (bCountry === userCountry && aCountry !== userCountry) return 1;
+                    
+                    // Priority 2: Sort by distance
                     const distanceA = this.calculateDistance(
                         this.userLocation.latitude, 
                         this.userLocation.longitude,
@@ -1301,7 +1374,9 @@
 
                 try {
                     console.log('Loading stations for country:', this.userLocation.country);
-                    const response = await fetch(`https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(this.userLocation.country)}`);
+                    
+                    // Fast loading: Get top voted stations from the country with limit for faster response
+                    const response = await fetch(`https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(this.userLocation.country)}?limit=50&order=votes&reverse=true`);
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -1316,7 +1391,7 @@
                     
                     const filteredStations = this.filterStations(stations);
                     const sortedStations = this.sortStationsByDistance(filteredStations);
-                    const localStations = sortedStations.slice(0, 30);
+                    const localStations = sortedStations.slice(0, 40); // Show more local stations
                     
                     if (localStations.length > 0) {
                         this.renderStations(localStations, 'local-stations');
@@ -1570,6 +1645,9 @@
                     // Update UI
                     this.updateNowPlaying(station);
                     document.getElementById('player-wrapper').style.display = 'block';
+                    
+                    // Save as last station
+                    this.saveLastStation(station);
                     
                     // Play audio
                     await this.audio.play();
