@@ -2,290 +2,1700 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ramadhan World - Islamic Prayer Times, Quran, Qibla</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="All-in-one Islamic web app with prayer times (Salah), Qibla compass, Quran player, Tasbeeh counter, Hijri calendar, and live Islamic radio. Your daily companion for Islamic practices.">
-    <meta name="keywords" content="islamic app, prayer times, salah, quran, qibla, tasbeeh, ramadan, hijri calendar, islamic radio, muslim, adhan, azan, asma-ul-husna, hadith, weather, clouds, 99 names of allah, ask islam, islamic qa, ai islam">
-    <meta name="google-adsense-account" content="ca-pub-8794459819365243">
-    <meta name="theme-color" content="#0a192f">
-    <link rel="canonical" href="https://www.ramadhanworld.com/index.html">
-    <link rel="icon" href="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png" type="image/png">
-
-    <!-- SEO and Social Sharing Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Ramadhan World - Your Daily Islamic Companion">
-    <meta property="og:description" content="Live prayer times, Qibla direction, Quran player, Tasbeeh counter, and more. Everything a Muslim needs in one place.">
-    <meta property="og:image" content="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png">
-    <meta property="og:url" content="https://www.ramadhanworld.com">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Ramadhan World - Your Daily Islamic Companion">
-    <meta property="twitter:description" content="Live prayer times, Qibla direction, Quran player, Tasbeeh counter, and more. Everything a Muslim needs in one place.">
-    <meta property="twitter:image" content="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png">
+    <meta name="description" content="TJ Global Radio Solutions - Your portal to world's audio. Stream radio stations worldwide with enhanced location detection and superior audio quality.">
+    <meta name="theme-color" content="#D6A100">
+    <title>TJ Global Radio Solutions | Stream World Radio</title>
     
-    <!-- Preconnect to critical origins for performance -->
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://api.aladhan.com">
-    <link rel="preconnect" href="https://api.quran.com">
-    <link rel="preconnect" href="https://api.open-meteo.com">
-    <link rel="preconnect" href="https://api.alquran.cloud">
-    <link rel="preconnect" href="https://hadithapi.com">
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="//de1.api.radio-browser.info">
+    <link rel="dns-prefetch" href="//fr1.api.radio-browser.info">
+    <link rel="dns-prefetch" href="//nl1.api.radio-browser.info">
+    <link rel="dns-prefetch" href="//ipapi.co">
+    <link rel="dns-prefetch" href="//ip-api.com">
+    <link rel="dns-prefetch" href="//www.highperformanceformat.com">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Minified Inline CSS -->
     <style>
-    body{font-family:'Cairo','Inter',sans-serif;-webkit-tap-highlight-color:transparent;background:linear-gradient(to bottom,#0a192f,#113a3b);color:#e6f1ff;touch-action:manipulation;-ms-touch-action:manipulation;-webkit-user-select:none;user-select:none}
-    button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-    #tasbeeh-increment-btn{-webkit-user-select:none;user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;outline:none}
-    .font-amiri{font-family:'Amiri',serif}
-    .card{background-color:rgba(10,25,47,.85);backdrop-filter:blur(10px);border:1px solid rgba(57,255,20,.2);box-shadow:0 8px 32px 0 rgba(0,0,0,.37);transition:background .5s ease-in-out,transform .3s ease;position:relative;overflow:hidden;border-radius:.75rem}
-    .card:hover{transform:translateY(-5px)}
-    #countdown-heading{font-weight:700;color:#fff;text-shadow:0 0 5px #39FF14,0 0 10px #39FF14;}
-    #countdown-timer{font-weight:700;font-size:3.5rem;color:#fff;text-shadow:0 0 8px #39FF14,0 0 16px #39FF14,0 0 28px #39FF14,0 0 40px #39FF14;letter-spacing:.05em;}
-    #next-prayer-name{color:#39FF14;font-weight:700}.prayer-time.active{background:linear-gradient(90deg,rgba(57,255,20,.3),rgba(57,255,20,.1));border-left-width:4px;border-color:#39FF14;transition:background-color .3s ease,border-color .3s ease}.nav-button.active{background-color:#39FF14;color:#0a192f;font-weight:700;box-shadow:0 4px 14px rgba(57,255,20,.4)}.nav-button:hover{background-color:rgba(57,255,20,.8);color:#000}#qibla-line{background-color:#39FF14;box-shadow:0 0 10px rgba(57,255,20,.7)}.section-title{font-family:'Cairo',sans-serif;font-weight:700;font-size:1.875rem;text-align:center;margin-bottom:1.5rem;color:#fff;text-shadow:0 0 5px #39FF14,0 0 10px #39FF14}#quran-player-container{background-color:rgba(17,58,59,.5);border:1px solid rgba(57,255,20,.3);border-radius:1rem;padding:1rem;margin-bottom:1.5rem}#current-surah-name{color:#fff;text-shadow:0 0 3px #39FF14}.quran-surah{cursor:pointer;padding:.75rem;border-radius:.5rem;transition:background-color .2s ease,transform .2s ease}.quran-surah:hover{background-color:rgba(57,255,20,.2);transform:translateX(5px)}.quran-surah.playing{background-color:rgba(57,255,20,.3);border-left:4px solid #39FF14}.quran-surah.playing .surah-name{color:#39FF14;font-weight:700}.play-pause-icon{color:#39FF14;font-size:1.25rem}#daily-islamic-message{color:#39FF14;text-shadow:0 0 5px rgba(57,255,20,.7)}#daily-islamic-message-ref{color:#a7f3d0;font-style:italic}.hadith-box{border:1px solid rgba(57,255,20,.3);background:transparent;padding:1.5rem;border-radius:1rem}#home-radio-audio-player{border-radius:50px;box-shadow:0 0 8px #39FF14,0 0 12px #39FF14;transition:box-shadow .3s ease}.video-container{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:.75rem;max-width:960px;margin:auto}.video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%}#compass{position:relative;width:256px;height:256px;background-color:#1f2937;border-radius:9999px;border:4px solid #374151;display:flex;align-items:center;justify-content:center;margin:2rem auto;transition:transform .2s linear}.direction{position:absolute;font-weight:700;color:#9ca3af}.direction.north{top:10px;font-size:1.5rem;color:#ef4444}.direction.south{bottom:10px}.direction.east{right:10px}.direction.west{left:10px}#hadith-content-home p{font-size:1.125rem;line-height:1.75;color:#d1d5db}.calendar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}.calendar-item{background:rgba(17,58,59,.4);border:1px solid rgba(57,255,20,.3)}.calendar-item:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,.25)}.calendar-date{font-family:'Amiri',serif;font-size:1.25rem;font-weight:700;color:#0a192f;background-color:#39FF14;padding:.25rem .75rem;border-radius:9999px;display:inline-block;margin-bottom:.75rem}.calendar-event-name{font-size:1.5rem;font-weight:600;color:#a7f3d0;margin-bottom:.5rem}.calendar-event-desc{font-size:1rem;color:#d1d5db;flex-grow:1}.gregorian-date{font-size:.9rem;color:#9ca3af;margin-top:1rem;border-top:1px solid rgba(255,255,255,.1);padding-top:.75rem}
-    .star{position:absolute;background-color:#fff;border-radius:50%;animation:twinkle 5s infinite; z-index: 1; box-shadow: 0 0 5px white;}
-    .planet{position:absolute;border-radius:50%;z-index:1;transition:left .1s linear}
-    @keyframes twinkle{0%,100%{opacity:.7}50%{opacity:.2}}
-    #sun{width:50px;height:50px;background-color:#f0e68c;border-radius:50%;box-shadow:0 0 20px #f0e68c;transition:top .1s linear,left .1s linear}
-    #moon{width:50px;height:50px;background-color:#f4f4f4;border-radius:50%;box-shadow:0 0 20px #f4f4f4,inset -10px 2px 0 0 #d0d0d0;transition:top .1s linear,left .1s linear}
-    #tasbeeh-counter-display{transition:transform .2s ease;text-shadow:0 0 10px rgba(57,255,20,.5)}#tasbeeh-increment-btn{background:linear-gradient(145deg,#3cf01e,#32c919);box-shadow:5px 5px 10px #2a9f14,-5px -5px 10px #48ff28}#tasbeeh-increment-btn:active{background:#39FF14;transform:scale(.95);box-shadow:inset 5px 5px 10px #2a9f14,inset -5px -5px 10px #48ff28}.settings-select{background-color:#1f2937;border:1px solid #374151;color:#fff;padding:.5rem;border-radius:.5rem;width:100%}#salah-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;padding:2rem;text-align:center;border-radius:1rem;transition:opacity .3s,transform .3s;background:rgba(10,25,47,.9);border:1px solid #39FF14}.info-buttons a{background-color:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);color:#a7f3d0;padding:8px 16px;border-radius:20px;text-decoration:none;transition:all .3s ease;margin:0 5px}.info-buttons a:hover{background-color:rgba(57,255,20,.3);color:#fff;box-shadow:0 0 10px rgba(57,255,20,.5)}
-    @media screen and (max-width:480px){#countdown-timer{font-size:3rem}#tasbeeh-counter-display{font-size:3.75rem}.nav-button{padding:.5rem .75rem;font-size:.9rem}h1{font-size:2.5rem}}
-    @media screen and (max-width:360px){#countdown-timer{font-size:2.8rem}h1{font-size:2rem}}
-    .ticker-container{overflow:hidden;padding:1rem 0;background:linear-gradient(90deg, rgba(12, 28, 50, 0.9) 0%, rgba(17, 58, 59, 0.9) 50%, rgba(12, 28, 50, 0.9) 100%);white-space:nowrap;box-shadow:0 4px 15px rgba(0,0,0,0.2);border-radius:.75rem;border:1px solid rgba(57,255,20,.2)}
-    .ticker-content{display:inline-block;padding-left:100%;will-change:transform}
-    .ticker-item{display:inline-flex;flex-direction:column;align-items:center;margin:0 2.5rem;vertical-align:middle}
-    .arabic-name{font-family:'Amiri',serif;font-size:2.5rem;color:#39FF14;text-shadow:0 0 8px rgba(57,255,20,0.7); margin-bottom: 4px;}
-    .english-translation{font-size:0.7rem;color:#a7f3d0;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
-    @keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-    .scroller-container{height:400px;overflow:hidden;position:relative;padding:0}
-    .scroller-container:before,.scroller-container:after{content:'';position:absolute;left:0;right:0;height:3rem;z-index:2}
-    .scroller-container:before{top:0;background:linear-gradient(to bottom,rgba(10,25,47,1) 0%,rgba(10,25,47,0) 100%)}
-    .scroller-container:after{bottom:0;background:linear-gradient(to top,rgba(10,25,47,1) 0%,rgba(10,25,47,0) 100%)}
-    .scroller-content{will-change:transform;padding:3rem 1.5rem}
-    .scroller-content:hover{animation-play-state:paused}
-    @keyframes v-scroll{0%{transform:translateY(0)}100%{transform:translateY(-100%)}}
-    .scroll-item{margin-bottom:2.5rem;padding:1rem;border-left:4px solid #39FF14;background:rgba(17,58,59,.3);border-radius:0 .5rem .5rem 0}
-    .scroll-item h3{font-size:1.2rem;color:#a7f3d0;margin-bottom:.5rem;font-weight:bold}
-    .scroll-item p{font-family:'Amiri',serif;font-size:1.1rem;color:#e6f1ff;line-height:1.8}
-    .ad-container-bottom{margin-top:1.5rem;padding-top:1.5rem;border-top:1px dashed rgba(57,255,20,.3);text-align:center}
-    .arabic-text {direction: rtl; unicode-bidi: embed; text-align: right; text-decoration: underline; text-decoration-color: var(--accent-green); text-underline-offset: 4px; }
-    </style>
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication", "name": "Ramadhan World", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web",
-      "description": "Your daily Islamic companion for prayer times (Salah), Qibla direction, Quran recitation, Tasbeeh counter, Hijri calendar, and Islamic radio.",
-      "offers": { "@type": "Offer", "price": "0" },
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "600" },
-      "image": "https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png", "url": "https://www.ramadhanworld.com"
-    }
-    </script>
-</head>
-<body class="bg-gray-900 text-white">
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-    <div id="loading-screen" class="fixed inset-0 bg-gray-900 flex flex-col justify-center items-center z-50 transition-opacity duration-300">
-        <h1 class="text-4xl sm:text-5xl font-extrabold" style="color: #39FF14;">RAMADHAN WORLD</h1>
+        :root {
+            --background-main: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --background-card: #ffffff;
+            --background-player: rgba(255, 255, 255, 0.95);
+            --primary-text: #2c3e50;
+            --secondary-text: #7f8c8d;
+            --accent-color: #D6A100;
+            --accent-color-glow: rgba(214, 161, 0, 0.3);
+            --accent-gradient: linear-gradient(45deg, #D6A100, #f39c12);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 30px rgba(214, 161, 0, 0.2);
+            --border-color: #e9ecef;
+            --ads-background: rgba(255, 255, 255, 0.95);
+            --hover-color: #f1f3f4;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+            --category-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0 0 140px 0;
+            background: var(--background-main);
+            color: var(--primary-text);
+            overflow-x: hidden;
+            animation: fadeIn 0.8s ease-in;
+            min-height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInLeft {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--accent-color-glow); }
+            50% { box-shadow: 0 0 20px var(--accent-color-glow), 0 0 30px var(--accent-color-glow); }
+        }
+
+        /* Enhanced Ads Containers */
+        .ads-container {
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            backdrop-filter: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ads-container::before {
+            display: none;
+        }
+
+        .ads-container:hover {
+            border-color: transparent;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #top-ads {
+            margin: 20px auto;
+            max-width: 1400px;
+            padding: 0 20px;
+        }
+
+        #player-ads {
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+            margin: 0;
+            background: transparent;
+        }
+
+        #footer-ads {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            border-radius: 0;
+            border-bottom: none;
+            backdrop-filter: none;
+            background: transparent;
+        }
+
+        .ads-placeholder {
+            color: var(--secondary-text);
+            font-size: 0.9em;
+            text-align: center;
+            padding: 15px;
+            background: var(--hover-color);
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        #app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Enhanced Header */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            animation: slideDown 0.8s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(214, 161, 0, 0.05), transparent);
+            z-index: -1;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            box-shadow: 0 8px 25px var(--accent-color-glow);
+            animation: pulse 3s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        header h1 {
+            font-size: 4em;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 30px rgba(214, 161, 0, 0.3);
+        }
+
+        header h1:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        header p {
+            font-size: 1.3em;
+            color: var(--secondary-text);
+            margin-top: 10px;
+            animation: fadeInUp 1.2s ease-out;
+            font-weight: 300;
+        }
+
+        /* Enhanced Search Container */
+        #search-container {
+            margin: 30px auto 60px auto;
+            max-width: 700px;
+            animation: fadeInUp 1.4s ease-out;
+            position: relative;
+        }
+
+        #search-box {
+            width: 100%;
+            padding: 25px 35px 25px 60px;
+            font-size: 1.2em;
+            border: 3px solid var(--border-color);
+            border-radius: 30px;
+            background-color: var(--background-card);
+            color: var(--primary-text);
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            font-weight: 400;
+        }
+
+        #search-container::before {
+            content: '🔍';
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.4em;
+            color: var(--secondary-text);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        #search-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px var(--accent-color-glow), var(--shadow-hover);
+            transform: scale(1.02);
+        }
+
+        #search-box:focus + ::before {
+            color: var(--accent-color);
+        }
+
+        #search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--background-card);
+            border: 3px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+
+        .suggestion-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            font-weight: 400;
+        }
+
+        .suggestion-item:hover {
+            background-color: var(--hover-color);
+            transform: translateX(5px);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Enhanced Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0;
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .category-tab {
+            padding: 12px 25px;
+            background: var(--background-card);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            font-weight: 500;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .category-tab:hover, .category-tab.active {
+            color: white;
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .category-tab:hover::before, .category-tab.active::before {
+            left: 0;
+        }
+
+        /* Enhanced Station Sections */
+        .station-section {
+            margin: 50px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .station-section h2 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--border-color);
+            animation: fadeInLeft 1.6s ease-out;
+            position: relative;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .station-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
+        .station-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        /* Enhanced Station Cards */
+        .station-card {
+            position: relative;
+            height: 280px;
+            background-color: var(--background-card);
+            background-size: cover;
+            background-position: center;
+            border-radius: 25px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+            backdrop-filter: blur(10px);
+        }
+
+        .station-card:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .station-card:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .station-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-color);
+            animation: glow 2s infinite;
+        }
+
+        .station-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.9) 100%);
+            z-index: 1;
+            transition: background 0.4s ease;
+        }
+
+        .station-card:hover::before {
+            background: linear-gradient(180deg, rgba(214, 161, 0, 0.1) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        
+        .station-card .info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            z-index: 2;
+            box-sizing: border-box;
+            transform: translateY(10px);
+            transition: transform 0.4s ease;
+        }
+
+        .station-card:hover .info {
+            transform: translateY(0);
+        }
+
+        .station-card .name {
+            font-weight: 700;
+            font-size: 1.4em;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .station-card .country {
+            font-size: 1.1em;
+            color: #e0e0e0;
+            text-shadow: 0 0 8px rgba(0,0,0,0.6);
+            font-weight: 400;
+        }
+
+        .station-card .genre {
+            font-size: 0.9em;
+            color: var(--accent-color);
+            text-shadow: 0 0 8px rgba(0,0,0,0.6);
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .station-card .distance {
+            font-size: 0.8em;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            margin-top: 3px;
+            opacity: 0.9;
+            background: rgba(214, 161, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(214, 161, 0, 0.9);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 3;
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced Player */
+        #player-wrapper {
+            position: fixed;
+            bottom: 90px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            border-top: none;
+        }
+
+        /* High Quality Button Styles */
+        .control-button {
+            width: 80px;
+            height: 80px;
+            border: none;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(214, 161, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(214, 161, 0, 0.4);
+        }
+
+        .control-button:active {
+            transform: scale(0.95);
+        }
+
+        .control-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .control-button:hover::before {
+            left: 100%;
+        }
+
+        .control-button svg {
+            width: 36px;
+            height: 36px;
+            fill: white;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        #eq-toggle {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        #eq-toggle:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        #player-container {
+            background: transparent;
+            backdrop-filter: none;
+            border-top: none;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            transition: all 0.4s ease;
+            height: 100px;
+            box-shadow: none;
+        }
+
+        #player-container:hover {
+            box-shadow: none;
+            border-top-color: transparent;
+        }
+
+        #equalizer-container {
+            position: absolute;
+            left: 0;
+            top: -140px;
+            width: 250px;
+            background: var(--background-card);
+            border: 3px solid var(--border-color);
+            border-radius: 12px 12px 0 0;
+            padding: 20px;
+            display: none;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+        }
+
+        #now-playing-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-grow: 1;
+            min-width: 0;
+            margin-left: 120px;
+        }
+
+        #now-playing-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            transition: all 0.4s ease;
+            border: 3px solid var(--border-color);
+        }
+
+        #now-playing-info img.playing {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 12px var(--accent-color-glow);
+            animation: pulse 2s infinite;
+        }
+
+        #now-playing-text {
+            font-weight: 600;
+            font-size: 1.2em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--primary-text);
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--secondary-text);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .loading::before {
+            content: '🎵';
+            display: block;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: var(--error-color);
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(231, 76, 60, 0.2);
+            margin: 20px 0;
+        }
+
+        .success {
+            color: var(--success-color);
+            background: rgba(39, 174, 96, 0.1);
+            border: 2px solid rgba(39, 174, 96, 0.2);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5em; }
+            header p { font-size: 1.1em; }
+            .station-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+            .station-card { height: 220px; }
+            #search-box { padding: 20px 30px 20px 50px; }
+            .category-tabs { gap: 10px; }
+            .category-tab { padding: 10px 20px; font-size: 0.9em; }
+            #now-playing-info { margin-left: 60px; }
+            #player-container { padding: 10px 15px; height: 60px; }
+            #app-container { padding: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 2em; }
+            .station-grid { grid-template-columns: 1fr; }
+            body { padding-bottom: 160px; }
+            .logo { width: 60px; height: 60px; font-size: 1.2em; }
+            .category-tabs { flex-direction: column; align-items: center; }
+        }
+
+        /* Enhanced Button Styles */
+        button {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 15px rgba(214, 161, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 161, 0, 0.4);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Volume and Equalizer Controls */
+        .control-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .control-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(214, 161, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .control-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 10px rgba(214, 161, 0, 0.5);
+        }
+
+        /* Location indicator */
+        .location-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--background-card);
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--secondary-text);
+            box-shadow: var(--shadow);
+            z-index: 100;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .location-indicator::before {
+            content: '📍';
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Advertisement -->
+    <div id="top-ads" class="ads-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'bbb39fa2df38b4031f13f19c6a9db940',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/bbb39fa2df38b4031f13f19c6a9db940/invoke.js"></script>
     </div>
 
-    <div id="main-content" class="min-h-screen container mx-auto p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-1000">
-        <!-- Header Section -->
-        <header class="text-center mb-6">
-            <img id="app-logo" src="https://i.ibb.co/Zp0bgjsS/ART-WORKS-1.png" alt="Ramadhan World App Logo" class="w-[200px] h-[200px] mx-auto mb-4 rounded-full shadow-lg object-contain" loading="lazy" decoding="async">
-            <h1 class="text-4xl sm:text-5xl font-extrabold" style="color: #39FF14;">Ramadhan World</h1>
-            <p id="islamic-date" class="text-lg text-gray-300 mt-2">Loading Islamic Date...</p>
-            <p id="location" class="text-md text-gray-400 mt-1">Fetching location...</p>
+    <!-- Location Indicator -->
+    <div class="location-indicator" id="location-indicator" style="display: none;">
+        <span id="location-text">Detecting location...</span>
+    </div>
+
+    <div id="app-container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">TJ</div>
+                <div>
+                    <h1>TJ Global Radio</h1>
+                    <p>Your portal to world's audio</p>
+                </div>
+            </div>
         </header>
 
-        <!-- Navigation -->
-        <nav class="flex justify-center gap-2 mb-6 flex-wrap items-center">
-            <a href="index.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">🏠 Home</a>
-            <a href="salah.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">🕌 Salah</a>
-            <a href="quran.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">📖 Quran</a>
-            <a href="radio.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">📻 Radio</a>
-            <a href="ask.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">💬 Ask Islam</a>
-            <a href="tasbeeh.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">📿 Tasbeeh</a>
-            <a href="hadith.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">📜 Hadith</a>
-            <a href="naat.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">🎵 Naat</a>
-            <a href="qibla.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">🧭 Qibla</a>
-            <a href="calendar.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">🗓️ Calendar</a>
-            <a href="settings.html" class="nav-button px-4 py-2 rounded-lg bg-gray-700 transition">⚙️ Settings</a>
-        </nav>
+        <div id="search-container">
+            <input type="text" id="search-box" placeholder="Search radio stations, countries, or genres..." autocomplete="off">
+            <div id="search-suggestions"></div>
+        </div>
 
-        <!-- Main Content -->
-        <main>
-            <!-- Countdown box -->
-            <section id="countdown-section" class="my-8">
-                <div class="card p-4 max-w-3xl mx-auto flex flex-col" style="transition: background 1s linear;">
-                    <div id="celestial-visualization" class="relative flex-grow min-h-[120px] overflow-hidden rounded-t-lg">
-                        <!-- Sun/Moon, stars, and planets will be added here by JS -->
-                    </div>
-                    <div id="timer-info-container" class="text-center pt-3">
-                        <h2 id="countdown-heading" class="text-2xl sm:text-3xl">Time Until <span id="next-prayer-name">...</span></h2>
-                        <div id="countdown-timer" class="tracking-wider my-1">00:00:00</div>
-                        <div id="weather-display" class="text-white text-base" style="background: transparent; text-shadow: 0 1px 3px rgba(0,0,0,0.7);">
-                            <span id="weather-emoji" class="mr-2"></span>
-                            <span id="weather-city">...</span> <span id="weather-temp">--°C</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Asma-ul-Husna Ticker -->
-            <section id="ticker-section" class="mb-8 max-w-3xl mx-auto">
-                <div class="ticker-container">
-                    <div id="ticker-content" class="ticker-content">
-                        <!-- 99 Names will be populated by JS -->
-                    </div>
-                </div>
-            </section>
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">🌍 All Stations</div>
+            <div class="category-tab" data-category="nearby">📡 Nearby</div>
+            <div class="category-tab" data-category="local">📍 Local Stations</div>
+            <div class="category-tab" data-category="pop">🎵 Pop Music</div>
+            <div class="category-tab" data-category="rock">🎸 Rock</div>
+            <div class="category-tab" data-category="jazz">🎷 Jazz</div>
+            <div class="category-tab" data-category="classical">🎼 Classical</div>
+            <div class="category-tab" data-category="news">📰 News</div>
+            <div class="category-tab" data-category="talk">🎙️ Talk</div>
+            <div class="category-tab" data-category="electronic">🎛️ Electronic</div>
+        </div>
 
-            <!-- Daily Islamic Message -->
-            <section id="daily-message-section" class="mb-8">
-                <div class="card p-6 max-w-3xl mx-auto text-center">
-                     <p id="daily-islamic-message" class="text-2xl font-bold mb-2">"Indeed, in the remembrance of Allah do hearts find rest."</p>
-                     <p id="daily-islamic-message-ref" class="text-lg">— Surah Ar-Ra'd (13:28)</p>
-                </div>
-            </section>
+        <!-- Local Stations Section -->
+        <div class="station-section" id="local-section">
+            <h2>📻 Your Local Radio</h2>
+            <div class="station-grid" id="local-stations">
+                <div class="loading">Loading local stations...</div>
+            </div>
+        </div>
 
-            <!-- Hadith for Today Section -->
-            <section id="hadith-section-home" class="mb-8">
-                <div class="card p-6 max-w-3xl mx-auto text-center">
-                    <div id="hadith-content-home">
-                       <div class="hadith-box">
-                            <h2 class="section-title mb-4">📖 Hadith for Today</h2>
-                            <p class="font-amiri text-center text-xl">"The best among you are those who have the best manners and character."</p>
-                            <p class="text-center text-base text-green-300 mt-4">
-                               Reference: Sahih al-Bukhari 3559
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Info Buttons Section -->
-            <section class="text-center p-4 mt-[-1rem] mb-4">
-                <div class="info-buttons">
-                    <a href="about.html">About</a>
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-            </section>
-        </main>
-        
-        <!-- Footer -->
-        <footer class="text-center p-4 text-sm text-gray-600 space-x-4">
-          <a href="about.html" class="text-blue-600 underline">About</a>
-          <a href="privacy.html" class="text-blue-600 underline">Privacy Policy</a>
-          <a href="contact.html" class="text-blue-600 underline">Contact</a>
-        </footer>
+        <!-- Genre-based Sections -->
+        <div class="station-section" id="pop-section" style="display: none;">
+            <h2>🎵 Pop Music Stations</h2>
+            <div class="station-grid" id="pop-stations">
+                <div class="loading">Loading pop stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="rock-section" style="display: none;">
+            <h2>🎸 Rock Stations</h2>
+            <div class="station-grid" id="rock-stations">
+                <div class="loading">Loading rock stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="jazz-section" style="display: none;">
+            <h2>🎷 Jazz Stations</h2>
+            <div class="station-grid" id="jazz-stations">
+                <div class="loading">Loading jazz stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="classical-section" style="display: none;">
+            <h2>🎼 Classical Stations</h2>
+            <div class="station-grid" id="classical-stations">
+                <div class="loading">Loading classical stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="news-section" style="display: none;">
+            <h2>📰 News Stations</h2>
+            <div class="station-grid" id="news-stations">
+                <div class="loading">Loading news stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="talk-section" style="display: none;">
+            <h2>🎙️ Talk Radio</h2>
+            <div class="station-grid" id="talk-stations">
+                <div class="loading">Loading talk stations...</div>
+            </div>
+        </div>
+
+        <div class="station-section" id="electronic-section" style="display: none;">
+            <h2>🎛️ Electronic Music</h2>
+            <div class="station-grid" id="electronic-stations">
+                <div class="loading">Loading electronic stations...</div>
+            </div>
+        </div>
+
+        <!-- Search Results Section -->
+        <div class="station-section" id="search-results" style="display: none;">
+            <h2>🔍 Search Results</h2>
+            <div class="station-grid" id="search-stations"></div>
+        </div>
     </div>
 
-    <div id="settings-saved-message" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300"></div>
-    <div id="salah-popup" class="card hidden bg-gray-800">
-        <h2 id="salah-popup-name" class="text-3xl font-bold text-green-400"></h2>
-        <p class="text-lg mt-2">It's time for prayer.</p>
-        <button onclick="dismissSalahPopup()" class="mt-4 bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-6 rounded-lg transition">Dismiss</button>
+    <!-- Player Wrapper -->
+    <div id="player-wrapper" style="display: none;">
+        <!-- Player Advertisement -->
+        <div id="player-ads" class="ads-container">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'bbb39fa2df38b4031f13f19c6a9db940',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/bbb39fa2df38b4031f13f19c6a9db940/invoke.js"></script>
+        </div>
+
+        <div id="player-container">
+            <div id="equalizer-container">
+                <h4>Audio Equalizer</h4>
+                <label>Bass: <input type="range" class="control-slider" id="bass-slider" min="-10" max="10" value="0"></label><br>
+                <label>Mid: <input type="range" class="control-slider" id="mid-slider" min="-10" max="10" value="0"></label><br>
+                <label>Treble: <input type="range" class="control-slider" id="treble-slider" min="-10" max="10" value="0"></label><br>
+            </div>
+
+            <button id="eq-toggle" class="control-button">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 18c-0.55 0-1-0.45-1-1V7c0-0.55 0.45-1 1-1s1 0.45 1 1v10c0 0.55-0.45 1-1 1zm4 4c-0.55 0-1-0.45-1-1V3c0-0.55 0.45-1 1-1s1 0.45 1 1v18c0 0.55-0.45 1-1 1zm4-8c-0.55 0-1-0.45-1-1V11c0-0.55 0.45-1 1-1s1 0.45 1 1v2c0 0.55-0.45 1-1 1zm4-4c-0.55 0-1-0.45-1-1V7c0-0.55 0.45-1 1-1s1 0.45 1 1v2c0 0.55-0.45 1-1 1z"/>
+                </svg>
+            </button>
+            <button id="play-pause" class="control-button">
+                <svg viewBox="0 0 24 24" id="play-icon">
+                    <path d="M8 6.82v10.36c0 0.79 0.87 1.27 1.54 0.84l8.14-5.18c0.62-0.39 0.62-1.29 0-1.68L9.54 5.98C8.87 5.55 8 6.03 8 6.82z"/>
+                </svg>
+                <svg viewBox="0 0 24 24" id="pause-icon" style="display: none;">
+                    <path d="M8 19c1.1 0 2-0.9 2-2V7c0-1.1-0.9-2-2-2s-2 0.9-2 2v10c0 1.1 0.9 2 2 2zm6-12v10c0 1.1 0.9 2 2 2s2-0.9 2-2V7c0-1.1-0.9-2-2-2s-2 0.9-2 2z"/>
+                </svg>
+            </button>
+            <div id="now-playing-info">
+                <img id="station-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iMTAiIGZpbGw9IiNENkExMDAiLz4KPHN2ZyB4PSIxMCIgeT0iMTAiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAydjIwYzAgMS4xLS45IDItMiAycy0yLS45LTItMlY0YzAtMS4xLjktMiAyLTJzMiAuOSAyIDJ6bTYgNnYxMmMwIDEuMS0uOSAyLTIgMnMtMi0uOS0yLTJWOGMwLTEuMS45LTIgMi0ycy0uOSAyIDIgMnptLTEyIDR2OGMwIDEuMS0uOSAyLTIgMnMtMi0uOS0yLTJWMTJjMC0xLjEuOS0yIDItMnMyIC45IDIgMnoiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Station Logo">
+                <div>
+                    <div id="now-playing-text">Select a station to start listening</div>
+                    <div id="volume-container" style="margin-top: 5px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#D6A100" style="vertical-align: middle; margin-right: 8px;">
+                            <path d="M3 10v4c0 0.55 0.45 1 1 1h3l3.29 3.29c0.63 0.63 1.71 0.18 1.71-0.71V6.41c0-0.89-1.08-1.34-1.71-0.71L7 9H4c-0.55 0-1 0.45-1 1zm13.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-0.73 2.5-2.25 2.5-4.02z"/>
+                        </svg>
+                        <input type="range" class="control-slider" id="volume-slider" min="0" max="100" value="50" style="width: 100px;">
+                    </div>
+                </div>
+            </div>
+            <div id="player-controls">
+                <button id="stop-btn" class="control-button">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 6h8c1.1 0 2 0.9 2 2v8c0 1.1-0.9 2-2 2H8c-1.1 0-2-0.9-2-2V8c0-1.1 0.9-2 2-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
-    
-    <script src="https://www.youtube.com/iframe_api" defer></script>
+
+    <!-- Footer Advertisement -->
+    <div id="footer-ads" class="ads-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'bbb39fa2df38b4031f13f19c6a9db940',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/bbb39fa2df38b4031f13f19c6a9db940/invoke.js"></script>
+    </div>
+
+    <audio id="audio-player" preload="none"></audio>
+
     <script>
-        // Main Application Logic (Modified for Multi-Page)
-        const loadingScreen=document.getElementById("loading-screen"),mainContent=document.getElementById("main-content"),islamicDateEl=document.getElementById("islamic-date"),locationEl=document.getElementById("location"),nextPrayerNameEl=document.getElementById("next-prayer-name"),countdownTimerEl=document.getElementById("countdown-timer"),countdownSectionCard=document.querySelector("#countdown-section .card"),celestialVisualizationEl=document.getElementById("celestial-visualization"),salahPrayerTimeElements={Fajr:document.querySelector("#salah-fajr span:last-child"),Sunrise:document.querySelector("#salah-sunrise span:last-child"),Dhuhr:document.querySelector("#salah-dhuhr span:last-child"),Asr:document.querySelector("#salah-asr span:last-child"),Maghrib:document.querySelector("#salah-maghrib span:last-child"),Isha:document.querySelector("#salah-isha span:last-child")},qiblaDirectionEl=document.getElementById("qibla-direction"),compass=document.getElementById("compass"),qiblaLine=document.getElementById("qibla-line"),quranSurahList=document.getElementById("quran-surah-list"),quranAudioPlayer=document.getElementById("quran-audio-player"),currentSurahName=document.getElementById("current-surah-name"),homeRadioAudioPlayer=document.getElementById("home-radio-audio-player"),settingsSavedMessage=document.getElementById("settings-saved-message"),tvPlayButton=document.getElementById("tv-play-button"),tvPauseButton=document.getElementById("tv-pause-button"),tasbeehCounterDisplay=document.getElementById("tasbeeh-counter-display"),hadithContentHome=document.getElementById("hadith-content-home"),dailyIslamicMessageEl=document.getElementById("daily-islamic-message"),dailyIslamicMessageRefEl=document.getElementById("daily-islamic-message-ref"),settingsNotificationToggle=document.getElementById("settings-notification-toggle"),calculationMethodSelect=document.getElementById("calculation-method-select"),salahPopup=document.getElementById("salah-popup"),salahPopupName=document.getElementById("salah-popup-name");
-        const weatherTempEl = document.getElementById('weather-temp');
-        const weatherCityEl = document.getElementById('weather-city');
-        const weatherEmojiEl = document.getElementById('weather-emoji');
-        const tickerContentEl = document.getElementById('ticker-content');
-        const scrollerContentEl = document.getElementById('scroller-content');
-        let tasbeehCount=0,countdownInterval,qiblaAngle=0,notificationsEnabled=!0,calculationMethod=2,youtubePlayer,quranChapters=[],currentSurahIndex=-1,currentPlayingSurahElement=null,userCoords=null,audioUnlocked=!1,prayerTimesToday=null;
-        const NOTIFICATION_STATUS_KEY="ramadanAppNotificationStatus",CALC_METHOD_KEY="ramadanAppCalcMethod",radioStations=[{name:"Ramadhan World",url:"https://ramadhan786.radioca.st/;"}],islamicEvents=[{date:"27 Rajab",name:"Isra and Mi'raj",gregorianDates:{2025:"Monday, January 27",2026:"Friday, January 16"},description:"The Prophet's ﷺ miraculous night journey."},{date:"15 Sha’ban",name:"Laylat al-Bara'at",gregorianDates:{2025:"Friday, February 14",2026:"Wednesday, February 4"},description:"The night of forgiveness."},{date:"1 Ramadan",name:"Start of Ramadan",gregorianDates:{2025:"Saturday, March 1",2026:"Thursday, February 19"},description:"The beginning of the holy month of fasting."},{date:"27 Ramadan",name:"Laylat al-Qadr",gregorianDates:{2025:"Thursday, March 27",2026:"Tuesday, March 17"},description:"The Night of Power, better than a thousand months."},{date:"1 Shawwal",name:"Eid al-Fitr",gregorianDates:{2025:"Sunday, March 30",2026:"Friday, March 20"},description:"The festival of breaking the fast."},{date:"10 Dhul Hijjah",name:"Eid al-Adha",gregorianDates:{2025:"Friday, June 6",2026:"Wednesday, May 27"},description:"The festival of sacrifice."},{date:"1 Muharram",name:"Islamic New Year",gregorianDates:{2025:"Friday, June 27",2026:"Wednesday, May 17"},description:"The start of the Islamic lunar calendar."},{date:"10 Muharram",name:"Day of Ashura",gregorianDates:{2025:"Sunday, July 6",2026:"Friday, May 26"},description:"A day of fasting and remembrance."},{date:"12 Rabi al-Awwal",name:"Mawlid an-Nabi",gregorianDates:{2025:"Friday, September 5",2026:"Tuesday, August 25"},description:"The birthday of Prophet Muhammad ﷺ."}],curatedHadiths=[{text:"The Prophet (ﷺ) said, 'The best among you are those who have the best manners and character.'",book:"Sahih al-Bukhari",number:"3559"},{text:"The Prophet (ﷺ) said, 'A Muslim is a brother of another Muslim... Whoever fulfilled the needs of his brother, Allah will fulfill his needs.'",book:"Sahih al-Bukhari",number:"2442"},{text:"The Prophet (ﷺ) said, 'None of you will have faith till he wishes for his (Muslim) brother what he likes for himself.'",book:"Sahih al-Bukhari",number:"13"}],curatedQuranMessages=[{text:"Indeed, in the remembrance of Allah do hearts find rest.",reference:"Surah Ar-Ra'd (13:28)"},{text:"And He is with you wherever you are.",reference:"Surah Al-Hadid (57:4)"},{text:"So verily, with the hardship, there is relief. Verily, with the hardship, there is relief.",reference:"Surah Ash-Sharh (94:5-6)"},{text:"And speak to people good [words].",reference:"Surah Al-Baqarah (2:83)"},{text:"And seek help through patience and prayer.",reference:"Surah Al-Baqarah (2:45)"}];
-        const asmaUlHusna = [{arabic:"ٱلْرَّحْمَـٰنُ",english:"The Beneficent"},{arabic:"ٱلْرَّحِيْمُ",english:"The Merciful"},{arabic:"ٱلْمَلِكُ",english:"The King"},{arabic:"ٱلْقُdُّوسُ",english:"The Most Holy"},{arabic:"ٱلْسَّلَامُ",english:"The Source of Peace"},{arabic:"ٱلْمُؤْمِنُ",english:"The Guardian of Faith"},{arabic:"ٱلْمُهَيْمِنُ",english:"The Protector"},{arabic:"ٱلْعَزِيْزُ",english:"The Almighty"},{arabic:"ٱلْجَبَّارُ",english:"The Compeller"},{arabic:"ٱلْمُتَكَبِّرُ",english:"The Majestic"},{arabic:"ٱلْخَالِقُ",english:"The Creator"},{arabic:"ٱلْبَارِئُ",english:"The Evolver"},{arabic:"ٱلْمُصَوِّرُ",english:"The Fashioner"},{arabic:"ٱلْغَفَّارُ",english:"The Great Forgiver"},{arabic:"ٱلْقَهَّارُ",english:"The All-Prevailing One"},{arabic:"ٱلْوَهَّابُ",english:"The Supreme Bestower"},{arabic:"ٱلْرَّزَّاقُ",english:"The Provider"},{arabic:"ٱلْفَتَّاحُ",english:"The Supreme Opener"},{arabic:"ٱلْعَلِيْمُ",english:"The All-Knowing"},{arabic:"ٱلْقَابِضُ",english:"The Withholder"},{arabic:"ٱلْبَاسِطُ",english:"The Extender"},{arabic:"ٱلْخَافِضُ",english:"The Humbler"},{arabic:"ٱلْرَّافِعُ",english:"The Exalter"},{arabic:"ٱلْمُعِزُّ",english:"The Giver of Honour"},{arabic:"ٱلْمُذِلُّ",english:"The Giver of Dishonour"},{arabic:"ٱلْسَّمِيْعُ",english:"The All-Hearing"},{arabic:"ٱلْبَصِيْرُ",english:"The All-Seeing"},{arabic:"ٱلْحَكَمُ",english:"The Judge"},{arabic:"ٱلْعَدْلُ",english:"The Utterly Just"},{arabic:"ٱلْلَّطِيْفُ",english:"The Subtle One"},{arabic:"ٱلْخَبِيْرُ",english:"The All-Aware"},{arabic:"ٱلْحَلِيْمُ",english:"The Forbearing One"},{arabic:"ٱلْعَظِيْمُ",english:"The Magnificent"},{arabic:"ٱلْغَفُوْرُ",english:"The All-Forgiving"},{arabic:"ٱلْشَّكُوْرُ",english:"The Grateful"},{arabic:"ٱlْعَلِيُّ",english:"The Sublime"},{arabic:"ٱلْكَبِيْرُ",english:"The Great"},{arabic:"ٱلْحَفِيْظُ",english:"The Preserver"},{arabic:"ٱلْمُقِيْتُ",english:"The Sustainer"},{arabic:"ٱلْحَسِيْبُ",english:"The Reckoner"},{arabic:"ٱلْجَلِيْلُ",english:"The Majestic"},{arabic:"ٱلْكَرِيْمُ",english:"The Bountiful"},{arabic:"ٱلْرَّقِيْبُ",english:"The Watchful"},{arabic:"ٱلْمُجِيْبُ",english:"The Responsive"},{arabic:"ٱلْوَاسِعُ",english:"The All-Encompassing"},{arabic:"ٱلْحَكِيْمُ",english:"The Wise"},{arabic:"ٱلْوَدُوْدُ",english:"The Loving"},{arabic:"ٱلْمَجِيْدُ",english:"The Glorious"},{arabic:"ٱلْبَاعِثُ",english:"The Resurrector"},{arabic:"ٱلْشَّهِيْدُ",english:"The Witness"},{arabic:"ٱلْحَقُّ",english:"The Truth"},{arabic:"ٱلْوَكِيْلُ",english:"The Trustee"},{arabic:"ٱلْقَوِيُّ",english:"The Strong"},{arabic:"ٱلْمَتِيْنُ",english:"The Firm"},{arabic:"ٱلْوَلِيُّ",english:"The Protecting Friend"},{arabic:"ٱلْحَمِيْدُ",english:"The Praiseworthy"},{arabic:"ٱلْمُحْصِيْ",english:"The Accounter"},{arabic:"ٱلْمُبْدِئُ",english:"The Originator"},{arabic:"ٱلْمُعِيْدُ",english:"The Restorer"},{arabic:"ٱلْمُحْيِيْ",english:"The Giver of Life"},{arabic:"ٱلْمُمِيْتُ",english:"The Taker of Life"},{arabic:"ٱلْحَيُّ",english:"The Ever-Living"},{arabic:"ٱلْقَيُّوْمُ",english:"The Self-Existing"},{arabic:"ٱلْوَاجِدُ",english:"The Perceiver"},{arabic:"ٱلْمَاجِدُ",english:"The Illustrious"},{arabic:"ٱلْوَاحِدُ",english:"The One"},{arabic:"ٱلْأَحَدُ",english:"The Unique"},{arabic:"ٱلْصَّمَدُ",english:"The Eternal"},{arabic:"ٱلْقَادِرُ",english:"The Able"},{arabic:"ٱلْمُقْتَدِرُ",english:"The All-Determining"},{arabic:"ٱلْمُقَدِّمُ",english:"The Expediter"},{arabic:"ٱلْمُؤَخِّرُ",english:"The Delayer"},{arabic:"ٱلْأَوَّلُ",english:"The First"},{arabic:"ٱلْآخِرُ",english:"The Last"},{arabic:"ٱلْظَّاهِرُ",english:"The Manifest"},{arabic:"ٱلْبَاطِنُ",english:"The Hidden"},{arabic:"ٱلْوَالِي",english:"The Governor"},{arabic:"ٱلْمُتَعَالِي",english:"The Most Exalted"},{arabic:"ٱلْبَرُّ",english:"The Source of All Goodness"},{arabic:"ٱلْتَّوَّابُ",english:"The Acceptor of Repentance"},{arabic:"ٱلْمُنْتَقِمُ",english:"The Avenger"},{arabic:"ٱلْعَفُوُّ",english:"The Pardoner"},{arabic:"ٱلْرَّؤُوْفُ",english:"The Kind"},{arabic:"مَالِكُ ٱلْمُلْكِ",english:"The Owner of All Sovereignty"},{arabic:"ذُو ٱلْجَلَالِ وَٱلْإِكْرَامِ",english:"The Lord of Majesty and Honour"},{arabic:"ٱلْمُقْسِطُ",english:"The Equitable"},{arabic:"ٱلْجَامِعُ",english:"The Gatherer"},{arabic:"ٱلْغَنِيُّ",english:"The Self-Sufficient"},{arabic:"ٱلْمُغْنِيُّ",english:"The Enricher"},{arabic:"ٱلْمَانِعُ",english:"The Preventer"},{arabic:"ٱلْضَّارُّ",english:"The Distresser"},{arabic:"ٱلْنَّافِعُ",english:"The Propitious"},{arabic:"ٱلْنُّوْرُ",english:"The Light"},{arabic:"ٱلْهَادِيْ",english:"The Guide"},{arabic:"ٱلْبَدِيْعُ",english:"The Incomparable"},{arabic:"ٱلْبَاقِيْ",english:"The Everlasting"},{arabic:"ٱلْوَارِثُ",english:"The Supreme Inheritor"},{arabic:"ٱلْرَّشِيْدُ",english:"The Guide to the Right Path"},{arabic:"ٱلْصَّبُوْرُ",english:"The Patient"}];
-        function initializeAppFast(){
-            hideLoading();
-            document.body.addEventListener("click",unlockAllAudio,{once:!0});
-            loadAllSettings();
-            if(document.getElementById('islamic-calendar-grid')) populateEventCalendar();
-            if(dailyIslamicMessageEl) displayDailyMessage();
-            if(homeRadioAudioPlayer) setupRadioPlayer();
-            if(tickerContentEl || scrollerContentEl) initializeAnimations();
-            if(tickerContentEl) initializeTicker();
-            if(scrollerContentEl) fetchAndDisplayScrollableContent();
-            if(hadithContentHome) { displayDailyHadith(); setInterval(displayDailyHadith, 1200000); }
-            if(dailyIslamicMessageEl) setInterval(displayDailyMessage,18e5);
-            async function fetchInitialData() { await getUserLocation(); if(quranSurahList) await populateQuranList(); };
-            fetchInitialData();
-            if(quranAudioPlayer) quranAudioPlayer.addEventListener("ended",playNextSurah);
-            if(calculationMethodSelect) calculationMethodSelect.addEventListener("change",a=>{ calculationMethod=a.target.value; saveSettings(CALC_METHOD_KEY,calculationMethod); showTemporaryMessage("Settings saved. Refreshing times..."); getUserLocation(); });
-            if (compass) startCompass();
+        class RadioApp {
+            constructor() {
+                this.audio = document.getElementById('audio-player');
+                this.currentStation = null;
+                this.stations = [];
+                this.userLocation = { country: '', latitude: null, longitude: null };
+                this.currentCategory = 'all';
+                this.searchTimeout = null;
+                this.isPlaying = false;
+                this.isMuted = false;
+                this.stationsByCategory = {};
+                
+                this.init();
+            }
+
+            async init() {
+                await this.detectLocation();
+                this.setupEventListeners();
+                this.loadStations();
+                this.updateLocationIndicator();
+            }
+
+            // Enhanced location detection with IP fallback
+            async detectLocation() {
+                console.log('Starting location detection...');
+                
+                try {
+                    // Try geolocation first
+                    if (navigator.geolocation) {
+                        try {
+                            const position = await new Promise((resolve, reject) => {
+                                navigator.geolocation.getCurrentPosition(
+                                    resolve,
+                                    reject,
+                                    { timeout: 10000, enableHighAccuracy: false }
+                                );
+                            });
+                            
+                            this.userLocation.latitude = position.coords.latitude;
+                            this.userLocation.longitude = position.coords.longitude;
+                            console.log('Geolocation success:', this.userLocation.latitude, this.userLocation.longitude);
+                            
+                            // Get country from coordinates
+                            const country = await this.getCountryFromCoordinates(
+                                position.coords.latitude, 
+                                position.coords.longitude
+                            );
+                            this.userLocation.country = country || '';
+                            console.log('Country from coordinates:', country);
+                            
+                            if (this.userLocation.country) {
+                                return; // Success with geolocation
+                            }
+                        } catch (geoError) {
+                            console.log('Geolocation failed:', geoError.message);
+                        }
+                    }
+                } catch (error) {
+                    console.log('Navigator geolocation not available');
+                }
+
+                // Fallback to IP-based location
+                console.log('Attempting IP-based location detection...');
+                try {
+                    const ipLocation = await this.getLocationFromIP();
+                    if (ipLocation) {
+                        this.userLocation.country = ipLocation.country || '';
+                        this.userLocation.latitude = ipLocation.latitude || null;
+                        this.userLocation.longitude = ipLocation.longitude || null;
+                        console.log('IP location success:', ipLocation);
+                    }
+                } catch (error) {
+                    console.error('IP location detection failed:', error);
+                    // Set a default fallback
+                    console.log('Setting default location fallback');
+                    this.userLocation.country = '';
+                    this.userLocation.latitude = null;
+                    this.userLocation.longitude = null;
+                }
+                
+                console.log('Final location:', this.userLocation);
+            }
+
+            async getLocationFromIP() {
+                const apis = [
+                    {
+                        url: 'https://ipapi.co/json/',
+                        parse: data => ({
+                            country: data.country_name,
+                            latitude: data.latitude,
+                            longitude: data.longitude
+                        })
+                    },
+                    {
+                        url: 'http://ip-api.com/json/',
+                        parse: data => ({
+                            country: data.country,
+                            latitude: data.lat,
+                            longitude: data.lon
+                        })
+                    }
+                ];
+
+                for (const api of apis) {
+                    try {
+                        const response = await fetch(api.url);
+                        const data = await response.json();
+                        return api.parse(data);
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                throw new Error('All IP location APIs failed');
+            }
+
+            async getCountryFromCoordinates(lat, lon) {
+                try {
+                    // Use a reverse geocoding service
+                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+                    const data = await response.json();
+                    return data.countryName;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            updateLocationIndicator() {
+                const indicator = document.getElementById('location-indicator');
+                const locationText = document.getElementById('location-text');
+                
+                if (this.userLocation.country) {
+                    locationText.textContent = this.userLocation.country;
+                    indicator.style.display = 'block';
+                } else {
+                    indicator.style.display = 'none';
+                }
+            }
+
+            setupEventListeners() {
+                // Category tabs
+                document.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        this.switchCategory(e.target.dataset.category);
+                    });
+                });
+
+                // Search functionality
+                const searchBox = document.getElementById('search-box');
+                searchBox.addEventListener('input', (e) => {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.handleSearch(e.target.value);
+                    }, 300);
+                });
+
+                // Player controls
+                document.getElementById('play-pause').addEventListener('click', () => this.togglePlayPause());
+                document.getElementById('stop-btn').addEventListener('click', () => this.stopAudio());
+                document.getElementById('eq-toggle').addEventListener('click', () => this.toggleEqualizer());
+
+                // Volume control
+                document.getElementById('volume-slider').addEventListener('input', (e) => {
+                    this.setVolume(e.target.value);
+                });
+
+                // Audio events
+                this.audio.addEventListener('loadstart', () => this.showPlayerLoading(true));
+                this.audio.addEventListener('canplay', () => this.showPlayerLoading(false));
+                this.audio.addEventListener('error', () => this.handleAudioError());
+            }
+
+            // Calculate distance between two points using Haversine formula
+            calculateDistance(lat1, lon1, lat2, lon2) {
+                if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
+                
+                const R = 6371; // Earth's radius in kilometers
+                const dLat = this.toRad(lat2 - lat1);
+                const dLon = this.toRad(lon2 - lon1);
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                         Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) *
+                         Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c; // Distance in kilometers
+            }
+
+            toRad(value) {
+                return value * Math.PI / 180;
+            }
+
+            // Filter out unwanted stations
+            filterStations(stations) {
+                return stations.filter(station => {
+                    if (!station.name || !station.url) return false;
+                    
+                    const name = (station.name || '').toLowerCase();
+                    const country = (station.country || '').toLowerCase();
+                    const tags = (station.tags || '').toLowerCase();
+                    
+                    // Only filter out Pakistani content if user is NOT in Pakistan
+                    if (this.userLocation.country && this.userLocation.country.toLowerCase() !== 'pakistan') {
+                        const unwantedTerms = ['pakistan', 'pak radio', 'islamabad', 'karachi', 'lahore'];
+                        
+                        const containsUnwantedContent = unwantedTerms.some(term => 
+                            name.includes(term) || 
+                            country.includes(term) || 
+                            tags.includes(term)
+                        );
+                        
+                        if (containsUnwantedContent) return false;
+                    }
+                    
+                    // Filter out broken or empty URLs
+                    if (!station.url || station.url.length < 5) return false;
+                    
+                    return true;
+                });
+            }
+
+            // Sort stations by distance from user location
+            sortStationsByDistance(stations) {
+                if (!this.userLocation.latitude || !this.userLocation.longitude) {
+                    return stations;
+                }
+
+                return stations.sort((a, b) => {
+                    const distanceA = this.calculateDistance(
+                        this.userLocation.latitude, 
+                        this.userLocation.longitude,
+                        parseFloat(a.geo_lat) || 0, 
+                        parseFloat(a.geo_long) || 0
+                    );
+                    const distanceB = this.calculateDistance(
+                        this.userLocation.latitude, 
+                        this.userLocation.longitude,
+                        parseFloat(b.geo_lat) || 0, 
+                        parseFloat(b.geo_long) || 0
+                    );
+
+                    // Prioritize stations with location data
+                    if (distanceA === Infinity && distanceB === Infinity) return 0;
+                    if (distanceA === Infinity) return 1;
+                    if (distanceB === Infinity) return -1;
+                    
+                    return distanceA - distanceB;
+                });
+            }
+
+            async loadStations() {
+                try {
+                    // Only load local stations on page load
+                    if (this.userLocation.country) {
+                        await this.loadLocalStations();
+                    } else {
+                        // Fallback to showing some stations if no location
+                        await this.loadPopularStations();
+                        this.renderStations(this.stationsByCategory.popular.slice(0, 20), 'local-stations');
+                    }
+                    await this.loadStationsByCategory();
+                } catch (error) {
+                    console.error('Error loading stations:', error);
+                }
+            }
+
+            async loadPopularStations() {
+                try {
+                    // Try to load popular stations first, then apply location sorting
+                    const response = await fetch('https://de1.api.radio-browser.info/json/stations/topvote/100');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const stations = await response.json();
+                    console.log('Fetched stations:', stations.length);
+                    
+                    if (!Array.isArray(stations) || stations.length === 0) {
+                        throw new Error('No stations received from API');
+                    }
+                    
+                    const filteredStations = this.filterStations(stations);
+                    console.log('Filtered stations:', filteredStations.length);
+                    
+                    const sortedStations = this.sortStationsByDistance(filteredStations).slice(0, 50);
+                    
+                    this.renderStations(sortedStations, 'popular-stations');
+                    this.stationsByCategory.popular = sortedStations;
+                    
+                } catch (error) {
+                    console.error('Error loading stations:', error);
+                    // Fallback: try alternative API endpoint
+                    try {
+                        const fallbackResponse = await fetch('https://fr1.api.radio-browser.info/json/stations/topclick/50');
+                        if (fallbackResponse.ok) {
+                            const fallbackStations = await fallbackResponse.json();
+                            const filteredStations = this.filterStations(fallbackStations);
+                            const sortedStations = this.sortStationsByDistance(filteredStations);
+                            this.renderStations(sortedStations, 'popular-stations');
+                            this.stationsByCategory.popular = sortedStations;
+                        } else {
+                            throw new Error('Fallback API also failed');
+                        }
+                    } catch (fallbackError) {
+                        console.error('Fallback also failed:', fallbackError);
+                        this.showError('popular-stations', 'Unable to load radio stations. Please check your internet connection.');
+                    }
+                }
+            }
+
+            async loadLocalStations() {
+                if (!this.userLocation.country) {
+                    console.log('No user country detected, skipping local stations');
+                    return;
+                }
+
+                try {
+                    console.log('Loading stations for country:', this.userLocation.country);
+                    const response = await fetch(`https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(this.userLocation.country)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const stations = await response.json();
+                    console.log('Country stations fetched:', stations.length);
+                    
+                    if (!Array.isArray(stations)) {
+                        throw new Error('Invalid response format');
+                    }
+                    
+                    const filteredStations = this.filterStations(stations);
+                    const sortedStations = this.sortStationsByDistance(filteredStations);
+                    const localStations = sortedStations.slice(0, 30);
+                    
+                    if (localStations.length > 0) {
+                        this.renderStations(localStations, 'local-stations');
+                        this.stationsByCategory.local = localStations;
+                        console.log('Local stations rendered:', localStations.length);
+                    } else {
+                        this.showError('local-stations', 'No stations found in your area');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading local stations:', error);
+                    this.showError('local-stations', 'Unable to load local stations');
+                }
+            }
+
+            async loadNearbyStations() {
+                if (!this.userLocation.latitude || !this.userLocation.longitude) {
+                    console.log('No user coordinates available, skipping nearby stations');
+                    return;
+                }
+
+                try {
+                    console.log('Loading nearby stations...');
+                    // Simplified approach - get stations and filter by distance
+                    const response = await fetch('https://de1.api.radio-browser.info/json/stations/topvote/100');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const stations = await response.json();
+                    console.log('Fetched stations for nearby filtering:', stations.length);
+
+                    // Filter stations with coordinates
+                    const stationsWithCoords = stations.filter(station => 
+                        station.geo_lat && station.geo_long && 
+                        parseFloat(station.geo_lat) !== 0 && parseFloat(station.geo_long) !== 0
+                    );
+                    
+                    console.log('Stations with coordinates:', stationsWithCoords.length);
+
+                    const filteredStations = this.filterStations(stationsWithCoords);
+                    const sortedStations = this.sortStationsByDistance(filteredStations);
+                    
+                    // Get closest stations within reasonable distance
+                    const nearbyStations = sortedStations
+                        .filter(station => {
+                            const distance = this.calculateDistance(
+                                this.userLocation.latitude, 
+                                this.userLocation.longitude,
+                                parseFloat(station.geo_lat), 
+                                parseFloat(station.geo_long)
+                            );
+                            return distance < 1000; // Within 1000km for broader coverage
+                        })
+                        .slice(0, 20);
+
+                    console.log('Nearby stations found:', nearbyStations.length);
+
+                    if (nearbyStations.length > 0) {
+                        this.renderStations(nearbyStations, 'nearby-stations');
+                        this.stationsByCategory.nearby = nearbyStations;
+                        console.log('Nearby stations rendered:', nearbyStations.length);
+                    } else {
+                        console.log('No nearby stations found, trying with broader search...');
+                        // Try with all stations if no nearby ones found
+                        const allFilteredStations = this.filterStations(stations);
+                        const broadStations = this.sortStationsByDistance(allFilteredStations).slice(0, 15);
+                        if (broadStations.length > 0) {
+                            this.renderStations(broadStations, 'nearby-stations');
+                            this.stationsByCategory.nearby = broadStations;
+                            console.log('Broader nearby stations rendered:', broadStations.length);
+                        } else {
+                            this.showError('nearby-stations', 'No nearby stations found');
+                        }
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading nearby stations:', error);
+                    this.showError('nearby-stations', 'Unable to load nearby stations');
+                }
+            }
+
+            async loadStationsByCategory() {
+                const categories = {
+                    pop: ['pop', 'pop music', 'top 40'],
+                    rock: ['rock', 'classic rock', 'alternative rock'],
+                    jazz: ['jazz', 'smooth jazz', 'jazz fusion'],
+                    classical: ['classical', 'classical music', 'orchestra'],
+                    news: ['news', 'news talk', 'talk news'],
+                    talk: ['talk', 'talk radio', 'spoken'],
+                    electronic: ['electronic', 'dance', 'edm', 'techno', 'house']
+                };
+
+                for (const [category, tags] of Object.entries(categories)) {
+                    try {
+                        let allStations = [];
+                        for (const tag of tags) {
+                            const response = await fetch(`https://de1.api.radio-browser.info/json/stations/bytag/${encodeURIComponent(tag)}`);
+                            const stations = await response.json();
+                            allStations = allStations.concat(stations);
+                        }
+                        
+                        // Remove duplicates, filter unwanted stations, and sort by distance
+                        const uniqueStations = allStations.filter((station, index, self) => 
+                            index === self.findIndex(s => s.stationuuid === station.stationuuid)
+                        );
+                        const filteredStations = this.filterStations(uniqueStations);
+                        const sortedStations = this.sortStationsByDistance(filteredStations).slice(0, 30);
+                        
+                        this.stationsByCategory[category] = sortedStations;
+                        this.renderStations(sortedStations, `${category}-stations`);
+                    } catch (error) {
+                        this.showError(`${category}-stations`, `Failed to load ${category} stations`);
+                    }
+                }
+            }
+
+            switchCategory(category) {
+                // Update active tab
+                document.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelector(`[data-category="${category}"]`).classList.add('active');
+
+                // Show/hide sections
+                document.querySelectorAll('.station-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                this.currentCategory = category;
+
+                if (category === 'all') {
+                    document.querySelectorAll('.station-section').forEach(section => {
+                        if (!section.id.includes('search-results')) {
+                            section.style.display = 'block';
+                        }
+                    });
+                } else {
+                    let sectionId;
+                    if (category === 'local') {
+                        sectionId = 'local-section';
+                    } else if (category === 'nearby') {
+                        sectionId = 'nearby-section';
+                    } else {
+                        sectionId = `${category}-section`;
+                    }
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.style.display = 'block';
+                    }
+                }
+
+                // Hide search results when switching categories
+                document.getElementById('search-results').style.display = 'none';
+            }
+
+            async handleSearch(query) {
+                if (query.length < 2) {
+                    document.getElementById('search-results').style.display = 'none';
+                    this.switchCategory(this.currentCategory);
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`https://de1.api.radio-browser.info/json/stations/byname/${encodeURIComponent(query)}`);
+                    const stations = await response.json();
+                    const filteredStations = this.filterStations(stations);
+                    const sortedStations = this.sortStationsByDistance(filteredStations);
+                    
+                    this.renderStations(sortedStations.slice(0, 20), 'search-stations');
+                    
+                    // Show search results
+                    document.querySelectorAll('.station-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById('search-results').style.display = 'block';
+                    
+                } catch (error) {
+                    this.showError('search-stations', 'Search failed');
+                }
+            }
+
+            renderStations(stations, containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+
+                if (stations.length === 0) {
+                    container.innerHTML = '<div class="error">No stations found</div>';
+                    return;
+                }
+
+                container.innerHTML = stations.map((station, index) => {
+                    const favicon = station.favicon || this.getDefaultIcon();
+                    const country = station.country || '🌍';
+                    const tags = station.tags ? station.tags.split(',').slice(0, 2).join(', ') : '';
+                    
+                    // Calculate and display distance for nearby stations
+                    let distanceText = '';
+                    if (this.userLocation.latitude && this.userLocation.longitude && station.geo_lat && station.geo_long) {
+                        const distance = this.calculateDistance(
+                            this.userLocation.latitude, 
+                            this.userLocation.longitude,
+                            parseFloat(station.geo_lat), 
+                            parseFloat(station.geo_long)
+                        );
+                        if (distance < 1000) { // Show distance only if under 1000km
+                            distanceText = `<div class="distance">${Math.round(distance)} km away</div>`;
+                        }
+                    }
+
+                    // Add priority indicator for closest stations
+                    const priorityBadge = index < 3 && containerId.includes('local') || containerId.includes('nearby') ? 
+                        '<div class="priority-badge">📍</div>' : '';
+                    
+                    return `
+                        <div class="station-card" onclick="radioApp.playStation('${station.stationuuid}')" 
+                             style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${favicon}')">
+                            ${priorityBadge}
+                            <div class="info">
+                                <div class="name">${this.escapeHtml(station.name)}</div>
+                                <div class="country">${country}</div>
+                                ${tags ? `<div class="genre">${this.escapeHtml(tags)}</div>` : ''}
+                                ${distanceText}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Store stations for playback
+                stations.forEach(station => {
+                    this.stations[station.stationuuid] = station;
+                });
+            }
+
+            getDefaultIcon() {
+                return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0Q2QTEwMCIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmMzljMTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8c3ZnIHg9IjUwIiB5PSI1MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNMTIgMnYyMGMwIDEuMS0uOSAyLTIgMnMtMi0uOS0yLTJWNGMwLTEuMS45LTIgMi0ycy4yLjkgMiAyem02IDZ2MTJjMCAxLjEtLjkgMi0yIDJzLTItLjktMi0yVjhjMC0xLjEuOS0yIDItMnMtLjkgMiAyIDJ6bS0xMiA0djhjMCAxLjEtLjkgMi0yIDJzLTItLjktMi0yVjEyYzAtMS4xLjktMiAyLTJzMiAuOSAyIDJ6Ii8+Cjwvc3ZnPgo8L3N2Zz4K';
+            }
+
+            async playStation(stationId) {
+                const station = this.stations[stationId];
+                if (!station) return;
+
+                try {
+                    // Record click
+                    fetch(`https://de1.api.radio-browser.info/json/url/${stationId}`, { method: 'POST' }).catch(() => {});
+
+                    this.currentStation = station;
+                    this.audio.src = station.url_resolved || station.url;
+                    
+                    // Update UI
+                    this.updateNowPlaying(station);
+                    document.getElementById('player-wrapper').style.display = 'block';
+                    
+                    // Play audio
+                    await this.audio.play();
+                    this.isPlaying = true;
+                    document.getElementById('play-pause').textContent = '⏸️';
+                    
+                } catch (error) {
+                    this.handleAudioError();
+                }
+            }
+
+            updateNowPlaying(station) {
+                document.getElementById('now-playing-text').textContent = station.name;
+                const logo = document.getElementById('station-logo');
+                logo.src = station.favicon || this.getDefaultIcon();
+                logo.classList.add('playing');
+            }
+
+            togglePlayPause() {
+                if (!this.currentStation) return;
+
+                const playIcon = document.getElementById('play-icon');
+                const pauseIcon = document.getElementById('pause-icon');
+
+                if (this.isPlaying) {
+                    this.audio.pause();
+                    this.isPlaying = false;
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                    document.getElementById('station-logo').classList.remove('playing');
+                } else {
+                    this.audio.play().then(() => {
+                        this.isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                        document.getElementById('station-logo').classList.add('playing');
+                    }).catch(() => this.handleAudioError());
+                }
+            }
+
+            stopAudio() {
+                this.audio.pause();
+                this.audio.currentTime = 0;
+                this.isPlaying = false;
+                document.getElementById('play-pause').textContent = '▶️';
+                document.getElementById('station-logo').classList.remove('playing');
+                document.getElementById('now-playing-text').textContent = 'Select a station to start listening';
+                document.getElementById('player-wrapper').style.display = 'none';
+                this.currentStation = null;
+            }
+
+            toggleMute() {
+                const volumeOnIcon = document.getElementById('volume-on-icon');
+                const volumeOffIcon = document.getElementById('volume-off-icon');
+                
+                if (this.isMuted) {
+                    this.audio.muted = false;
+                    this.isMuted = false;
+                    volumeOnIcon.style.display = 'block';
+                    volumeOffIcon.style.display = 'none';
+                } else {
+                    this.audio.muted = true;
+                    this.isMuted = true;
+                    volumeOnIcon.style.display = 'none';
+                    volumeOffIcon.style.display = 'block';
+                }
+            }
+
+            setVolume(value) {
+                this.audio.volume = value / 100;
+            }
+
+            toggleEqualizer() {
+                const eq = document.getElementById('equalizer-container');
+                eq.style.display = eq.style.display === 'none' ? 'block' : 'none';
+            }
+
+            showPlayerLoading(show) {
+                const playBtn = document.getElementById('play-pause');
+                playBtn.textContent = show ? '⏳' : (this.isPlaying ? '⏸️' : '▶️');
+            }
+
+            handleAudioError() {
+                this.showPlayerLoading(false);
+                document.getElementById('now-playing-text').textContent = 'Error playing station';
+                document.getElementById('play-pause').textContent = '❌';
+                setTimeout(() => {
+                    if (this.currentStation) {
+                        document.getElementById('play-pause').textContent = '▶️';
+                    }
+                }, 2000);
+            }
+
+            showError(containerId, message) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = `<div class="error">${message}</div>`;
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
         }
-        function unlockAllAudio(){if(audioUnlocked)return;const a=[homeRadioAudioPlayer, quranAudioPlayer].filter(Boolean);a.forEach(a=>{a.muted=!0;const e=a.play();void 0!==e&&e.then(()=>{a.pause(),a.currentTime=0,a.muted=!1}).catch(()=>{})}),audioUnlocked=!0;}
-        function displayDailyMessage(){const a=Math.floor(Math.random()*curatedQuranMessages.length),e=curatedQuranMessages[a];dailyIslamicMessageEl.textContent=`"${e.text}"`,dailyIslamicMessageRefEl.textContent=`— ${e.reference}`}
-        async function displayDailyHadith() { try { const response = await fetch('https://hadithapi.com/api/bukhari/random/en'); if (!response.ok) throw new Error('API response not OK'); const data = await response.json(); const hadith = data.hadith && data.hadith.length > 0 ? data.hadith[0] : data; if (hadith && hadith.hadithEnglish && hadith.chapterNo && hadith.hadithNo) { hadithContentHome.innerHTML = `<div class="hadith-box"><h2 class="section-title mb-4">📖 Hadith for Today</h2><p class="font-amiri text-center text-xl">"${hadith.hadithEnglish}"</p><p class="text-center text-base text-green-300 mt-4">Reference: Sahih al-Bukhari, Chapter ${hadith.chapterNo}, Hadith ${hadith.hadithNo}</p></div>`; } else { throw new Error('Invalid Hadith data format'); } } catch (error) { console.error("Error fetching Hadith:", error); } }
-        function populateEventCalendar(){const a=document.querySelector("#islamic-calendar-grid"),e=new Date().getFullYear(),t=new Date;t.setHours(0,0,0,0);const n=a=>islamicEvents.map(e=>{const t=e.gregorianDates[a];if(!t)return null;const n=new Date(`${t}, ${a}`);return{...e,dateObj:n,displayDate:t,displayYear:a}}).filter(Boolean);let o=[...n(e),...n(e+1)];let r=o.filter(a=>a.dateObj>=t).sort((a,e)=>a.dateObj-e.dateObj);a&&(a.innerHTML=r.length>0?r.map(a=>`<div class="calendar-item" style="transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column;"><div class="calendar-date">${a.date}</div><h3 class="calendar-event-name">${a.name}</h3><p class="calendar-event-desc">${a.description}</p><div class="gregorian-date"><strong>Expected Gregorian Date (${a.displayYear}):</strong><br>${a.displayDate}</div></div>`).join(""):`<p class="text-center col-span-full text-gray-400">No major Islamic events scheduled for the near future.</p>`)}
-        function calculateQiblaDirection(a,e){const t=21.4225,n=39.8262,o=(n-e)*Math.PI/180,r=a*Math.PI/180,d=t*Math.PI/180,i=Math.sin(o)*Math.cos(d),s=Math.cos(r)*Math.sin(d)-Math.sin(r)*Math.cos(d)*Math.cos(o);return(180*Math.atan2(i,s)/Math.PI+360)%360}
-        function getWeatherEmoji(weatherCode, isDay) { const code = Number(weatherCode); if (code === 0) return isDay ? '☀️' : '🌙'; if (code === 1) return isDay ? '🌤️' : '☁️'; if (code === 2) return '🌥️'; if (code === 3) return '☁️'; if (code >= 45 && code <= 48) return '🌫️'; if (code >= 51 && code <= 55) return '💧'; if (code >= 56 && code <= 57) return '🥶'; if (code >= 61 && code <= 65) return '🌧️'; if (code >= 66 && code <= 67) return '🌨️'; if (code >= 71 && code <= 75) return '❄️'; if (code === 77) return '🌨️'; if (code >= 80 && code <= 82) return '🌦️'; if (code >= 85 && code <= 86) return '❄️'; if (code >= 95 && code <= 99) return '⛈️'; return '❔'; }
-        async function getWeather(lat, lon) { try { const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`); const data = await response.json(); if(weatherTempEl) weatherTempEl.textContent = `${Math.round(data.current_weather.temperature)}°C`; if(weatherEmojiEl) weatherEmojiEl.textContent = getWeatherEmoji(data.current_weather.weathercode, data.current_weather.is_day); } catch (error) { console.error("Error fetching weather:", error); if(weatherTempEl) weatherTempEl.textContent = 'Weather N/A'; if(weatherEmojiEl) weatherEmojiEl.textContent = '❔'; } }
-        function getUserLocation(){return new Promise(a=>{navigator.geolocation?navigator.geolocation.getCurrentPosition(async e=>{userCoords={latitude:e.coords.latitude,longitude:e.coords.longitude},qiblaAngle=calculateQiblaDirection(userCoords.latitude,userCoords.longitude);try{const t=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.latitude}&lon=${userCoords.longitude}`),n=await t.json(),o=n.address.city||n.address.town||"Unknown",r=n.address.country||"Country";if(locationEl)locationEl.textContent=`${o}, ${r}`;if(weatherCityEl)weatherCityEl.textContent = o;prayerTimesToday=await getPrayerTimes(o,r),prayerTimesToday&&updateCountdown(prayerTimesToday),getWeather(userCoords.latitude, userCoords.longitude)}catch(e){prayerTimesToday=await getPrayerTimes("Karachi","Pakistan"),prayerTimesToday&&updateCountdown(prayerTimesToday)}a()},async()=>{if(locationEl)locationEl.textContent="Location denied. Using default times for Karachi.";if(weatherCityEl)weatherCityEl.textContent = "Karachi";prayerTimesToday=await getPrayerTimes("Karachi","Pakistan"),prayerTimesToday&&updateCountdown(prayerTimesToday),getWeather(24.8607, 67.0011),a()}):(getPrayerTimes("Karachi","Pakistan").then(a=>{prayerTimesToday=a,prayerTimesToday&&updateCountdown(prayerTimesToday)}),getWeather(24.8607, 67.0011),a())})}
-        async function getPrayerTimes(a,e){try{const t=new Date,n=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`,o=`https://api.aladhan.com/v1/timingsByCity/${n}?city=${a}&country=${e}&method=${calculationMethod}`,r=await fetch(o),d=await r.json();if(200===d.code)return displayPrayerTimes(d.data),d.data.timings;return null}catch(a){return console.error("Error fetching prayer times:",a),null}}
-        function subtractMinutes(a,e){const[t,n]=a.split(":").map(Number),o=new Date;return o.setHours(t,n,0,0),o.setMinutes(o.getMinutes()-e),`${padZero(o.getHours())}:${padZero(o.getMinutes())}`}
-        function displayPrayerTimes(a){const{timings:e,date:t}=a;if(islamicDateEl)islamicDateEl.textContent=`${t.hijri.weekday.en}, ${t.hijri.day} ${t.hijri.month.en} ${t.hijri.year}`;Object.keys(salahPrayerTimeElements).forEach(a=>{salahPrayerTimeElements[a]&&e[a]&&(salahPrayerTimeElements[a].textContent=formatTime(e[a]))});const n=subtractMinutes(e.Fajr,10),o=e.Maghrib;const sehriEl = document.querySelector("#salah-sehri span:last-child"); if(sehriEl) sehriEl.textContent=formatTime(n); const iftarEl = document.querySelector("#salah-iftar span:last-child"); if(iftarEl) iftarEl.textContent=formatTime(o);}
-        function updateCountdown(a){if(!nextPrayerNameEl) return; countdownInterval&&clearInterval(countdownInterval);let e={};countdownInterval=setInterval(()=>{const t=new Date;let n=findNextPrayer(t,a);let o;if(n)o=new Date(`${t.toDateString()} ${n.time}`);else{n={name:"Fajr",time:a.Fajr};const e=new Date;e.setDate(e.getDate()+1),o=new Date(`${e.toDateString()} ${n.time}`),23===t.getHours()&&59===t.getMinutes()&&(e={})}nextPrayerNameEl.textContent=n.name;if(celestialVisualizationEl)updateCountdownBackground(a);const r=o.getTime()-t.getTime();if(r>0){const t=Math.floor(r/36e5),o=Math.floor(r%36e5/6e4),d=Math.floor(r%6e4/1e3);countdownTimerEl.textContent=`${padZero(t)}:${padZero(o)}:${padZero(d)}`,r<=1e3&&!e[n.name]&&(triggerPrayerNotification(n.name),e[n.name]=!0)}else updateCountdown(a)},1e3)}
-        function findNextPrayer(a,e){for(const t of["Fajr","Sunrise","Dhuhr","Asr","Maghrib","Isha"])if(e[t]){const n=new Date(`${a.toDateString()} ${e[t]}`);if(n>a)return{name:t,time:e[t]}}return null}
-        function hideLoading(){loadingScreen.style.opacity="0",setTimeout(()=>{loadingScreen.style.display="none",mainContent.style.opacity=1},300)}
-        function startCompass(){"undefined"!=typeof DeviceOrientationEvent&&"function"==typeof DeviceOrientationEvent.requestPermission?DeviceOrientationEvent.requestPermission().then(a=>{"granted"===a&&window.addEventListener("deviceorientation",handleOrientation)}).catch(console.error):window.addEventListener("deviceorientation",handleOrientation)}
-        function stopCompass(){window.removeEventListener("deviceorientation",handleOrientation)}
-        function handleOrientation(a){let e=a.webkitCompassHeading||a.alpha;null!==e&&compass&&qiblaLine&&(compass.style.transform=`rotate(${-e}deg)`,qiblaLine.style.transform=`translateX(-50%) rotate(${qiblaAngle}deg)`)}
-        async function populateQuranList(){try{const a=await fetch("https://api.quran.com/api/v4/chapters");quranChapters=(await a.json()).chapters;if(quranSurahList) quranSurahList.innerHTML=quranChapters.map((a,e)=>`<div id="surah-item-${a.id}" class="quran-surah flex justify-between items-center" onclick="toggleSurahPlay(${a.id}, ${e})"><div><p class="surah-name font-semibold">${a.id}. ${a.name_simple}</p><p class="text-sm text-gray-400">${a.translated_name.name}</p></div><i id="icon-${a.id}" class="fas fa-play play-pause-icon"></i></div>`).join("")}catch(a){console.error("Error fetching Surahs:",a)}}
-        async function toggleSurahPlay(a,e){const t=document.getElementById(`surah-item-${a}`);if(!quranAudioPlayer)return; if(currentPlayingSurahElement&&currentPlayingSurahElement!==t&&quranAudioPlayer.pause(),t.classList.contains("playing")&&!quranAudioPlayer.paused)quranAudioPlayer.pause();else if(quranAudioPlayer.volume=1,currentSurahIndex===e)quranAudioPlayer.play();else try{const t=await fetch(`https://api.quran.com/api/v4/chapter_recitations/7/${a}`),n=await t.json();quranAudioPlayer.src=n.audio_file.audio_url,currentSurahIndex=e,quranAudioPlayer.play()}catch(a){console.error("Error fetching Surah audio:",a)}}
-        if(quranAudioPlayer){ quranAudioPlayer.onplay=()=>{if(currentPlayingSurahElement){currentPlayingSurahElement.classList.remove("playing");let a=currentPlayingSurahElement.id.split("-")[2];document.getElementById(`icon-${a}`).classList.replace("fa-pause","fa-play")}const a=quranChapters[currentSurahIndex];currentPlayingSurahElement=document.getElementById(`surah-item-${a.id}`),currentPlayingSurahElement.classList.add("playing"),document.getElementById(`icon-${a.id}`).classList.replace("fa-play","fa-pause"),currentSurahName.textContent=`${a.name_simple} (${a.translated_name.name})`}; quranAudioPlayer.onpause=()=>{if(currentPlayingSurahElement){let a=currentPlayingSurahElement.id.split("-")[2];currentPlayingSurahElement.classList.remove("playing"),document.getElementById(`icon-${a}`).classList.replace("fa-pause","fa-play")}}}
-        function playNextSurah(){currentSurahIndex!==-1&&currentSurahIndex<quranChapters.length-1&&toggleSurahPlay(quranChapters[currentSurahIndex+1].id,currentSurahIndex+1)}
-        function incrementTasbeeh(){tasbeehCounterDisplay.textContent=++tasbeehCount;saveSettings("ramadanTasbeeh",tasbeehCount);tasbeehCounterDisplay.style.transform="scale(1.2)";setTimeout(()=>{tasbeehCounterDisplay.style.transform="scale(1)"},100)}
-        function resetTasbeeh(){tasbeehCounterDisplay.textContent=tasbeehCount=0;saveSettings("ramadanTasbeeh",tasbeehCount)}
-        function setupRadioPlayer(){if(!homeRadioAudioPlayer)return;homeRadioAudioPlayer.src=radioStations[0].url;homeRadioAudioPlayer.addEventListener("play",()=>{homeRadioAudioPlayer.volume=1})}
-        function onYouTubeIframeAPIReady(){if(!document.getElementById('youtube-player'))return;youtubePlayer=new YT.Player("youtube-player",{height:"480",width:"854",playerVars:{playsinline:1,listType:"playlist",list:"PL6b_3Yr67_wFpDJfaZLlMEUP6h5EroJi2",controls:0,rel:0},events:{onStateChange:onPlayerStateChange}})}
-        function onPlayerStateChange(a){if(tvPlayButton)tvPlayButton.classList.toggle("hidden",a.data===YT.PlayerState.PLAYING);if(tvPauseButton)tvPauseButton.classList.toggle("hidden",a.data!==YT.PlayerState.PLAYING)}
-        function playVideo(){youtubePlayer.playVideo()}
-        function pauseVideo(){youtubePlayer.pauseVideo()}
-        function nextVideo(){youtubePlayer.nextVideo()}
-        function previousVideo(){youtubePlayer.previousVideo()}
-        function loadAllSettings(){notificationsEnabled="false"!==localStorage.getItem(NOTIFICATION_STATUS_KEY);calculationMethod=localStorage.getItem(CALC_METHOD_KEY)||2;tasbeehCount=localStorage.getItem("ramadanTasbeeh")||0;if(tasbeehCounterDisplay)tasbeehCounterDisplay.textContent=tasbeehCount;if(calculationMethodSelect)calculationMethodSelect.value=calculationMethod;updateSettingsNotificationUI()}
-        function saveSettings(a,e){localStorage.setItem(a,e)}
-        function updateSettingsNotificationUI(){if(!settingsNotificationToggle)return;notificationsEnabled?(settingsNotificationToggle.textContent="Notifications are ON (Click to Disable)",settingsNotificationToggle.classList.remove("bg-red-600","hover:bg-red-700"),settingsNotificationToggle.classList.add("bg-green-600","hover:bg-green-700")):(settingsNotificationToggle.textContent="Notifications are OFF (Click to Enable)",settingsNotificationToggle.classList.remove("bg-green-600","hover:bg-green-700"),settingsNotificationToggle.classList.add("bg-red-600","hover:bg-red-700"))}
-        function toggleMasterNotifications(){"denied"===Notification.permission?showTemporaryMessage("Notifications are blocked by your browser.",!0):"default"===Notification.permission?Notification.requestPermission().then(a=>{"granted"===a&&(notificationsEnabled=!notificationsEnabled,saveSettings(NOTIFICATION_STATUS_KEY,notificationsEnabled),updateSettingsNotificationUI(),showTemporaryMessage(`Notifications ${notificationsEnabled?"Enabled":"Disabled"}`))}):(notificationsEnabled=!notificationsEnabled,saveSettings(NOTIFICATION_STATUS_KEY,notificationsEnabled),updateSettingsNotificationUI(),showTemporaryMessage(`Notifications ${notificationsEnabled?"Enabled":"Disabled"}`))}
-        function triggerPrayerNotification(a){if(notificationsEnabled&&salahPopup){salahPopupName.textContent=a;salahPopup.classList.remove("hidden");salahPopup.style.opacity=1;salahPopup.style.transform="translate(-50%, -50%) scale(1)"}}
-        function dismissSalahPopup(){if(salahPopup){salahPopup.style.opacity=0;salahPopup.style.transform="translate(-50%, -50%) scale(0.8)";setTimeout(()=>{salahPopup.classList.add("hidden")},300)}}
-        function showTemporaryMessage(a,e=!1){if(settingsSavedMessage){settingsSavedMessage.textContent=a;settingsSavedMessage.style.backgroundColor=e?"#ef4444":"#10B981";settingsSavedMessage.classList.add("opacity-100");setTimeout(()=>{settingsSavedMessage.classList.remove("opacity-100")},4e3)}}
-        function formatTime(a){if(!a)return"--:--";const[e,t]=a.split(":"),n=parseInt(e,10),o=n>=12?"PM":"AM",r=n%12||12;return`${padZero(r)}:${t} ${o}`}
-        function padZero(a){return a<10?"0"+a:String(a)}
-        function lerpColor(a, b, amount) { const from = parseInt(a.substring(1), 16); const to = parseInt(b.substring(1), 16); const ar = from >> 16, ag = from >> 8 & 0xff, ab = from & 0xff; const br = to >> 16, bg = to >> 8 & 0xff, bb = to & 0xff; const rr = Math.round(ar + amount * (br - ar)); const rg = Math.round(ag + amount * (bg - ag)); const rb = Math.round(ab + amount * (bb - ab)); return `#${(1 << 24 | rr << 16 | rg << 8 | rb).toString(16).slice(1).padStart(6, '0')}`; }
-        function createCelestialBody(type, container, left, top) { const body = document.createElement("div"); body.id = type; body.style.position = "absolute"; body.style.zIndex = "2"; body.style.left = `calc(${left}% - 25px)`; body.style.top = `calc(${top}% - 25px)`; container.appendChild(body); }
-        function createStarsAndPlanets(container, nightPercent) { for (let i = 0; i < 30; i++) { const star = document.createElement("div"); star.className = "star"; star.style.width = `${Math.random() * 2 + 1}px`; star.style.height = star.style.width; star.style.top = `${Math.random() * 90}%`; star.style.left = `${Math.random() * 100}%`; star.style.animationDelay = `${Math.random() * 5}s`; container.appendChild(star); } const planets = [ { color: 'rgba(255, 180, 120, 0.6)', size: '3px', speed: 0.95 }, { color: 'rgba(180, 210, 255, 0.7)', size: '2px', speed: 0.90 } ]; planets.forEach(p => { const planet = document.createElement('div'); planet.className = 'planet'; planet.style.width = p.size; planet.style.height = p.size; planet.style.backgroundColor = p.color; planet.style.top = `${Math.random() * 80 + 10}%`; planet.style.left = `calc(${nightPercent * 100 * p.speed}% - ${parseInt(p.size)/2}px)`; container.appendChild(planet); }); }
-        function updateCountdownBackground(a) { if (!a || !celestialVisualizationEl) return; const e = new Date(); const t = new Date(`${e.toDateString()} ${a.Fajr}`); const o = new Date(`${e.toDateString()} ${a.Sunrise}`); const n = new Date(`${e.toDateString()} ${a.Maghrib}`); const ishaTime = new Date(`${e.toDateString()} ${a.Isha}`); celestialVisualizationEl.innerHTML = ''; let s, l, c, g = 50, celestialType, nightPercent; const u = { night: ["#0a192f", "#113a3b"], sunrise: ["#4a6e8a", "#f28c38"], day: ["#87ceeb", "#f0e68c"], sunset: ["#1f2937", "#ff5f6d", "#ffc371"] }; if (e > o && e < n) { s = (e - o) / (n - o); l = `linear-gradient(to bottom, ${u.day[0]}, ${u.day[1]})`; celestialType = 'sun'; c = 100 * s; } else { if (e >= ishaTime) { const tomorrowFajr = new Date(t.getTime() + 864e5); nightPercent = (e - ishaTime) / (tomorrowFajr - ishaTime); } else { const yesterdayIsha = new Date(ishaTime.getTime() - 864e5); nightPercent = (e - yesterdayIsha) / (t - yesterdayIsha); } l = `linear-gradient(to bottom, ${u.night[0]}, ${u.night[1]})`; celestialType = 'moon'; c = 100 * nightPercent; createStarsAndPlanets(celestialVisualizationEl, nightPercent); } if (e > t && e < o) { s = (e - t) / (o - t); l = `linear-gradient(to bottom, ${lerpColor(u.night[0],u.sunrise[0],s)}, ${lerpColor(u.night[1],u.sunrise[1],s)})`; celestialType = 'sun'; c = 100 * s; } if (e > n && e < ishaTime) { s = (e - n) / (ishaTime - n); const dayTotalDuration = n - o; const timePastSunrise = e - o; const effectivePercentage = timePastSunrise / dayTotalDuration; l = `linear-gradient(to bottom, ${lerpColor(u.day[0],u.sunset[0],s)}, ${lerpColor(u.day[1],u.sunset[1],s)})`; celestialType = 'sun'; c = 100 * effectivePercentage; } if(countdownSectionCard) countdownSectionCard.style.background = l; createCelestialBody(celestialType, celestialVisualizationEl, c, g); }
-        function initializeTicker() { const tickerHtml = asmaUlHusna.map(name => `<div class="ticker-item"><div class="arabic-name">${name.arabic}</div><div class="english-translation">${name.english}</div></div>`).join(''); tickerContentEl.innerHTML = tickerHtml + tickerHtml; }
-        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
-        function fetchAndDisplayScrollableContent() { const hadiths = [ { text: "Actions are but by intentions, and every man shall have only that which he intended.", reference: "Sahih al-Bukhari 1" }, { text: "He who believes in Allah and the Last Day, let him speak good or else keep silent.", reference: "Sahih Muslim 47a" }, { text: "The strong man is not the one who is good at wrestling, but the strong man is the one who controls himself in a fit of rage.", reference: "Sahih al-Bukhari 6114" }, { text: "The most beloved of deeds to Allah are the most consistent of them, even if they are few.", reference: "Sahih al-Bukhari 6464" }, { text: "Do not belittle any good deed, even meeting your brother with a cheerful face.", reference: "Sahih Muslim 2626" }, { text: "Wealth is not in having many possessions. Rather, true wealth is the richness of the soul.", reference: "Sahih Muslim 1051" } ]; const shuffledHadiths = shuffleArray(hadiths); const contentHtml = shuffledHadiths.map(item => `<div class="scroll-item"><h3>Hadith</h3><p>"${item.text}"</p><p style="text-align: center; color: #a7f3d0; font-style: italic; margin-top: 0.5rem;">- ${item.reference}</p></div>`).join(''); scrollerContentEl.innerHTML = contentHtml + contentHtml; }
-        function initializeAnimations() { const ticker = document.getElementById('ticker-content'); const scroller = document.getElementById('scroller-content'); if (ticker) { const tickerAnimationDuration = 1200; const savedTickerPercentage = parseFloat(localStorage.getItem('tickerScrollPercentage')) || 0; const tickerDelay = -1 * tickerAnimationDuration * savedTickerPercentage; ticker.style.animation = `ticker-scroll ${tickerAnimationDuration}s linear ${tickerDelay}s infinite`; } if (scroller) { const scrollerAnimationDuration = 300; const savedScrollerPercentage = parseFloat(localStorage.getItem('scrollerScrollPercentage')) || 0; const scrollerDelay = -1 * scrollerAnimationDuration * savedScrollerPercentage; scroller.style.animation = `v-scroll ${scrollerAnimationDuration}s linear ${scrollerDelay}s infinite`; } window.addEventListener('beforeunload', () => { try { if (ticker) { const tickerMatrix = new DOMMatrix(window.getComputedStyle(ticker).transform); const tickerTranslateX = tickerMatrix.m41; const tickerContentWidth = ticker.scrollWidth / 2; if (tickerContentWidth > 0) { const tickerScrolledPercentage = Math.abs(tickerTranslateX) / tickerContentWidth; localStorage.setItem('tickerScrollPercentage', tickerScrolledPercentage % 1); } } } catch(e) { console.error("Could not save ticker state:", e); } try { if (scroller) { const scrollerMatrix = new DOMMatrix(window.getComputedStyle(scroller).transform); const scrollerTranslateY = scrollerMatrix.m42; const scrollerContentHeight = scroller.scrollHeight / 2; if (scrollerContentHeight > 0) { const scrollerScrolledPercentage = Math.abs(scrollerTranslateY) / scrollerContentHeight; localStorage.setItem('scrollerScrollPercentage', scrollerScrolledPercentage % 1); } } } catch(e) { console.error("Could not save scroller state:", e); } }); }
-        document.addEventListener("DOMContentLoaded", initializeAppFast);
-    </script>
-    <script>
-    // Navigation Handler
-    document.addEventListener("DOMContentLoaded", function() {
-        const navButtons = document.querySelectorAll('nav .nav-button');
-        let currentPage = window.location.pathname.split('/').pop();
-        if (currentPage === '' || currentPage === 'index.html') {
-            currentPage = 'index.html';
-        }
-        navButtons.forEach(button => {
-            const buttonPage = button.getAttribute('href');
-            button.classList.remove('active');
-            if (buttonPage === currentPage) {
-                button.classList.add('active');
+
+        // Initialize the app
+        const radioApp = new RadioApp();
+
+        // Handle page visibility change to pause audio when tab is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && radioApp.isPlaying) {
+                // Optional: pause when tab is hidden
+                // radioApp.togglePlayPause();
             }
         });
-    });
+
+        // Service Worker registration for PWA features (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {
+                    // Service worker registration failed, but app still works
+                });
+            });
+        }
     </script>
 </body>
 </html>
