@@ -16,6 +16,7 @@
     <link rel="dns-prefetch" href="//nl1.api.radio-browser.info">
     <link rel="dns-prefetch" href="//ipapi.co">
     <link rel="dns-prefetch" href="//ip-api.com">
+    <link rel="dns-prefetch" href="//ipinfo.io">
     <link rel="dns-prefetch" href="//www.highperformanceformat.com">
     <link rel="preconnect" href="//www.highperformanceformat.com">
     
@@ -257,21 +258,19 @@
             }
 
             async detectLocation() {
-                // Try IP location first as it's more reliable
                 try {
                     const ipLocation = await this.getLocationFromIP();
-                    if (ipLocation) {
-                        this.userLocation.country = ipLocation.country || '';
-                        this.userLocation.latitude = ipLocation.latitude || null;
-                        this.userLocation.longitude = ipLocation.longitude || null;
-                        console.log('Location detected:', this.userLocation);
+                    if (ipLocation && ipLocation.country) {
+                        this.userLocation.country = ipLocation.country;
+                        this.userLocation.latitude = ipLocation.latitude;
+                        this.userLocation.longitude = ipLocation.longitude;
+                        console.log('Location detected via IP:', this.userLocation);
                         return;
                     }
                 } catch (error) {
-                    console.warn('IP location detection failed:', error);
+                    console.warn('IP location detection failed:', error.message);
                 }
 
-                // Fallback to browser geolocation
                 if (navigator.geolocation) {
                     try {
                         const position = await new Promise((resolve, reject) => {
@@ -281,39 +280,82 @@
                         this.userLocation.longitude = position.coords.longitude;
                         const country = await this.getCountryFromCoordinates(position.coords.latitude, position.coords.longitude);
                         this.userLocation.country = country || '';
-                        console.log('Geolocation detected:', this.userLocation);
+                        console.log('Location detected via Geolocation API:', this.userLocation);
                     } catch (geoError) {
-                        console.warn('Geolocation failed:', geoError.message);
+                        console.warn('Browser geolocation failed:', geoError.message);
                         // Set a default location if all fails
                         this.userLocation.country = 'United States';
                         this.userLocation.latitude = 39.8283;
                         this.userLocation.longitude = -98.5795;
+                        console.log('Using default location.');
                     }
+                } else {
+                    // Set a default location if geolocation is not supported
+                    this.userLocation.country = 'United States';
+                    this.userLocation.latitude = 39.8283;
+                    this.userLocation.longitude = -98.5795;
+                    console.log('Geolocation not supported, using default location.');
                 }
             }
-
+            
             async getLocationFromIP() {
                 const apis = [
-                    { url: 'https://ipapi.co/json/', parse: data => ({ country: data.country_name, latitude: data.latitude, longitude: data.longitude }) },
-                    { url: 'https://ip-api.com/json/', parse: data => ({ country: data.country, latitude: data.lat, longitude: data.lon }) }
+                    { 
+                        url: 'https://ipinfo.io/json', 
+                        parse: data => ({ country: data.country, latitude: data.loc ? data.loc.split(',')[0] : null, longitude: data.loc ? data.loc.split(',')[1] : null }) 
+                    },
+                    { 
+                        url: 'https://ipapi.co/json/', 
+                        parse: data => ({ country: data.country_code, latitude: data.latitude, longitude: data.longitude }) 
+                    },
+                    { 
+                        url: 'https://ip-api.com/json/', 
+                        parse: data => ({ country: data.countryCode, latitude: data.lat, longitude: data.lon }) 
+                    }
                 ];
+            
                 for (const api of apis) {
                     try {
                         const response = await fetch(api.url, { headers: { 'Accept': 'application/json' }});
-                        if (!response.ok) continue;
-                        const data = await response.json();
-                        return api.parse(data);
-                    } catch (error) { continue; }
+                        if (response.ok) {
+                            const data = await response.json();
+                            const location = api.parse(data);
+                            if (location.country) {
+                                // Attempt to get full country name for better matching
+                                const countryName = await this.getCountryNameFromCode(location.country);
+                                location.country = countryName || location.country;
+                                return location;
+                            }
+                        }
+                    } catch (error) { 
+                        console.warn(`IP API failed: ${api.url}`, error);
+                        continue; 
+                    }
                 }
                 throw new Error('All IP location APIs failed');
             }
-
+            
+            async getCountryNameFromCode(code) {
+                try {
+                    const response = await fetch(`https://de1.api.radio-browser.info/json/countries/${code}`);
+                    if (!response.ok) return null;
+                    const data = await response.json();
+                    return data[0] ? data[0].name : null;
+                } catch (error) {
+                    return null;
+                }
+            }
+            
             async getCountryFromCoordinates(lat, lon) {
                 try {
                     const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+                    if (!response.ok) return null;
                     const data = await response.json();
                     return data.countryName;
-                } catch (error) { return null; }
+                } catch (error) { 
+                    console.error('Reverse geocoding failed:', error);
+                    return null; 
+                }
             }
 
             updateLocationIndicator() {
@@ -343,8 +385,8 @@
                 this.audio.addEventListener('loadstart', () => this.showPlayerLoading(true));
                 this.audio.addEventListener('canplay', () => this.showPlayerLoading(false));
                 this.audio.addEventListener('error', () => this.handleAudioError());
-                this.audio.addEventListener('play', () => { this.isPlaying = true; this.showPlayerLoading(false); });
-                this.audio.addEventListener('pause', () => { this.isPlaying = false; this.showPlayerLoading(false); });
+                this.audio.addEventListener('play', () => { this.isPlaying = true; this.showPlayerLoading(false); this.updatePlayPauseButton(); });
+                this.audio.addEventListener('pause', () => { this.isPlaying = false; this.showPlayerLoading(false); this.updatePlayPauseButton(); });
             }
 
             calculateDistance(lat1, lon1, lat2, lon2) {
@@ -358,12 +400,7 @@
 
             filterStations(stations) {
                 return stations.filter(station => {
-                    if (!station.name || !station.url) return false;
-                    const name = (station.name || '').toLowerCase();
-                    const country = (station.country || '').toLowerCase();
-                    const tags = (station.tags || '').toLowerCase();
-                    if (!station.url || station.url.length < 5) return false;
-                    return true;
+                    return station.name && station.url_resolved && station.url_resolved.length > 5;
                 });
             }
 
@@ -377,27 +414,16 @@
             }
 
             async loadStations() {
-                try {
-                    // Always try to load popular stations first to show something immediately
+                if (this.userLocation.country) {
+                    await this.loadLocalStations();
+                } else {
                     await this.loadPopularStations();
-                    
-                    // Then load by category
-                    await this.loadStationsByCategory();
-                    
-                    // If we have location, try to load local stations and update the display
-                    if (this.userLocation.country) {
-                        setTimeout(() => this.loadLocalStations(), 500);
-                    }
-                } catch (error) {
-                    console.error('Error loading stations:', error);
-                    // Show fallback popular stations
-                    this.loadPopularStations();
                 }
+                this.loadStationsByCategory();
             }
 
             async fetchStations(url, containerId, categoryKey) {
                 try {
-                    // Clear loading message
                     const container = document.getElementById(containerId);
                     if (container) {
                         container.innerHTML = '<div class="loading">Loading stations...</div>';
@@ -420,11 +446,13 @@
             }
 
             loadLocalStations() {
-                const countryCode = encodeURIComponent(this.userLocation.country);
-                return this.fetchStations(`https://de1.api.radio-browser.info/json/stations/bycountry/${countryCode}?limit=100&order=votes&reverse=true`, 'local-stations', 'local');
+                const countryName = encodeURIComponent(this.userLocation.country);
+                document.getElementById('local-section').querySelector('h2').textContent = `📻 Radio in ${this.userLocation.country}`;
+                return this.fetchStations(`https://de1.api.radio-browser.info/json/stations/bycountry/${countryName}?limit=100&order=votes&reverse=true`, 'local-stations', 'local');
             }
             
             loadPopularStations() {
+                document.getElementById('local-section').querySelector('h2').textContent = `📻 Popular Radio`;
                 return this.fetchStations('https://de1.api.radio-browser.info/json/stations/topvote/100', 'local-stations', 'local');
             }
 
@@ -550,12 +578,12 @@
                     if (!this.audio.src) this.audio.src = this.currentStation.url_resolved || this.currentStation.url;
                     this.audio.play().catch(error => this.handleAudioError(error));
                 }
-                this.updatePlayPauseButton();
             }
 
             stopAudio() {
                 this.audio.pause();
-                this.audio.currentTime = 0;
+                this.audio.src = '';
+                this.audio.removeAttribute('src');
                 this.isPlaying = false;
                 this.updatePlayPauseButton();
             }
@@ -563,22 +591,26 @@
             updatePlayPauseButton() {
                 const playIcon = document.getElementById('play-icon');
                 const pauseIcon = document.getElementById('pause-icon');
+                const stationLogo = document.getElementById('station-logo');
                 if (this.isPlaying) {
                     playIcon.style.display = 'none';
                     pauseIcon.style.display = 'block';
+                    stationLogo.classList.add('playing');
                 } else {
                     playIcon.style.display = 'block';
                     pauseIcon.style.display = 'none';
+                    stationLogo.classList.remove('playing');
                 }
             }
 
             showPlayerLoading(isLoading) {
                 const button = document.getElementById('play-pause');
+                const stationLogo = document.getElementById('station-logo');
                 if (isLoading) {
                     button.classList.add('loading');
+                    stationLogo.classList.remove('playing');
                 } else {
                     button.classList.remove('loading');
-                    this.updatePlayPauseButton();
                 }
             }
 
