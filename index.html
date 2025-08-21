@@ -808,42 +808,43 @@
                 }
             };
 
-            const showToast = (message) => {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            };
-
-            const handleShare = async (index) => {
+            // MODIFIED: The handleShare function is now completely new.
+            const handleShare = (index) => {
                 const property = properties[index];
-                const encodedProperty = btoa(JSON.stringify(property));
-                const shareUrl = `${window.location.origin}${window.location.pathname}?property=${encodedProperty}`;
                 
-                const shareData = {
-                    title: property.title,
-                    text: `Check out this property from MOHSIN ESTATE: ${property.title}, ${property.status} in ${property.location}. Price: ${property.price}`,
-                    url: shareUrl,
-                };
+                // 1. Generate the unique link that will open the modal on the website
+                const encodedProperty = btoa(JSON.stringify(property));
+                const propertyUrl = `${window.location.origin}${window.location.pathname}?property=${encodedProperty}`;
+                
+                // 2. Create the detailed message for WhatsApp, using its formatting (asterisks for bold)
+                const message = `
+*Check out this property from MOHSIN ESTATE!*
 
-                if (navigator.share) {
-                    try {
-                        await navigator.share(shareData);
-                    } catch (err) {
-                        console.error("Error sharing:", err);
-                    }
-                } else {
-                    navigator.clipboard.writeText(shareUrl).then(() => {
-                        showToast('Link copied to clipboard!');
-                    });
-                }
+*Property:* ${property.title}
+*Status:* ${property.status}
+*Location:* ${property.location}
+*Price:* ${property.price}
+*Details:* ${property.beds} Beds, ${property.baths} Baths
+
+*View full details here:*
+${propertyUrl}
+                `.trim();
+
+                // 3. URL-encode the entire message so it can be passed in a URL
+                const encodedMessage = encodeURIComponent(message);
+
+                // 4. Create the final WhatsApp "click to chat" URL
+                const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+
+                // 5. Open the WhatsApp link in a new browser tab. 
+                // This will prompt the user to open their WhatsApp app.
+                window.open(whatsappUrl, '_blank');
             };
 
             propertyListingsContainer.addEventListener('click', function(e) {
                 const shareButton = e.target.closest('.share-btn');
                 if (shareButton) {
+                    e.preventDefault();
                     const index = shareButton.dataset.index;
                     handleShare(index);
                 }
