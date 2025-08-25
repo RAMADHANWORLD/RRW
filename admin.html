@@ -3,134 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - MOHSIN ESTATE</title>
+    <title>MOHSIN ESTATE - Admin Panel</title>
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom CSS -->
     <style>
         :root {
-            --primary-color: #0a2d4d;
-            --secondary-color: #d4af37;
+            --primary-glow: #00aaff;
+            --secondary-glow: #0a2d4d;
+            --dark-bg: #121212;
+            --light-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-muted-color: #888;
+            --border-color: rgba(0, 170, 255, 0.2);
         }
+
         body {
-            background-color: #f0f2f5;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s;
         }
+
+        .card, .list-group-item {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
+            border-color: rgba(0, 170, 255, 0.5);
+        }
+        
+        .card-header {
+            background-color: rgba(0, 170, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary-glow);
+            font-weight: 600;
+        }
+        
+        .card-footer {
+             background-color: transparent;
+             border-top: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            background-color: var(--light-bg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
         .navbar-brand {
-            color: var(--secondary-color) !important;
+            color: var(--primary-glow) !important;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
-        #login-container {
-            min-height: 100vh;
+
+        h1, h4 {
+            color: var(--primary-glow);
+            font-weight: 600;
+        }
+        
+        .lead, p, .text-muted {
+            color: var(--text-muted-color) !important;
+        }
+        
+        .btn-portal {
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            margin: 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--secondary-glow);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #0055ff, var(--primary-glow));
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.4);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+        }
+        
+        .btn-dark {
+             background: var(--light-bg);
+             border: 1px solid var(--primary-glow);
+             color: var(--primary-glow);
+        }
+        
+        .btn-dark:hover, .btn-dark:focus {
+            background: var(--primary-glow);
+            color: var(--dark-bg);
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+            transform: translateY(-3px);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(40, 167, 69, 0.8);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+            border: none;
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+            color: var(--dark-bg);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.8);
+            color: var(--dark-bg);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: none;
+            box-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(220, 53, 69, 0.8);
+        }
+
+        .form-control, .form-select {
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .form-label {
+            color: var(--text-muted-color);
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-muted-color);
+            border: 1px solid transparent;
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            color: var(--primary-glow);
+            background-color: var(--light-bg);
+            border-color: var(--border-color) var(--border-color) var(--light-bg);
+        }
+
+        .list-group-item {
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .image-preview-container {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;
+        }
+        .preview-image-wrapper, .preview-video-wrapper { position: relative; }
+        .preview-image, .preview-video {
+            width: 100px; height: 100px; object-fit: cover;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .preview-image:hover, .preview-video:hover { transform: scale(1.05); }
+        .remove-media-btn {
+            position: absolute; top: -8px; right: -8px;
+            background-color: #dc3545; color: white; border: none;
+            border-radius: 50%; width: 24px; height: 24px;
+            font-size: 14px; line-height: 24px; text-align: center;
+            cursor: pointer; padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        /* Edit/Delete Button Styling */
+        .btn-outline-primary {
+            color: var(--primary-glow);
+            border-color: var(--primary-glow);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-glow);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+        .btn-danger, .btn-outline-danger {
+            box-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+        }
+         .btn-danger:hover, .btn-outline-danger:hover {
+            box-shadow: 0 0 25px rgba(220, 53, 69, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-glow);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            z-index: 1060;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .property-card {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .property-card:hover {
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
+            border-color: rgba(0, 170, 255, 0.5);
+        }
+
+        .property-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .property-title {
+            color: var(--primary-glow);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .property-details {
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+        }
+
+        .status-approved {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .status-rejected {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+        }
+
+        .stats-card {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
+            border-color: rgba(0, 170, 255, 0.5);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-glow);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+        }
+
+        .media-gallery {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .media-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid var(--border-color);
+        }
+
+        .media-item:hover {
+            transform: scale(1.1);
+        }
+
+        .media-item img, .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .file-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 2px solid var(--border-color);
+        }
+
+        .file-item img, .file-item video {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted-color);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .modal-content {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+        }
+
+        .modal-header {
+            background-color: rgba(0, 170, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary-glow);
+        }
+
+        .modal-footer {
+            background-color: transparent;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        @media (max-width: 768px) {
+            .property-card {
+                padding: 15px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+
+            .btn-portal {
+                font-size: 1.2rem;
+                padding: 0.8rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Login Interface -->
-    <div id="login-container">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white text-center">
-                    <h4><i class="fas fa-shield-halved me-2"></i>MOHSIN ESTATE</h4>
-                    <small>Admin Panel Login</small>
-                </div>
-                <div class="card-body">
-                    <form id="login-form">
-                        <div class="mb-3">
-                            <label for="username" class="form-label"><i class="fas fa-user me-2"></i>Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="admin" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label"><i class="fas fa-lock me-2"></i>Password</label>
-                            <input type="password" class="form-control" id="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
-                    </form>
-                    <div id="login-error" class="text-danger mt-3 text-center"></div>
+    <!-- Initial View -->
+    <div id="initial-view" class="container text-center" style="padding-top: 10vh;">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 mb-4"><i class="fas fa-building-user me-2"></i>Welcome to MOHSIN ESTATE</h1>
+                <p class="lead mb-5">Please select your portal to continue.</p>
+                <div>
+                    <button id="show-user-portal" class="btn btn-primary btn-portal"><i class="fas fa-user-plus me-2"></i>Add/Manage Property</button>
+                    <button id="show-admin-portal" class="btn btn-dark btn-portal"><i class="fas fa-shield-halved me-2"></i>Admin Panel</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Main Admin Panel (Initially Hidden) -->
-    <div id="admin-panel" style="display: none;">
-        <nav class="navbar navbar-dark bg-dark">
+
+    <!-- User Portal -->
+    <div id="user-portal-container" style="display: none;">
+        <nav class="navbar navbar-dark">
             <div class="container">
-                <a class="navbar-brand" href="index.html"><i class="fas fa-shield-halved me-2"></i>MOHSIN ESTATE - Admin Panel</a>
+                <a class="navbar-brand" href="javascript:void(0);" onclick="showInitialView()">
+                    <i class="fas fa-building-user me-2"></i>MOHSIN ESTATE - User Portal
+                </a>
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="btn btn-outline-light btn-sm me-3">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                    <a href="admin.html" class="btn btn-outline-info btn-sm me-3">
+                        <i class="fas fa-shield-halved me-2"></i>Admin Panel
+                    </a>
+                    <button id="logout-btn" class="btn btn-outline-warning d-none">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
             </div>
         </nav>
-
-        <div class="container mt-4">
-            <!-- Tab Navigation -->
-            <ul class="nav nav-tabs" id="adminTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="add-property-tab" data-bs-toggle="tab" data-bs-target="#add-property" type="button" role="tab" aria-controls="add-property" aria-selected="true"><i class="fas fa-plus-circle me-2"></i>Admin Posts</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="check-user-tab" data-bs-toggle="tab" data-bs-target="#check-user" type="button" role="tab" aria-controls="check-user" aria-selected="false"><i class="fas fa-users-cog me-2"></i>Check User Posts</button>
-                </li>
-            </ul>
-
-            <!-- Tab Content -->
-            <div class="tab-content" id="adminTabContent">
-                <!-- Admin Property Management Tab -->
-                <div class="tab-pane fade show active" id="add-property" role="tabpanel" aria-labelledby="add-property-tab">
-                    <div class="row mt-4">
-                        <div class="col-lg-5">
-                            <div class="card shadow-sm">
-                                <div class="card-header bg-primary text-white">
-                                    <h4><i class="fas fa-plus-circle me-2"></i>Add New Property (Admin)</h4>
-                                </div>
-                                <div class="card-body">
-                                    <form id="property-form">
-                                        <div class="mb-3">
-                                            <label for="propertyTitle" class="form-label">Property Title</label>
-                                            <input type="text" class="form-control" id="propertyTitle" placeholder="e.g., Spacious Family Home" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="propertyLocation" class="form-label">Location</label>
-                                            <input type="text" class="form-control" id="propertyLocation" placeholder="e.g., Sector 31-B, KDA Korangi" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="propertyStatus" class="form-label">Status</label>
-                                            <select class="form-select" id="propertyStatus">
-                                                <option value="For Sale">For Sale</option>
-                                                <option value="For Rent">For Rent</option>
-                                            </select>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3"><label for="propertyBeds" class="form-label">Beds</label><input type="number" class="form-control" id="propertyBeds" required></div>
-                                            <div class="col-md-4 mb-3"><label for="propertyBaths" class="form-label">Baths</label><input type="number" class="form-control" id="propertyBaths" required></div>
-                                            <div class="col-md-4 mb-3"><label for="propertyArea" class="form-label">Area (Sq.Yd.)</label><input type="text" class="form-control" id="propertyArea" placeholder="240" required></div>
-                                        </div>
-                                        <div class="mb-3"><label for="propertyPrice" class="form-label">Price / Rent</label><input type="text" class="form-control" id="propertyPrice" placeholder="e.g., PKR 1.85 Crore" required></div>
-                                        <div class="mb-3"><label for="propertyImage" class="form-label">Upload Image</label><input type="file" class="form-control" id="propertyImage" accept="image/*" required></div>
-                                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Save Property</button>
-                                    </form>
-                                </div>
-                            </div>
+        
+        <div id="login-view" class="container" style="max-width: 400px; margin: 5rem auto;">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h4><i class="fas fa-mobile-alt me-2"></i>Create Account / Login</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-center">Enter your mobile number to manage your property listings.</p>
+                    <form id="user-login-form">
+                        <div class="mb-3">
+                            <label for="mobileNumber" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="mobileNumber" required placeholder="0333xxxxxxx" pattern="03[0-9]{9}">
                         </div>
-                        <div class="col-lg-7">
-                            <div class="card shadow-sm">
-                                <div class="card-header"><h4><i class="fas fa-list-alt me-2"></i>Current Admin Listings</h4></div>
-                                <div class="card-body"><div id="property-list" class="list-group"></div></div>
-                            </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Continue
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="main-content" class="container mt-5 d-none">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h4 id="form-title"><i class="fas fa-plus-circle me-2"></i>Add New Property</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="user-property-form">
+                                <input type="hidden" id="propertyId">
+                                
+                                <div class="mb-3">
+                                    <label for="userPropertyTitle" class="form-label">Property Title</label>
+                                    <input type="text" class="form-control" id="userPropertyTitle" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userPropertyType" class="form-label">Property Type</label>
+                                    <select class="form-select" id="userPropertyType" required>
+                                        <option value="">Select Type</option>
+                                        <option value="House">House</option>
+                                        <option value="Plot">Plot</option>
+                                        <option value="Commercial">Commercial</option>
+                                        <option value="Apartment">Apartment</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userPurpose" class="form-label">Purpose</label>
+                                    <select class="form-select" id="userPurpose" required>
+                                        <option value="">Select Purpose</option>
+                                        <option value="Sale">For Sale</option>
+                                        <option value="Rent">For Rent</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userPrice" class="form-label">Price (PKR)</label>
+                                    <input type="number" class="form-control" id="userPrice" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="userLocation" placeholder="e.g., Sector 51-A, KDA Scheme 33" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userArea" class="form-label">Area</label>
+                                    <input type="text" class="form-control" id="userArea" placeholder="e.g., 120 sq yards, 5 marla" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userBedrooms" class="form-label">Bedrooms</label>
+                                    <select class="form-select" id="userBedrooms">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3" selected>3</option>
+                                        <option value="4">4</option>
+                                        <option value="5+">5+</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userBathrooms" class="form-label">Bathrooms</label>
+                                    <select class="form-select" id="userBathrooms">
+                                        <option value="1">1</option>
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5+">5+</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="userDescription" rows="3" placeholder="Describe your property..."></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userImages" class="form-label">Property Images</label>
+                                    <input type="file" class="form-control" id="userImages" multiple accept="image/*">
+                                    <div id="user-image-preview" class="image-preview-container"></div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="userVideos" class="form-label">Property Videos</label>
+                                    <input type="file" class="form-control" id="userVideos" multiple accept="video/*">
+                                    <div id="user-video-preview" class="image-preview-container"></div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100" id="submit-property-btn">
+                                    <i class="fas fa-plus me-2"></i>Add Property
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- User Post Management Tab -->
-                <div class="tab-pane fade" id="check-user" role="tabpanel" aria-labelledby="check-user-tab">
-                    <div class="card shadow-sm mt-4">
-                        <div class="card-header bg-secondary text-white">
-                            <h4><i class="fas fa-tasks me-2"></i>Manage All User Properties</h4>
+                
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h4><i class="fas fa-list me-2"></i>My Properties</h4>
                         </div>
                         <div class="card-body">
-                            <div id="all-property-list" class="list-group">
-                               <!-- All properties will be dynamically inserted here -->
+                            <div id="user-properties-loading" class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-3">Loading your properties...</p>
+                            </div>
+                            
+                            <div id="user-properties-list">
+                                <!-- User properties will be loaded here -->
+                            </div>
+                            
+                            <div id="no-user-properties" class="empty-state d-none">
+                                <i class="fas fa-home fa-3x mb-3"></i>
+                                <h5>No Properties Yet</h5>
+                                <p>Start by adding your first property using the form on the left.</p>
                             </div>
                         </div>
                     </div>
@@ -139,149 +636,765 @@
         </div>
     </div>
 
+    <!-- Admin Portal -->
+    <div id="admin-portal-container" style="display: none;">
+        <nav class="navbar navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="javascript:void(0);" onclick="showInitialView()">
+                    <i class="fas fa-shield-halved me-2"></i>MOHSIN ESTATE - Admin Panel
+                </a>
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="btn btn-outline-light btn-sm me-3">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div id="admin-login-view" class="container" style="max-width: 400px; margin: 5rem auto;">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h4><i class="fas fa-lock me-2"></i>Admin Login</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="admin-login-form">
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="admin-content" class="container mt-5 d-none">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card">
+                        <div class="stat-number" id="total-properties">0</div>
+                        <div class="stat-label">Total Properties</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card">
+                        <div class="stat-number" id="pending-properties">0</div>
+                        <div class="stat-label">Pending Review</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card">
+                        <div class="stat-number" id="approved-properties">0</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card">
+                        <div class="stat-number" id="rejected-properties">0</div>
+                        <div class="stat-label">Rejected</div>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
+                        <i class="fas fa-clock me-2"></i>Pending Properties
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button" role="tab">
+                        <i class="fas fa-check me-2"></i>Approved Properties
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button" role="tab">
+                        <i class="fas fa-times me-2"></i>Rejected Properties
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                        <i class="fas fa-list me-2"></i>All Properties
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="adminTabContent">
+                <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                    <div class="mt-4">
+                        <div id="pending-properties-loading" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading pending properties...</p>
+                        </div>
+                        <div id="pending-properties-list"></div>
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="approved" role="tabpanel">
+                    <div class="mt-4">
+                        <div id="approved-properties-loading" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading approved properties...</p>
+                        </div>
+                        <div id="approved-properties-list"></div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="rejected" role="tabpanel">
+                    <div class="mt-4">
+                        <div id="rejected-properties-loading" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading rejected properties...</p>
+                        </div>
+                        <div id="rejected-properties-list"></div>
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="all" role="tabpanel">
+                    <div class="mt-4">
+                        <div id="all-properties-loading" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading all properties...</p>
+                        </div>
+                        <div id="all-properties-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast-notification">
+        <span id="toast-message"></span>
+    </div>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Admin JavaScript -->
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        
+        // Supabase configuration
+        const supabaseUrl = "https://cjshxsphqicmmcwqxcmx.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqc2h4c3BocWljbW1jd3F4Y214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMzQxNDAsImV4cCI6MjA3MTcxMDE0MH0.n-Y9KgffhcysGWsLLrHUMBoVuUmdEqyZRK6gtIY683Q";
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Login Elements
-            const loginForm = document.getElementById('login-form');
-            const loginContainer = document.getElementById('login-container');
-            const adminPanel = document.getElementById('admin-panel');
-            const loginError = document.getElementById('login-error');
+        // Initialize Supabase client
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-            // Admin Panel Elements
-            const propertyForm = document.getElementById('property-form');
-            const adminPropertyList = document.getElementById('property-list');
-            const allPropertyList = document.getElementById('all-property-list');
-            const userCheckTab = document.getElementById('check-user-tab');
+        // Global variables
+        window.supabase = supabase;
+        let userSelectedImages = [];
+        let userSelectedVideos = [];
+        let currentUser = null;
 
-            // --- Login Logic ---
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
+        // Admin password
+        const ADMIN_PASSWORD = "mohsin123";
 
-                // Check credentials
-                if (username === 'admin' && password === 'mohsin@123') {
-                    // Hide login and show admin panel
-                    loginContainer.style.display = 'none';
-                    adminPanel.style.display = 'block';
-                    // Initial load of properties
-                    loadAdminProperties();
+        // Toast notification function
+        window.showToast = function(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast-notification show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Navigation functions
+        window.showInitialView = function() {
+            document.getElementById('initial-view').style.display = 'block';
+            document.getElementById('user-portal-container').style.display = 'none';
+            document.getElementById('admin-portal-container').style.display = 'none';
+        }
+
+        window.showUserPortal = function() {
+            document.getElementById('initial-view').style.display = 'none';
+            document.getElementById('user-portal-container').style.display = 'block';
+            document.getElementById('admin-portal-container').style.display = 'none';
+        }
+
+        window.showAdminPortal = function() {
+            document.getElementById('initial-view').style.display = 'none';
+            document.getElementById('user-portal-container').style.display = 'none';
+            document.getElementById('admin-portal-container').style.display = 'block';
+        }
+
+        // Initial view button handlers
+        document.getElementById('show-user-portal').addEventListener('click', showUserPortal);
+        document.getElementById('show-admin-portal').addEventListener('click', showAdminPortal);
+
+        // User login functionality
+        document.getElementById('user-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mobileNumber = document.getElementById('mobileNumber').value;
+            
+            if (mobileNumber && /^03[0-9]{9}$/.test(mobileNumber)) {
+                currentUser = mobileNumber;
+                document.getElementById('login-view').classList.add('d-none');
+                document.getElementById('main-content').classList.remove('d-none');
+                document.getElementById('logout-btn').classList.remove('d-none');
+                loadUserProperties();
+                showToast('Logged in successfully!', 'success');
+            } else {
+                showToast('Please enter a valid mobile number', 'error');
+            }
+        });
+
+        // User logout
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            currentUser = null;
+            document.getElementById('login-view').classList.remove('d-none');
+            document.getElementById('main-content').classList.add('d-none');
+            document.getElementById('logout-btn').classList.add('d-none');
+            document.getElementById('mobileNumber').value = '';
+            showToast('Logged out successfully', 'info');
+        });
+
+        // Admin login functionality
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('admin-login-view').classList.add('d-none');
+                document.getElementById('admin-content').classList.remove('d-none');
+                loadAdminStats();
+                loadPropertiesByStatus('pending');
+                showToast('Admin login successful!', 'success');
+            } else {
+                showToast('Invalid password. Please try again.', 'error');
+            }
+        });
+
+        // Tab switching for admin
+        document.getElementById('pending-tab').addEventListener('click', () => loadPropertiesByStatus('pending'));
+        document.getElementById('approved-tab').addEventListener('click', () => loadPropertiesByStatus('approved'));
+        document.getElementById('rejected-tab').addEventListener('click', () => loadPropertiesByStatus('rejected'));
+        document.getElementById('all-tab').addEventListener('click', () => loadPropertiesByStatus('all'));
+
+        // File preview for user property form
+        document.getElementById('userImages').addEventListener('change', function(e) {
+            handleFilePreview(e, 'user-image-preview', 'images', userSelectedImages);
+        });
+
+        document.getElementById('userVideos').addEventListener('change', function(e) {
+            handleFilePreview(e, 'user-video-preview', 'videos', userSelectedVideos);
+        });
+
+        function handleFilePreview(event, previewId, fileType, selectedArray) {
+            const files = Array.from(event.target.files);
+            const previewContainer = document.getElementById(previewId);
+            
+            files.forEach(file => {
+                selectedArray.push(file);
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = fileType === 'images' ? 'preview-image-wrapper' : 'preview-video-wrapper';
+                
+                if (fileType === 'images') {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.className = 'preview-image';
+                    wrapper.appendChild(img);
                 } else {
-                    loginError.textContent = 'Invalid username or password.';
+                    const video = document.createElement('video');
+                    video.src = URL.createObjectURL(file);
+                    video.className = 'preview-video';
+                    video.controls = true;
+                    wrapper.appendChild(video);
                 }
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-media-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function() {
+                    const index = selectedArray.indexOf(file);
+                    if (index > -1) {
+                        selectedArray.splice(index, 1);
+                    }
+                    wrapper.remove();
+                };
+                
+                wrapper.appendChild(removeBtn);
+                previewContainer.appendChild(wrapper);
             });
+        }
 
+        // User property form submission
+        document.getElementById('user-property-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-property-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+                submitBtn.disabled = true;
 
-            // --- Property Management Logic (Untouched) ---
-            function getProperties() {
-                return JSON.parse(localStorage.getItem('properties')) || [];
-            }
+                // Get form data
+                const title = document.getElementById('userPropertyTitle').value;
+                const propertyType = document.getElementById('userPropertyType').value;
+                const purpose = document.getElementById('userPurpose').value;
+                const price = document.getElementById('userPrice').value;
+                const location = document.getElementById('userLocation').value;
+                const area = document.getElementById('userArea').value;
+                const bedrooms = document.getElementById('userBedrooms').value;
+                const bathrooms = document.getElementById('userBathrooms').value;
+                const description = document.getElementById('userDescription').value;
 
-            function saveProperties(properties) {
-                localStorage.setItem('properties', JSON.stringify(properties));
-            }
-
-            // --- Admin Property Form Logic ---
-            propertyForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const imageFile = document.getElementById('propertyImage').files[0];
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const imageBase64 = event.target.result;
-                        const property = {
-                            id: Date.now(),
-                            title: document.getElementById('propertyTitle').value,
-                            location: document.getElementById('propertyLocation').value,
-                            status: document.getElementById('propertyStatus').value,
-                            beds: document.getElementById('propertyBeds').value,
-                            baths: document.getElementById('propertyBaths').value,
-                            area: document.getElementById('propertyArea').value,
-                            price: document.getElementById('propertyPrice').value,
-                            image: imageBase64,
-                            userId: 'admin' // Mark as an admin post
-                        };
-
-                        const properties = getProperties();
-                        properties.push(property);
-                        saveProperties(properties);
-                        propertyForm.reset();
-                        loadAdminProperties();
-                        loadAllProperties(); // Refresh the other tab too
-                    };
-                    reader.readAsDataURL(imageFile);
-                }
-            });
-
-            // --- Load Properties Logic ---
-            function loadAdminProperties() {
-                const properties = getProperties().filter(p => p.userId === 'admin');
-                adminPropertyList.innerHTML = ''; 
-                if(properties.length === 0){
-                    adminPropertyList.innerHTML = '<p class="text-center text-muted">No admin properties have been added yet.</p>';
+                // Validate required fields
+                if (!title || !propertyType || !purpose || !price || !location || !area) {
+                    showToast('Please fill in all required fields', 'error');
                     return;
                 }
-                properties.forEach(property => {
-                    const item = document.createElement('div');
-                    item.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    item.innerHTML = `<span><img src="${property.image}" width="50" height="50" class="me-3 rounded" style="object-fit: cover;"><strong>${property.title}</strong> - ${property.location}</span><button class="btn btn-danger btn-sm" onclick="deleteProperty(${property.id})"><i class="fas fa-trash-alt"></i></button>`;
-                    adminPropertyList.appendChild(item);
-                });
-            }
 
-            function loadAllProperties() {
-                const properties = getProperties();
-                allPropertyList.innerHTML = '';
-                 if(properties.length === 0){
-                    allPropertyList.innerHTML = '<p class="text-center text-muted">No properties exist yet.</p>';
-                    return;
-                }
-                properties.forEach(property => {
-                    const userIdentifier = property.userId === 'admin' 
-                        ? `<span class="badge bg-primary">Admin</span>` 
-                        : `<span class="badge bg-info text-dark">User: ${property.userId}</span>`;
+                // Upload images
+                const imageUrls = [];
+                for (const file of userSelectedImages) {
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const { data, error } = await supabase.storage
+                        .from('property_images')
+                        .upload(fileName, file);
                     
-                    const item = document.createElement('div');
-                    item.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    item.innerHTML = `
-                        <div class="d-flex align-items-center">
-                            <img src="${property.image}" width="50" height="50" class="me-3 rounded" style="object-fit: cover;">
-                            <div>
-                                <strong>${property.title}</strong><br>
-                                <small class="text-muted">${property.location}</small>
-                            </div>
+                    if (error) {
+                        console.error('Image upload error:', error);
+                        continue;
+                    }
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('property_images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrls.push(publicUrl);
+                }
+
+                // Upload videos
+                const videoUrls = [];
+                for (const file of userSelectedVideos) {
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const { data, error } = await supabase.storage
+                        .from('property_images')
+                        .upload(fileName, file);
+                    
+                    if (error) {
+                        console.error('Video upload error:', error);
+                        continue;
+                    }
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('property_images')
+                        .getPublicUrl(fileName);
+                    
+                    videoUrls.push(publicUrl);
+                }
+
+                // Insert property
+                const { data, error } = await supabase
+                    .from('properties')
+                    .insert([{
+                        title,
+                        property_type: propertyType,
+                        purpose,
+                        price: parseInt(price),
+                        location,
+                        area,
+                        bedrooms,
+                        bathrooms,
+                        description,
+                        images: imageUrls,
+                        videos: videoUrls,
+                        mobile_number: currentUser,
+                        status: 'pending'
+                    }]);
+
+                if (error) {
+                    console.error('Database insert error:', error);
+                    showToast('Error submitting property. Please try again.', 'error');
+                    return;
+                }
+
+                showToast('Property submitted successfully! It will be reviewed by admin.', 'success');
+                
+                // Reset form
+                document.getElementById('user-property-form').reset();
+                userSelectedImages = [];
+                userSelectedVideos = [];
+                document.getElementById('user-image-preview').innerHTML = '';
+                document.getElementById('user-video-preview').innerHTML = '';
+                
+                // Reload user properties
+                loadUserProperties();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Load user properties
+        async function loadUserProperties() {
+            const loadingElement = document.getElementById('user-properties-loading');
+            const listElement = document.getElementById('user-properties-list');
+            const noPropertiesElement = document.getElementById('no-user-properties');
+            
+            try {
+                loadingElement.style.display = 'block';
+                listElement.innerHTML = '';
+                noPropertiesElement.classList.add('d-none');
+
+                const { data: properties, error } = await supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('mobile_number', currentUser)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading user properties:', error);
+                    return;
+                }
+
+                loadingElement.style.display = 'none';
+
+                if (!properties || properties.length === 0) {
+                    noPropertiesElement.classList.remove('d-none');
+                    return;
+                }
+
+                properties.forEach(property => {
+                    const propertyCard = createUserPropertyCard(property);
+                    listElement.appendChild(propertyCard);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        // Create user property card
+        function createUserPropertyCard(property) {
+            const item = document.createElement('div');
+            item.className = 'list-group-item';
+
+            let imageSrc = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=200';
+            if (property.images && property.images.length > 0) {
+                imageSrc = property.images[0];
+            }
+
+            item.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="d-flex">
+                        <img src="${imageSrc}" alt="${property.title}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 15px;">
+                        <div>
+                            <h6 class="mb-1 property-title">${property.title}</h6>
+                            <p class="mb-1 property-details">${property.property_type} • ${property.purpose} • PKR ${parseInt(property.price).toLocaleString()}</p>
+                            <small class="property-details">${property.location} • ${property.area}</small>
                         </div>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3 text-end">${userIdentifier}</div>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProperty(${property.id})">
-                                <i class="fas fa-trash-alt me-1"></i> Delete
+                    </div>
+                    <div class="text-end">
+                        <span class="status-badge status-${property.status}">${property.status}</span>
+                        <div class="mt-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="editUserProperty('${property.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteUserProperty('${property.id}')">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
+                    </div>
+                </div>
+            `;
+
+            return item;
+        }
+
+        // Load admin statistics
+        async function loadAdminStats() {
+            try {
+                const { data: properties, error } = await supabase
+                    .from('properties')
+                    .select('status');
+
+                if (error) {
+                    console.error('Error loading stats:', error);
+                    return;
+                }
+
+                const stats = {
+                    total: properties.length,
+                    pending: properties.filter(p => p.status === 'pending').length,
+                    approved: properties.filter(p => p.status === 'approved').length,
+                    rejected: properties.filter(p => p.status === 'rejected').length
+                };
+
+                document.getElementById('total-properties').textContent = stats.total;
+                document.getElementById('pending-properties').textContent = stats.pending;
+                document.getElementById('approved-properties').textContent = stats.approved;
+                document.getElementById('rejected-properties').textContent = stats.rejected;
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load properties by status for admin
+        async function loadPropertiesByStatus(status) {
+            const containerId = status === 'all' ? 'all-properties' : `${status}-properties`;
+            const loadingId = `${containerId}-loading`;
+            const listId = `${containerId}-list`;
+            
+            const loadingElement = document.getElementById(loadingId);
+            const listElement = document.getElementById(listId);
+            
+            try {
+                loadingElement.style.display = 'block';
+                listElement.innerHTML = '';
+
+                let query = supabase.from('properties').select('*');
+                
+                if (status !== 'all') {
+                    query = query.eq('status', status);
+                }
+
+                const { data: properties, error } = await query.order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading properties:', error);
+                    loadingElement.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h5>Error loading properties</h5>
+                            <p>Please try again later.</p>
+                        </div>
                     `;
-                    allPropertyList.appendChild(item);
+                    return;
+                }
+
+                loadingElement.style.display = 'none';
+
+                if (!properties || properties.length === 0) {
+                    listElement.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-home"></i>
+                            <h5>No ${status === 'all' ? '' : status} properties</h5>
+                            <p>There are no properties${status === 'all' ? '' : ` with ${status} status`}.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                properties.forEach(property => {
+                    const propertyCard = createAdminPropertyCard(property);
+                    listElement.appendChild(propertyCard);
                 });
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingElement.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h5>Error loading properties</h5>
+                        <p>Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Create admin property card
+        function createAdminPropertyCard(property) {
+            const card = document.createElement('div');
+            card.className = 'property-card';
+
+            let imageSrc = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=200';
+            if (property.images && property.images.length > 0) {
+                imageSrc = property.images[0];
             }
 
-            window.deleteProperty = function(id) {
-                if(confirm('Are you sure you want to permanently delete this property?')){
-                    let properties = getProperties();
-                    properties = properties.filter(p => p.id !== id);
-                    saveProperties(properties);
-                    loadAdminProperties(); // Reload both lists
-                    loadAllProperties();
+            let mediaGallery = '';
+            if (property.images && property.images.length > 0) {
+                mediaGallery += '<div class="media-gallery mt-2">';
+                property.images.forEach(img => {
+                    mediaGallery += `<div class="media-item"><img src="${img}" alt="Property"></div>`;
+                });
+                if (property.videos && property.videos.length > 0) {
+                    property.videos.forEach(video => {
+                        mediaGallery += `<div class="media-item"><video src="${video}"></video></div>`;
+                    });
                 }
+                mediaGallery += '</div>';
             }
-            
-            // Load all properties when the "Check User Posts" tab is shown
-            userCheckTab.addEventListener('shown.bs.tab', function (event) {
-                loadAllProperties();
-            });
-        });
+
+            let actionButtons = '';
+            if (property.status === 'pending') {
+                actionButtons = `
+                    <button class="btn btn-success btn-sm me-2" onclick="updatePropertyStatus('${property.id}', 'approved')">
+                        <i class="fas fa-check me-1"></i>Approve
+                    </button>
+                    <button class="btn btn-warning btn-sm me-2" onclick="updatePropertyStatus('${property.id}', 'rejected')">
+                        <i class="fas fa-times me-1"></i>Reject
+                    </button>
+                `;
+            } else if (property.status === 'rejected') {
+                actionButtons = `
+                    <button class="btn btn-success btn-sm me-2" onclick="updatePropertyStatus('${property.id}', 'approved')">
+                        <i class="fas fa-check me-1"></i>Approve
+                    </button>
+                `;
+            } else if (property.status === 'approved') {
+                actionButtons = `
+                    <button class="btn btn-warning btn-sm me-2" onclick="updatePropertyStatus('${property.id}', 'rejected')">
+                        <i class="fas fa-times me-1"></i>Reject
+                    </button>
+                `;
+            }
+
+            actionButtons += `
+                <button class="btn btn-danger btn-sm" onclick="deleteProperty('${property.id}')">
+                    <i class="fas fa-trash me-1"></i>Delete
+                </button>
+            `;
+
+            card.innerHTML = `
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="${imageSrc}" alt="${property.title}" class="property-image">
+                    </div>
+                    <div class="col-md-7">
+                        <h6 class="property-title">${property.title}</h6>
+                        <div class="property-details">
+                            <p class="mb-1"><strong>Type:</strong> ${property.property_type} | <strong>Purpose:</strong> ${property.purpose}</p>
+                            <p class="mb-1"><strong>Location:</strong> ${property.location} | <strong>Area:</strong> ${property.area}</p>
+                            <p class="mb-1"><strong>Price:</strong> PKR ${parseInt(property.price).toLocaleString()}</p>
+                            <p class="mb-1"><strong>Contact:</strong> ${property.mobile_number}</p>
+                            <p class="mb-0"><strong>Submitted:</strong> ${new Date(property.created_at).toLocaleDateString()}</p>
+                        </div>
+                        ${mediaGallery}
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <div class="mb-3">
+                            <span class="status-badge status-${property.status}">${property.status}</span>
+                        </div>
+                        <div class="d-flex flex-column gap-2">
+                            ${actionButtons}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Update property status
+        window.updatePropertyStatus = async function(propertyId, newStatus) {
+            try {
+                const { data, error } = await supabase
+                    .from('properties')
+                    .update({ status: newStatus })
+                    .eq('id', propertyId);
+
+                if (error) {
+                    console.error('Error updating property status:', error);
+                    showToast('Error updating property status', 'error');
+                    return;
+                }
+
+                showToast(`Property ${newStatus} successfully!`, 'success');
+                
+                // Reload stats and current tab
+                loadAdminStats();
+                const activeTab = document.querySelector('#adminTabs .nav-link.active').id;
+                const status = activeTab.replace('-tab', '');
+                loadPropertiesByStatus(status);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred while updating property status', 'error');
+            }
+        }
+
+        // Delete property
+        window.deleteProperty = async function(propertyId) {
+            if (!confirm('Are you sure you want to delete this property? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('properties')
+                    .delete()
+                    .eq('id', propertyId);
+
+                if (error) {
+                    console.error('Error deleting property:', error);
+                    showToast('Error deleting property', 'error');
+                    return;
+                }
+
+                showToast('Property deleted successfully!', 'success');
+                
+                // Reload stats and current tab
+                loadAdminStats();
+                const activeTab = document.querySelector('#adminTabs .nav-link.active').id;
+                const status = activeTab.replace('-tab', '');
+                loadPropertiesByStatus(status);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred while deleting property', 'error');
+            }
+        }
+
+        // Delete user property
+        window.deleteUserProperty = async function(propertyId) {
+            if (!confirm('Are you sure you want to delete this property?')) {
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('properties')
+                    .delete()
+                    .eq('id', propertyId)
+                    .eq('mobile_number', currentUser);
+
+                if (error) {
+                    console.error('Error deleting property:', error);
+                    showToast('Error deleting property', 'error');
+                    return;
+                }
+
+                showToast('Property deleted successfully!', 'success');
+                loadUserProperties();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred while deleting property', 'error');
+            }
+        }
+
+        // Edit user property (placeholder)
+        window.editUserProperty = function(propertyId) {
+            showToast('Edit functionality coming soon!', 'info');
+        }
+
     </script>
 </body>
 </html>

@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- MODIFIED: Set a responsive viewport for all devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOHSIN ESTATE - KDA Employment Society Korangi Properties</title>
     
@@ -17,6 +16,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Custom CSS -->
     <style>
         :root {
@@ -29,7 +31,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth;
-            background-color: #f0f2f5; /* A slightly off-white background for a softer look */
+            background-color: #f0f2f5;
         }
 
         /* --- Ad Container Styles --- */
@@ -41,7 +43,7 @@
         
         .ad-container-side {
             position: fixed;
-            top: 100px; /* Position below the navbar */
+            top: 100px; 
             width: 160px;
             height: 300px;
             z-index: 1000;
@@ -55,7 +57,6 @@
             right: 20px;
         }
         
-        /* ADDED: Media query to hide side ads on smaller screens to prevent overlap */
         @media (max-width: 1400px) {
             .ad-container-side {
                 display: none;
@@ -113,7 +114,6 @@
         }
         .hero-content h1 {
             font-family: 'Playfair Display', serif;
-            /* MODIFIED: Changed fixed font size to be responsive */
             font-size: 2.5rem; 
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
@@ -122,7 +122,6 @@
             font-size: 1.1rem;
         }
 
-        /* ADDED: Media query for larger screens */
         @media (min-width: 768px) {
             .hero-content h1 {
                 font-size: 4rem;
@@ -169,6 +168,7 @@
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
         }
         .property-card:hover {
             transform: translateY(-8px);
@@ -176,6 +176,17 @@
         }
         .property-image {
             position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
         }
         .property-badge {
             position: absolute;
@@ -237,6 +248,7 @@
         .contact-info-card a {
             color: var(--secondary-color);
             transition: color 0.3s ease;
+            text-decoration: none;
         }
         .contact-info-card a:hover {
             color: #fff;
@@ -260,16 +272,20 @@
             font-weight: 600;
             padding: 10px 25px;
             transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
         }
 
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            color: white;
         }
         .btn-primary:hover {
             background-color: #08243e;
             border-color: #08243e;
             transform: translateY(-2px);
+            color: white;
         }
         .btn-secondary {
             background-color: var(--secondary-color);
@@ -280,8 +296,9 @@
             background-color: #b8952d;
             border-color: #b8952d;
             transform: translateY(-2px);
+            color: var(--primary-color) !important;
         }
-        
+
         .toast-notification {
             position: fixed;
             bottom: 20px;
@@ -299,6 +316,227 @@
         .toast-notification.show {
             opacity: 1;
             visibility: visible;
+        }
+
+        /* Property Details Styles */
+        .property-details {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .property-location {
+            color: var(--primary-color);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .property-feature {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .contact-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-contact {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 25px;
+        }
+
+        /* Loading and Empty States */
+        .loading-card {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(10, 45, 77, 0.25);
+        }
+
+        /* Property Upload Form */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--secondary-color);
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .file-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-item img, .file-item video {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Media Gallery */
+        .media-gallery {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .media-item:hover {
+            transform: scale(1.05);
+        }
+
+        .media-item img, .media-item video {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .video-play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* Share Button */
+        .btn-share {
+            background: linear-gradient(45deg, #4267B2, #365899);
+            color: white;
+            border: none;
+        }
+
+        .btn-share:hover {
+            background: linear-gradient(45deg, #365899, #4267B2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .property-features {
+                justify-content: center;
+            }
+            
+            .contact-buttons {
+                justify-content: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
         }
     </style>
 </head>
@@ -338,11 +576,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#home"><i class="fas fa-building-user me-2"></i>MOHSIN ESTATE</a>
-            <!-- ADDED: Navbar toggler button for mobile view -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- MODIFIED: Added 'collapse navbar-collapse' classes to make navbar responsive -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
@@ -372,7 +608,6 @@
             <div class="hero-content">
                 <h1 class="display-3 fw-bold mb-4">Your Premier Real Estate Partner in KDA Korangi</h1>
                 <p class="lead mb-5">Discover exceptional properties for sale and rent, and build your dream home with our expert construction services.</p>
-                <!-- MODIFIED: Made button group responsive -->
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <a href="#properties" class="btn btn-secondary btn-lg">Explore Properties</a>
                     <a href="#contact" class="btn btn-outline-light btn-lg">Get In Touch</a>
@@ -380,281 +615,272 @@
             </div>
         </div>
     </section>
-    
-    <!-- =============================================== -->
-    <!-- =============== TICKER SECTION ================ -->
-    <!-- =============================================== -->
-    <div class="ticker-wrap">
-        <div class="ticker-move">
-            <div class="ticker-item">For Sale: 240 Sq. Yd. House in Sector 31-B</div>
-            <div class="ticker-item">For Rent: 120 Sq. Yd. Upper Portion in Allahwala Town</div>
-            <div class="ticker-item">New Construction Project Started in Sector 32-A</div>
-            <div class="ticker-item">For Sale: 80 Sq. Yd. Corner House</div>
-            <div class="ticker-item">Contact us for construction rates!</div>
-            <div class="ticker-item">For Sale: 240 Sq. Yd. House in Sector 31-B</div>
-            <div class="ticker-item">For Rent: 120 Sq. Yd. Upper Portion in Allahwala Town</div>
-            <div class="ticker-item">New Construction Project Started in Sector 32-A</div>
-        </div>
-    </div>
 
-    <!-- Top Inline Ad -->
+    <!-- Top Ad Banner -->
     <div class="ad-container-top-bottom">
         <script type="text/javascript">
             atOptions = {
-                'key' : 'bbb39fa2df38b4031f13f19c6a9db940',
+                'key' : '6c142495c8d3ca5ad5c1b96c8f87c5c2',
                 'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
+                'height' : 90,
+                'width' : 728,
                 'params' : {}
             };
         </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/bbb39fa2df38b4031f13f19c6a9db940/invoke.js"></script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/6c142495c8d3ca5ad5c1b96c8f87c5c2/invoke.js"></script>
     </div>
 
-    <!-- =============================================== -->
-    <!-- ============== PROPERTIES SECTION ============= -->
-    <!-- =============================================== -->
+    <!-- News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="ticker-content">
+            <div class="ticker-item">🏠 New 120 Sq Yards House Available in Sector 51-A</div>
+            <div class="ticker-item">🏗️ Construction Services Available - Free Estimates</div>
+            <div class="ticker-item">📱 Call/WhatsApp: 0336-2842584 for Property Consultancy</div>
+            <div class="ticker-item">💰 Best Prices in KDA Employment Society</div>
+            <div class="ticker-item">✅ Verified Properties Only</div>
+        </div>
+    </div>
+
+    <!-- Properties Section -->
     <section id="properties" class="section">
         <div class="container">
-            <div class="text-center mb-5 position-relative">
-                <h2 class="section-title">Featured Properties</h2>
-                <p class="text-muted fs-5">A selection of premium homes available in KDA Employment Society, Korangi.</p>
-                
-                <!-- MODIFIED: Add Property button for desktop. Smaller and hidden on mobile. -->
-                <a href="addproperty.html" class="btn btn-primary btn-sm position-absolute d-none d-md-inline-block" style="top: 0; right: 0;">
-                    <i class="fas fa-plus me-1"></i> Add Property
-                </a>
-                
-                <!-- MODIFIED: Add Property button for mobile. Integrated into the flow and hidden on desktop. -->
-                <div class="d-md-none mt-3">
-                     <a href="addproperty.html" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus me-1"></i> Add Property
-                    </a>
+            <div class="text-center mb-5">
+                <h2 class="section-title display-5">Featured Properties</h2>
+                <p class="lead text-muted">Discover prime real estate opportunities in KDA Employment Society Korangi</p>
+            </div>
+
+            <!-- Property Filters -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-2">
+                    <select class="form-select" id="propertyTypeFilter">
+                        <option value="">All Types</option>
+                        <option value="House">House</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Apartment">Apartment</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <select class="form-select" id="purposeFilter">
+                        <option value="">All Purposes</option>
+                        <option value="Sale">For Sale</option>
+                        <option value="Rent">For Rent</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text" class="form-control" id="locationFilter" placeholder="Search by location...">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button class="btn btn-primary w-100" onclick="applyFilters()">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
                 </div>
             </div>
 
-            <div id="property-listings" class="row g-4 justify-content-center">
-                <!-- Property cards will be dynamically injected here by JavaScript -->
+            <!-- Properties Loading State -->
+            <div id="properties-loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading properties...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading properties...</p>
             </div>
 
+            <!-- Properties Grid -->
+            <div class="row" id="properties-grid">
+                <!-- Properties will be loaded here -->
+            </div>
+
+            <!-- No Properties Found -->
+            <div id="no-properties" class="text-center py-5 d-none">
+                <i class="fas fa-home fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No Properties Found</h4>
+                <p class="text-muted">Try adjusting your search criteria or check back later for new listings.</p>
+                <button class="btn btn-primary" onclick="showPropertyModal()">List Your Property</button>
+            </div>
+
+            <!-- View More Button -->
+            <div class="text-center mt-5">
+                <button class="btn btn-secondary btn-lg" onclick="showPropertyModal()">
+                    <i class="fas fa-plus me-2"></i>List Your Property
+                </button>
+            </div>
         </div>
     </section>
 
-    <!-- =============================================== -->
-    <!-- ============ CONSTRUCTIONS SECTION ============ -->
-    <!-- =============================================== -->
+    <!-- Property Submission Modal -->
+    <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="propertyModalLabel">
+                        <i class="fas fa-home me-2"></i>List Your Property
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="property-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="property-title" class="form-label">Property Title *</label>
+                                <input type="text" class="form-control" id="property-title" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="property-type" class="form-label">Property Type *</label>
+                                <select class="form-select" id="property-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="House">House</option>
+                                    <option value="Plot">Plot</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Apartment">Apartment</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="purpose" class="form-label">Purpose *</label>
+                                <select class="form-select" id="purpose" required>
+                                    <option value="">Select Purpose</option>
+                                    <option value="Sale">For Sale</option>
+                                    <option value="Rent">For Rent</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label">Price (PKR) *</label>
+                                <input type="number" class="form-control" id="price" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="location" class="form-label">Location *</label>
+                                <input type="text" class="form-control" id="location" required placeholder="e.g., Sector 51-A, KDA Scheme 33">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="area" class="form-label">Area *</label>
+                                <input type="text" class="form-control" id="area" required placeholder="e.g., 120 sq yards, 5 marla">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="bedrooms" class="form-label">Bedrooms</label>
+                                <select class="form-select" id="bedrooms">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                    <option value="5+">5+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="bathrooms" class="form-label">Bathrooms</label>
+                                <select class="form-select" id="bathrooms">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5+">5+</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobile-number" class="form-label">Your Mobile Number *</label>
+                            <input type="tel" class="form-control" id="mobile-number" required placeholder="0333xxxxxxx" pattern="03[0-9]{9}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Describe your property..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="images" class="form-label">Property Images</label>
+                            <input type="file" class="form-control" id="images" multiple accept="image/*">
+                            <div id="image-preview" class="file-preview"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="videos" class="form-label">Property Videos</label>
+                            <input type="file" class="form-control" id="videos" multiple accept="video/*">
+                            <div id="video-preview" class="file-preview"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submit-property" onclick="submitProperty()">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Property
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details Modal -->
+    <div class="modal fade" id="propertyDetailsModal" tabindex="-1" aria-labelledby="propertyDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="propertyDetailsModalLabel">Property Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="propertyDetailsContent">
+                    <!-- Property details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Constructions Section -->
     <section id="constructions" class="section bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                 <h2 class="section-title">Construction Services</h2>
-                <p class="text-muted fs-5">Build with confidence. We offer transparent, high-quality construction services.</p>
+                <h2 class="section-title display-5">Construction Services</h2>
+                <p class="lead text-muted">Professional construction and renovation services</p>
             </div>
-            
-            <div class="card construction-table">
-                <div class="card-header bg-primary text-white text-center py-3">
-                   <h4>🏗️ Construction Rate Chart (KDA Employees Society, Korangi)</h4>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0 fs-6">
-                        <thead class="table-dark">
-                            <tr>
-                                <th class="py-3 px-3">Category</th>
-                                <th class="py-3 px-3">Rate (PKR / Sq.Ft.)</th>
-                                <th class="py-3 px-3">Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Grey Structure (Labor Only)</strong></td>
-                                <td class="py-3 px-3">950 – 1,050</td>
-                                <td class="py-3 px-3">Masonry, plaster, shuttering, steel fixing</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Grey Structure (With Material)</strong></td>
-                                <td class="py-3 px-3">2,200 – 2,500</td>
-                                <td class="py-3 px-3">Complete grey structure with cement, steel, sand, crush</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Finishing (Basic)</strong></td>
-                                <td class="py-3 px-3">1,200 – 1,500</td>
-                                <td class="py-3 px-3">Tiles, paint, woodwork, electric fittings</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Finishing (Premium)</strong></td>
-                                <td class="py-3 px-3">2,000 – 2,500</td>
-                                <td class="py-3 px-3">Imported tiles, premium paint, wooden doors, lighting</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Turnkey Package (Standard)</strong></td>
-                                <td class="py-3 px-3">3,500 – 3,800</td>
-                                <td class="py-3 px-3">Full construction – grey + finishing</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-3"><strong>Turnkey Package (Luxury)</strong></td>
-                                <td class="py-3 px-3">4,200 – 4,800</td>
-                                <td class="py-3 px-3">Premium construction – luxury materials & modern design</td>
-                            </tr>
-                             <tr>
-                                <td class="py-3 px-3"><strong>Commercial Construction</strong></td>
-                                <td class="py-3 px-3">5,000 – 6,000</td>
-                                <td class="py-3 px-3">Offices, shops, plazas (with high-grade material)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer text-center py-3">
-                    <p class="mb-2 text-muted">Rates are estimates and may vary based on project scope and material choices. Contact us for a detailed quote!</p>
-                    <a href="https://wa.me/923042632003?text=I would like a detailed quote for my construction project." class="btn btn-success mt-2">
-                        <i class="fab fa-whatsapp me-2"></i>Get a Quote from Nazakat (Contractor)
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- =============================================== -->
-    <!-- ================== TEAM SECTION =============== -->
-    <!-- =============================================== -->
-    <section id="team" class="section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Meet Our Professional Team</h2>
-                <p class="text-muted fs-5">The experts dedicated to making your real estate goals a reality.</p>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <!-- MODIFIED: Added responsive classes for different screen sizes -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="team-card">
-                        <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
-                        <h5>MOHSIN</h5>
-                        <p class="team-role">Director</p>
-                        <a href="tel:+923362842584" class="text-decoration-none text-dark">+92 336 2842584</a>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="table-responsive">
+                        <table class="table table-striped construction-table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Rate per Sq Ft</th>
+                                    <th>Includes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Grey Structure</strong></td>
+                                    <td>PKR 1,800-2,200</td>
+                                    <td>Foundation, Walls, Roof Slab</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Complete Construction</strong></td>
+                                    <td>PKR 3,500-4,500</td>
+                                    <td>Grey + Finishing + Fixtures</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Interior Finishing</strong></td>
+                                    <td>PKR 1,200-1,800</td>
+                                    <td>Tiles, Paint, Electrical, Plumbing</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Renovation</strong></td>
+                                    <td>PKR 800-1,500</td>
+                                    <td>Repairs, Upgrades, Modernization</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="team-card">
-                        <div class="team-avatar"><i class="fas fa-user-gear"></i></div>
-                        <h5>RAFIQ</h5>
-                        <p class="team-role">Deputy Director</p>
-                        <a href="tel:+923013313129" class="text-decoration-none text-dark">+92 301 3313129</a>
-                    </div>
-                </div>
-                 <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="team-card">
-                        <div class="team-avatar"><i class="fas fa-bullhorn"></i></div>
-                        <h5>NOMAN</h5>
-                        <p class="team-role">Market Head</p>
-                        <a href="tel:+923332491993" class="text-decoration-none text-dark">+92 333 2491993</a>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="team-card">
-                        <div class="team-avatar"><i class="fas fa-hard-hat"></i></div>
-                        <h5>NAZAKAT</h5>
-                        <p class="team-role">Contractor</p>
-                        <a href="tel:+923042632003" class="text-decoration-none text-dark">+92 304 2632003</a>
-                    </div>
-                </div>
-                 <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="team-card">
-                        <div class="team-avatar"><i class="fas fa-users"></i></div>
-                        <h5>WASIM</h5>
-                        <p class="team-role">Coordinator</p>
-                         <p class="text-muted">Ensuring smooth operations</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =============================================== -->
-    <!-- ================ CONTACT SECTION ============== -->
-    <!-- =============================================== -->
-    <section id="contact" class="section bg-light">
-        <div class="container">
-             <div class="text-center mb-5">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="text-muted fs-5">We're here to help with all your property and construction needs.</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-7">
-                     <div class="card p-4 p-md-5 border-0 shadow-sm">
-                        <h4 class="mb-4">Send us a Message</h4>
-                        <form>
-                            <div class="row">
-                                <!-- MODIFIED: Added responsive classes to stack on mobile -->
-                                <div class="col-12 col-md-6 mb-3">
-                                    <label for="name" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="name" required>
-                                </div>
-                                <div class="col-12 col-md-6 mb-3">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="interest" class="form-label">I'm interested in...</label>
-                                <select class="form-select" id="interest">
-                                    <option>Buying a Property</option>
-                                    <option>Selling a Property</option>
-                                    <option>Renting a Property</option>
-                                    <option>Construction Services</option>
-                                    <option>General Inquiry</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control" id="message" rows="4" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-                 <div class="col-lg-5">
-                    <div class="contact-info-card h-100 d-flex flex-column justify-content-center">
-                        <h4 class="mb-4 text-white">Contact Information</h4>
-                        <div class="d-flex mb-3">
-                            <i class="fas fa-map-marker-alt fa-2x me-3 mt-1" style="color: var(--secondary-color);"></i>
-                            <div>
-                                <h6 class="text-white">Office Address</h6>
-                                <p class="mb-0">R4H6+8P7, KDA Employees Rd, Allahwala Town - Sector 31B, Korangi, Karachi</p>
-                            </div>
-                        </div>
-                        <div class="d-flex mb-3">
-                           <i class="fas fa-phone fa-2x me-3 mt-1" style="color: var(--secondary-color);"></i>
-                            <div>
-                                <h6 class="text-white">Director's Phone</h6>
-                                <p class="mb-0"><a href="tel:+923362842584">+92 336 2842584</a></p>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                           <i class="fab fa-whatsapp fa-2x me-3 mt-1" style="color: var(--secondary-color);"></i>
-                            <div>
-                                <h6 class="text-white">WhatsApp Inquiry</h6>
-                                <a href="https://wa.me/923362842584" target="_blank" class="btn btn-light btn-sm">Chat with us now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5">
-                <div class="card border-0 shadow-sm" style="border-radius: 15px; overflow: hidden;">
-                     <div class="card-header text-center bg-white py-3">
-                         <h5><i class="fas fa-map-marked-alt me-2 text-primary"></i>Find Our Office Location</h5>
-                     </div>
-                    <div class="card-body p-0">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.019939524583!2d67.1105938150029!3d24.8631779840523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33b0b0d3d5f4d%3A0x3e1f7bdf01faf4!2sKDA%20Employees%20Society!5e0!3m2!1sen!2s!4v1672522512345!5m2!1sen!2s"
-                            width="100%" 
-                            height="450" 
-                            style="border:0;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="card-footer text-center py-3">
-                        <a href="https://share.google/Nm5kSRl2rlqAA7ZuF" target="_blank" class="btn btn-primary">
-                            <i class="fas fa-directions me-2"></i>Get Directions on Google Maps
+                    
+                    <div class="text-center mt-4">
+                        <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Rates may vary based on specifications and materials chosen</p>
+                        <a href="https://wa.me/923362842584" class="btn btn-primary btn-lg" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i>Get Free Estimate
                         </a>
                     </div>
                 </div>
@@ -662,243 +888,680 @@
         </div>
     </section>
 
-    <!-- Bottom Inline Ad -->
-    <div class="ad-container-top-bottom">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'bbb39fa2df38b4031f13f19c6a9db940',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/bbb39fa2df38b4031f13f19c6a9db940/invoke.js"></script>
-    </div>
-
-    <!-- =============================================== -->
-    <!-- =================== FOOTER ==================== -->
-    <!-- =============================================== -->
-    <footer class="footer pt-5 pb-4">
+    <!-- Team Section -->
+    <section id="team" class="section">
         <div class="container">
-            <div class="row">
-                <!-- MODIFIED: Added responsive classes to stack footer columns on mobile -->
-                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="text-white mb-3"><i class="fas fa-building-user me-2"></i>MOHSIN ESTATE</h5>
-                    <p class="text-muted">Your trusted partner for premium properties and construction in KDA Employment Society, Korangi.</p>
+            <div class="text-center mb-5">
+                <h2 class="section-title display-5">Meet Our Team</h2>
+                <p class="lead text-muted">Experienced professionals dedicated to your real estate needs</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h5>Mohsin Ali</h5>
+                        <p class="team-role">Founder & CEO</p>
+                        <p class="text-muted">Leading real estate expert with 15+ years of experience in KDA Society</p>
+                    </div>
                 </div>
-                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="text-white mb-3">Quick Links</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#properties">Properties</a></li>
-                        <li><a href="#constructions">Constructions</a></li>
-                        <li><a href="#team">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <h5>Construction Team</h5>
+                        <p class="team-role">Expert Builders</p>
+                        <p class="text-muted">Skilled craftsmen delivering quality construction services</p>
+                    </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <h5 class="text-white mb-3">Contact Info</h5>
-                    <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2"></i>KDA Employees Society, Korangi, Karachi</p>
-                    <p class="text-muted mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+923362842584" class="text-muted text-decoration-none">+92 336 2842584</a></p>
-                     <a href="https://wa.me/923362842584" class="btn btn-success btn-sm" target="_blank">
-                        <i class="fab fa-whatsapp me-1"></i>WhatsApp Us
-                    </a>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h5>Sales Team</h5>
+                        <p class="team-role">Property Consultants</p>
+                        <p class="text-muted">Dedicated professionals helping you find your dream property</p>
+                    </div>
                 </div>
             </div>
-            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
-            <div class="text-center">
-                 <p class="text-muted mb-0">&copy; 2024 MOHSIN ESTATE. All Rights Reserved.</p>
-                 <a href="admin.html" target="_blank" style="font-size: 0.8rem; text-decoration: none; color: #d4af37; font-weight: 500;">Admin Login</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title display-5">Contact Us</h2>
+                <p class="lead text-muted">Get in touch for property consultancy and construction services</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-info-card">
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-4">
+                                <i class="fas fa-phone fa-2x mb-3"></i>
+                                <h5>Call Us</h5>
+                                <p><a href="tel:+923362842584">0336-2842584</a></p>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <i class="fab fa-whatsapp fa-2x mb-3"></i>
+                                <h5>WhatsApp</h5>
+                                <p><a href="https://wa.me/923362842584" target="_blank">Chat with us</a></p>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
+                                <h5>Location</h5>
+                                <p>KDA Employment Society<br>Korangi, Karachi</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p><i class="fas fa-clock me-2"></i>Available 24/7 for property consultancy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer section bg-dark text-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h5 class="text-secondary mb-3">MOHSIN ESTATE</h5>
+                    <p class="mb-3">Your trusted partner for real estate and construction services in KDA Employment Society Korangi. We provide comprehensive property solutions with transparency and professionalism.</p>
+                    <div class="footer-links">
+                        <a href="https://wa.me/923362842584" target="_blank" class="me-3">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="tel:+923362842584">
+                            <i class="fas fa-phone"></i> Call Now
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-secondary mb-3">Services</h6>
+                    <div class="footer-links">
+                        <a href="#properties" class="d-block mb-2">Property Sales</a>
+                        <a href="#properties" class="d-block mb-2">Property Rentals</a>
+                        <a href="#constructions" class="d-block mb-2">Construction</a>
+                        <a href="#team" class="d-block mb-2">Consultancy</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-secondary mb-3">Quick Links</h6>
+                    <div class="footer-links">
+                        <a href="#home" class="d-block mb-2">Home</a>
+                        <a href="#properties" class="d-block mb-2">Properties</a>
+                        <a href="#team" class="d-block mb-2">About Us</a>
+                        <a href="#contact" class="d-block mb-2">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="mb-0">&copy; 2024 MOHSIN ESTATE. All rights reserved. | KDA Employment Society Korangi</p>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
-    <div class="modal fade" id="propertyShareModal" tabindex="-1" aria-labelledby="propertyShareModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" id="modalContent"></div>
-        </div>
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast-notification">
+        <span id="toast-message"></span>
     </div>
-    
-    <div id="toast" class="toast-notification">Link copied to clipboard!</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!sessionStorage.getItem('adShown')) {
-                const showAdOnClick = () => {
-                    sessionStorage.setItem('adShown', 'true');
-                    const adScript = document.createElement('script');
-                    adScript.type = 'text/javascript';
-                    adScript.src = '//pl27400430.profitableratecpm.com/be/2e/06/be2e06ec9e2276671d155fc84fcfca02.js';
-                    document.body.appendChild(adScript);
-                    document.body.removeEventListener('click', showAdOnClick);
-                };
-                document.body.addEventListener('click', showAdOnClick);
-            }
-        });
-    </script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const propertyListingsContainer = document.getElementById('property-listings');
-            let properties = [];
-            
-            const defaultProperties = [
-                {
-                    "status": "For Sale", "title": "Spacious 240 Sq. Yd. House", "location": "Sector 31-B, KDA Korangi",
-                    "beds": 5, "baths": 5, "area": 240, "price": "PKR 2.5 Crore",
-                    "image": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800&auto=format&fit=crop"
-                },
-                {
-                    "status": "For Rent", "title": "Modern 120 Sq. Yd. Upper Portion", "location": "Allahwala Town, KDA Korangi",
-                    "beds": 2, "baths": 2, "area": 120, "price": "PKR 45,000",
-                    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-                },
-                {
-                    "status": "For Sale", "title": "Corner 80 Sq. Yd. Bungalow", "location": "Sector 32-A, KDA Korangi",
-                    "beds": 3, "baths": 3, "area": 80, "price": "PKR 1.8 Crore",
-                    "image": "https://images.unsplash.com/photo-1605276374104-5de67d216b8a?q=80&w=800&auto=format&fit=crop"
-                }
-            ];
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-            properties = JSON.parse(localStorage.getItem('properties')) || defaultProperties;
+    <!-- JavaScript -->
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        
+        // Supabase configuration
+        const supabaseUrl = "https://cjshxsphqicmmcwqxcmx.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqc2h4c3BocWljbW1jd3F4Y214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMzQxNDAsImV4cCI6MjA3MTcxMDE0MH0.n-Y9KgffhcysGWsLLrHUMBoVuUmdEqyZRK6gtIY683Q";
+
+        // Initialize Supabase client
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Global variables
+        window.supabase = supabase;
+        let selectedImages = [];
+        let selectedVideos = [];
+
+        // Show property modal
+        window.showPropertyModal = function() {
+            const modal = new bootstrap.Modal(document.getElementById('propertyModal'));
+            modal.show();
+        }
+
+        // Toast notification function
+        window.showToast = function(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
             
-            const renderProperties = () => {
-                if (!properties || properties.length === 0) {
-                    propertyListingsContainer.innerHTML = '<p class="text-center text-muted col-12">No properties are currently listed. Please check back later.</p>';
+            toastMessage.textContent = message;
+            toast.className = `toast-notification show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Share property function
+        window.shareProperty = async function(propertyId) {
+            try {
+                const propertyUrl = `${window.location.origin}${window.location.pathname}?property=${propertyId}`;
+                
+                // Use TinyURL API to shorten the link
+                const tinyResponse = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(propertyUrl)}`);
+                const shortUrl = await tinyResponse.text();
+                
+                // Copy to clipboard
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(shortUrl);
+                    showToast('Share link copied to clipboard!', 'success');
                 } else {
-                    propertyListingsContainer.innerHTML = '';
-                    properties.forEach((property, index) => {
-                        const isForRent = property.status === 'For Rent';
-                        const badgeColor = isForRent ? '#28a745' : '#0a2d4d';
-                        const priceText = isForRent ? `${property.price} / month` : property.price;
-                        const encodedTitle = encodeURIComponent(property.title);
-                        
-                        // MODIFIED: This responsive class ensures properties stack on mobile and form a grid on larger screens.
-                        const cardHTML = `
-                            <div class="col-12 col-md-6 col-lg-4"> 
-                                <div class="property-card h-100 d-flex flex-column">
-                                    <div class="property-image">
-                                        <img src="${property.image}" alt="${property.title}" class="img-fluid" loading="lazy" style="height: 250px; width: 100%; object-fit: cover;">
-                                        <div class="property-badge" style="background-color: ${badgeColor};">${property.status}</div>
-                                    </div>
-                                    <div class="property-content d-flex flex-column flex-grow-1">
-                                        <h5>${property.title}</h5>
-                                        <p class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>${property.location}</p>
-                                        <div class="d-flex justify-content-between text-muted my-3">
-                                            <span><i class="fas fa-bed me-1"></i> ${property.beds} Beds</span>
-                                            <span><i class="fas fa-bath me-1"></i> ${property.baths} Baths</span>
-                                            <span><i class="fas fa-ruler-combined me-1"></i> ${property.area} Sq.Yd.</span>
-                                        </div>
-                                        <div class="property-price mt-auto">${priceText}</div>
-                                        <div class="d-flex gap-2 mt-3">
-                                            <a href="https://wa.me/923362842584?text=I'm interested in the ${encodedTitle}" class="btn btn-primary w-100">Contact</a>
-                                            <button class="btn btn-outline-secondary share-btn" data-index="${index}" title="Share this property">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        propertyListingsContainer.innerHTML += cardHTML;
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shortUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Share link copied to clipboard!', 'success');
+                }
+
+                // Open share modal with options
+                const shareText = `Check out this amazing property on MOHSIN ESTATE: ${shortUrl}`;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'MOHSIN ESTATE Property',
+                        text: shareText,
+                        url: shortUrl
                     });
+                } else {
+                    // Open WhatsApp share
+                    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
                 }
-            };
+            } catch (error) {
+                console.error('Error sharing property:', error);
+                showToast('Error creating share link', 'error');
+            }
+        }
 
-            // MODIFIED: The handleShare function is now completely new.
-            const handleShare = (index) => {
-                const property = properties[index];
+        // Show property details modal
+        window.showPropertyDetails = function(property) {
+            const modal = new bootstrap.Modal(document.getElementById('propertyDetailsModal'));
+            const content = document.getElementById('propertyDetailsContent');
+            
+            let mediaGallery = '';
+            if (property.images && property.images.length > 0) {
+                mediaGallery += '<div class="mb-4"><h6>Images</h6><div class="row">';
+                property.images.forEach(img => {
+                    mediaGallery += `<div class="col-md-3 mb-2"><img src="${img}" class="img-fluid rounded" style="cursor: pointer;" onclick="window.open('${img}', '_blank')"></div>`;
+                });
+                mediaGallery += '</div></div>';
+            }
+            
+            if (property.videos && property.videos.length > 0) {
+                mediaGallery += '<div class="mb-4"><h6>Videos</h6><div class="row">';
+                property.videos.forEach(video => {
+                    mediaGallery += `<div class="col-md-6 mb-2"><video controls class="w-100 rounded"><source src="${video}" type="video/mp4"></video></div>`;
+                });
+                mediaGallery += '</div></div>';
+            }
+
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>${property.title}</h4>
+                        <p class="text-muted mb-3">${property.description || 'No description available'}</p>
+                        <div class="property-details">
+                            <p><strong>Type:</strong> ${property.property_type}</p>
+                            <p><strong>Purpose:</strong> ${property.purpose}</p>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Area:</strong> ${property.area}</p>
+                            <p><strong>Bedrooms:</strong> ${property.bedrooms || 'N/A'}</p>
+                            <p><strong>Bathrooms:</strong> ${property.bathrooms || 'N/A'}</p>
+                            <p><strong>Contact:</strong> ${property.mobile_number}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="property-price text-center mb-3">PKR ${parseInt(property.price).toLocaleString()}</div>
+                        <div class="d-grid gap-2">
+                            <a href="tel:${property.mobile_number}" class="btn btn-primary">
+                                <i class="fas fa-phone me-2"></i>Call Owner
+                            </a>
+                            <a href="https://wa.me/92${property.mobile_number.substring(1)}" target="_blank" class="btn btn-success">
+                                <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                            </a>
+                            <button class="btn btn-share" onclick="shareProperty('${property.id}')">
+                                <i class="fas fa-share-alt me-2"></i>Share Property
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                ${mediaGallery}
+            `;
+            
+            modal.show();
+        }
+
+        // File preview functions
+        document.getElementById('images').addEventListener('change', function(e) {
+            handleFilePreview(e, 'image-preview', 'images', selectedImages);
+        });
+
+        document.getElementById('videos').addEventListener('change', function(e) {
+            handleFilePreview(e, 'video-preview', 'videos', selectedVideos);
+        });
+
+        function handleFilePreview(event, previewId, fileType, selectedArray) {
+            const files = Array.from(event.target.files);
+            const previewContainer = document.getElementById(previewId);
+            
+            files.forEach(file => {
+                selectedArray.push(file);
                 
-                // 1. Generate the unique link that will open the modal on the website
-                const encodedProperty = btoa(JSON.stringify(property));
-                const propertyUrl = `${window.location.origin}${window.location.pathname}?property=${encodedProperty}`;
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
                 
-                // 2. Create the detailed message for WhatsApp, using its formatting (asterisks for bold)
-                const message = `
-*Check out this property from MOHSIN ESTATE!*
-
-*Property:* ${property.title}
-*Status:* ${property.status}
-*Location:* ${property.location}
-*Price:* ${property.price}
-*Details:* ${property.beds} Beds, ${property.baths} Baths
-
-*View full details here:*
-${propertyUrl}
-                `.trim();
-
-                // 3. URL-encode the entire message so it can be passed in a URL
-                const encodedMessage = encodeURIComponent(message);
-
-                // 4. Create the final WhatsApp "click to chat" URL
-                const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-
-                // 5. Open the WhatsApp link in a new browser tab. 
-                // This will prompt the user to open their WhatsApp app.
-                window.open(whatsappUrl, '_blank');
-            };
-
-            propertyListingsContainer.addEventListener('click', function(e) {
-                const shareButton = e.target.closest('.share-btn');
-                if (shareButton) {
-                    e.preventDefault();
-                    const index = shareButton.dataset.index;
-                    handleShare(index);
+                if (fileType === 'images') {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = 'Preview';
+                    fileItem.appendChild(img);
+                } else {
+                    const video = document.createElement('video');
+                    video.src = URL.createObjectURL(file);
+                    video.controls = true;
+                    fileItem.appendChild(video);
                 }
-            });
-
-            const checkUrlForProperty = () => {
-                const params = new URLSearchParams(window.location.search);
-                const propertyData = params.get('property');
-
-                if (propertyData) {
-                    try {
-                        const property = JSON.parse(atob(propertyData));
-                        const isForRent = property.status === 'For Rent';
-                        const priceText = isForRent ? `${property.price} / month` : property.price;
-
-                        const modalContent = `
-                            <div class="modal-header border-0">
-                                <h5 class="modal-title" id="propertyShareModalLabel">${property.title}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body p-0">
-                                <img src="${property.image}" alt="${property.title}" class="img-fluid w-100">
-                                <div class="p-4">
-                                    <span class="badge rounded-pill" style="background-color: ${isForRent ? '#28a745' : '#0a2d4d'}; font-size: 1rem;">${property.status}</span>
-                                    <h3 class="property-price mt-3">${priceText}</h3>
-                                    <p class="text-muted fs-5"><i class="fas fa-map-marker-alt me-2"></i>${property.location}</p>
-                                    <div class="d-flex justify-content-around text-center border-top border-bottom py-3 my-3">
-                                        <div><i class="fas fa-bed fa-2x text-primary"></i><p class="mb-0 mt-1">${property.beds} Beds</p></div>
-                                        <div><i class="fas fa-bath fa-2x text-primary"></i><p class="mb-0 mt-1">${property.baths} Baths</p></div>
-                                        <div><i class="fas fa-ruler-combined fa-2x text-primary"></i><p class="mb-0 mt-1">${property.area} Sq.Yd.</p></div>
-                                    </div>
-                                    <p>Contact MOHSIN ESTATE for more details on this excellent property opportunity.</p>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="https://wa.me/923362842584?text=I'm interested in the ${encodeURIComponent(property.title)}" class="btn btn-success"><i class="fab fa-whatsapp me-2"></i>Contact on WhatsApp</a>
-                                <button class="btn btn-primary" onclick="window.location.href='${window.location.origin}${window.location.pathname}'">Explore More Properties</button>
-                            </div>
-                        `;
-                        
-                        document.getElementById('modalContent').innerHTML = modalContent;
-                        const propertyModal = new bootstrap.Modal(document.getElementById('propertyShareModal'));
-                        propertyModal.show();
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                    } catch (e) {
-                        console.error('Failed to decode property data from URL', e);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-file';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function() {
+                    const index = selectedArray.indexOf(file);
+                    if (index > -1) {
+                        selectedArray.splice(index, 1);
                     }
-                }
-            };
+                    fileItem.remove();
+                };
+                
+                fileItem.appendChild(removeBtn);
+                previewContainer.appendChild(fileItem);
+            });
+        }
 
-            renderProperties();
-            checkUrlForProperty();
+        // Submit property function
+        window.submitProperty = async function() {
+            const submitBtn = document.getElementById('submit-property');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+                submitBtn.disabled = true;
+
+                // Get form data
+                const title = document.getElementById('property-title').value;
+                const propertyType = document.getElementById('property-type').value;
+                const purpose = document.getElementById('purpose').value;
+                const price = document.getElementById('price').value;
+                const location = document.getElementById('location').value;
+                const area = document.getElementById('area').value;
+                const bedrooms = document.getElementById('bedrooms').value;
+                const bathrooms = document.getElementById('bathrooms').value;
+                const mobileNumber = document.getElementById('mobile-number').value;
+                const description = document.getElementById('description').value;
+
+                // Validate required fields
+                if (!title || !propertyType || !purpose || !price || !location || !area || !mobileNumber) {
+                    showToast('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                // Upload images to Supabase Storage
+                const imageUrls = [];
+                for (const file of selectedImages) {
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const { data, error } = await supabase.storage
+                        .from('property_images')
+                        .upload(fileName, file);
+                    
+                    if (error) {
+                        console.error('Image upload error:', error);
+                        continue;
+                    }
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('property_images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrls.push(publicUrl);
+                }
+
+                // Upload videos to Supabase Storage
+                const videoUrls = [];
+                for (const file of selectedVideos) {
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const { data, error } = await supabase.storage
+                        .from('property_images')
+                        .upload(fileName, file);
+                    
+                    if (error) {
+                        console.error('Video upload error:', error);
+                        continue;
+                    }
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('property_images')
+                        .getPublicUrl(fileName);
+                    
+                    videoUrls.push(publicUrl);
+                }
+
+                // Insert property into database
+                const { data, error } = await supabase
+                    .from('properties')
+                    .insert([{
+                        title,
+                        property_type: propertyType,
+                        purpose,
+                        price: parseInt(price),
+                        location,
+                        area,
+                        bedrooms,
+                        bathrooms,
+                        description,
+                        images: imageUrls,
+                        videos: videoUrls,
+                        mobile_number: mobileNumber,
+                        status: 'pending'
+                    }]);
+
+                if (error) {
+                    console.error('Database insert error:', error);
+                    showToast('Error submitting property. Please try again.', 'error');
+                    return;
+                }
+
+                showToast('Property submitted successfully! It will be reviewed by admin.', 'success');
+                
+                // Reset form
+                document.getElementById('property-form').reset();
+                selectedImages = [];
+                selectedVideos = [];
+                document.getElementById('image-preview').innerHTML = '';
+                document.getElementById('video-preview').innerHTML = '';
+                
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('propertyModal')).hide();
+                
+                // Reload properties
+                loadProperties();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Load and display properties
+        async function loadProperties() {
+            const loadingElement = document.getElementById('properties-loading');
+            const gridElement = document.getElementById('properties-grid');
+            const noPropertiesElement = document.getElementById('no-properties');
+            
+            try {
+                loadingElement.style.display = 'block';
+                gridElement.innerHTML = '';
+                noPropertiesElement.classList.add('d-none');
+
+                const { data: properties, error } = await supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('status', 'approved')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading properties:', error);
+                    showToast('Error loading properties', 'error');
+                    return;
+                }
+
+                loadingElement.style.display = 'none';
+
+                if (!properties || properties.length === 0) {
+                    noPropertiesElement.classList.remove('d-none');
+                    return;
+                }
+
+                properties.forEach(property => {
+                    const propertyCard = createPropertyCard(property);
+                    gridElement.appendChild(propertyCard);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingElement.style.display = 'none';
+                showToast('Error loading properties', 'error');
+            }
+        }
+
+        // Create property card element
+        function createPropertyCard(property) {
+            const col = document.createElement('div');
+            col.className = 'col-lg-4 col-md-6 mb-4';
+
+            const card = document.createElement('div');
+            card.className = 'property-card';
+
+            // Property image
+            let imageSrc = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973';
+            if (property.images && property.images.length > 0) {
+                imageSrc = property.images[0];
+            }
+
+            // Create media gallery
+            let mediaGallery = '';
+            if (property.images && property.images.length > 1) {
+                mediaGallery += '<div class="media-gallery">';
+                property.images.slice(1, 4).forEach(img => {
+                    mediaGallery += `<div class="media-item"><img src="${img}" alt="Property" onclick="showPropertyDetails(${JSON.stringify(property).replace(/"/g, '&quot;')})"></div>`;
+                });
+                if (property.images.length > 4) {
+                    mediaGallery += `<div class="media-item" style="position: relative; background: rgba(0,0,0,0.7); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">+${property.images.length - 4}</div>`;
+                }
+                mediaGallery += '</div>';
+            }
+
+            // Add video thumbnails
+            if (property.videos && property.videos.length > 0) {
+                if (!mediaGallery) mediaGallery = '<div class="media-gallery">';
+                property.videos.slice(0, 2).forEach(video => {
+                    mediaGallery += `<div class="media-item" onclick="showPropertyDetails(${JSON.stringify(property).replace(/"/g, '&quot;')})"><video src="${video}" style="pointer-events: none;"></video><div class="video-play-overlay"><i class="fas fa-play"></i></div></div>`;
+                });
+                if (!property.images || property.images.length <= 1) {
+                    mediaGallery += '</div>';
+                }
+            }
+
+            card.innerHTML = `
+                <div class="property-image">
+                    <img src="${imageSrc}" alt="${property.title}" onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973'" onclick="showPropertyDetails(${JSON.stringify(property).replace(/"/g, '&quot;')})">
+                    <div class="property-badge">${property.purpose}</div>
+                </div>
+                <div class="property-content">
+                    <h5 class="mb-2">${property.title}</h5>
+                    <div class="property-location mb-2">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        ${property.location}
+                    </div>
+                    <div class="property-details mb-3">
+                        <div class="property-features">
+                            <div class="property-feature">
+                                <i class="fas fa-home me-1"></i>
+                                ${property.property_type}
+                            </div>
+                            <div class="property-feature">
+                                <i class="fas fa-expand-arrows-alt me-1"></i>
+                                ${property.area}
+                            </div>
+                            ${property.bedrooms ? `
+                            <div class="property-feature">
+                                <i class="fas fa-bed me-1"></i>
+                                ${property.bedrooms} BR
+                            </div>
+                            ` : ''}
+                            ${property.bathrooms ? `
+                            <div class="property-feature">
+                                <i class="fas fa-bath me-1"></i>
+                                ${property.bathrooms} Bath
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    ${mediaGallery}
+                    <div class="property-price">PKR ${parseInt(property.price).toLocaleString()}</div>
+                    <div class="contact-buttons">
+                        <a href="tel:${property.mobile_number}" class="btn btn-primary btn-contact">
+                            <i class="fas fa-phone me-1"></i>Call
+                        </a>
+                        <a href="https://wa.me/92${property.mobile_number.substring(1)}" target="_blank" class="btn btn-success btn-contact">
+                            <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                        </a>
+                        <button class="btn btn-share btn-contact" onclick="shareProperty('${property.id}')">
+                            <i class="fas fa-share-alt me-1"></i>Share
+                        </button>
+                        <button class="btn btn-outline-primary btn-contact" onclick="showPropertyDetails(${JSON.stringify(property).replace(/"/g, '&quot;')})">
+                            <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            col.appendChild(card);
+            return col;
+        }
+
+        // Apply filters function
+        window.applyFilters = function() {
+            const typeFilter = document.getElementById('propertyTypeFilter').value;
+            const purposeFilter = document.getElementById('purposeFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
+
+            loadFilteredProperties(typeFilter, purposeFilter, locationFilter);
+        }
+
+        // Load filtered properties
+        async function loadFilteredProperties(type, purpose, location) {
+            const loadingElement = document.getElementById('properties-loading');
+            const gridElement = document.getElementById('properties-grid');
+            const noPropertiesElement = document.getElementById('no-properties');
+            
+            try {
+                loadingElement.style.display = 'block';
+                gridElement.innerHTML = '';
+                noPropertiesElement.classList.add('d-none');
+
+                let query = supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('status', 'approved');
+
+                if (type) {
+                    query = query.eq('property_type', type);
+                }
+                if (purpose) {
+                    query = query.eq('purpose', purpose);
+                }
+                if (location) {
+                    query = query.ilike('location', `%${location}%`);
+                }
+
+                const { data: properties, error } = await query.order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading filtered properties:', error);
+                    showToast('Error loading properties', 'error');
+                    return;
+                }
+
+                loadingElement.style.display = 'none';
+
+                if (!properties || properties.length === 0) {
+                    noPropertiesElement.classList.remove('d-none');
+                    return;
+                }
+
+                properties.forEach(property => {
+                    const propertyCard = createPropertyCard(property);
+                    gridElement.appendChild(propertyCard);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingElement.style.display = 'none';
+                showToast('Error loading properties', 'error');
+            }
+        }
+
+        // Check for property parameter in URL on page load
+        function checkPropertyParameter() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('property');
+            
+            if (propertyId) {
+                // Load specific property and show details
+                loadSpecificProperty(propertyId);
+            }
+        }
+
+        // Load specific property
+        async function loadSpecificProperty(propertyId) {
+            try {
+                const { data: property, error } = await supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('id', propertyId)
+                    .eq('status', 'approved')
+                    .single();
+
+                if (error || !property) {
+                    console.error('Property not found:', error);
+                    return;
+                }
+
+                // Scroll to properties section and show details
+                document.getElementById('properties').scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    showPropertyDetails(property);
+                }, 1000);
+
+            } catch (error) {
+                console.error('Error loading specific property:', error);
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProperties();
+            checkPropertyParameter();
         });
     </script>
-
 </body>
 </html>
